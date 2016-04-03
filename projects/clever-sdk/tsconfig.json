@@ -1,22 +1,19 @@
 {
     "compilerOptions": {
-        "target": "es6", // 
-        "module": "commonjs", // 
+        "target": "es6", //
+        "module": "commonjs", //
         "experimentalDecorators": true, // 启用ES装饰器。
         "strict": true,
         "strictNullChecks": false,
         "moduleResolution": "Node",
         "skipLibCheck": true,
         "esModuleInterop": true,
-        "stripInternal": true,
+        "stripInternal": true
     },
     "include": [
         "./src/**/*"
         // "libs"
     ],
     // 排除
-    "exclude": [
-        "dist",
-        "build"
-    ]
+    "exclude": ["dist", "build"]
 }

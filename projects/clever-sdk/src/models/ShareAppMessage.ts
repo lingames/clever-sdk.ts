@@ -1,4 +1,8 @@
-export type ShareAppMessage = {} | wxShareAppMessage | ttShareAppMessage | ksShareAppMessage;
+export type ShareAppMessage =
+    | {}
+    | wxShareAppMessage
+    | ttShareAppMessage
+    | ksShareAppMessage;
 
 export interface wxShareAppMessage {
     /** 转发标题，不传则默认使用当前小游戏的昵称。 */

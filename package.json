@@ -7,15 +7,11 @@
         "projects/*"
     ],
     "scripts": {
-        "lint": "eslint \"projects/**/*.{js,ts,tsx}\""
+        "format": "biome format --write projects",
+        "format:check": "biome check projects"
     },
     "devDependencies": {
-        "@eslint/js": "^9.20.0",
-        "@typescript-eslint/eslint-plugin": "^8.24.0",
-        "@typescript-eslint/parser": "^8.24.0",
-        "eslint": "^9.20.1",
-        "eslint-define-config": "^2.1.0",
-        "globals": "^15.15.0",
+        "@biomejs/biome": "^2.4.11",
         "ts-loader": "^9.5.2",
         "typescript": "^5.8.2",
         "webpack": "^5.98.0",

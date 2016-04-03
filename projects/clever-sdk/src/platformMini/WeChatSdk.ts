@@ -1,11 +1,18 @@
-import {build_sdk_head} from '../helper';
-import {CleverSdk} from '../CleverSdk';
-import {VideoReward, wxCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
-import {CreateBannerAd} from '../models/CreateBannerAd';
-import {wxInitialize} from '../models/SdkInitialize';
-import {wxGetUserInfo, wxLoginData, wxUserInfoCallback} from '../models/LoginData';
-import {wxShareAppMessage} from '../models/ShareAppMessage';
-import {wxNavigateToScene} from '../models/NavigateToScene';
+import { build_sdk_head } from "../helper";
+import { CleverSdk } from "../CleverSdk";
+import {
+    VideoReward,
+    wxCreateRewardedVideoAd,
+} from "../models/PlayRewardedVideo";
+import { CreateBannerAd } from "../models/CreateBannerAd";
+import { wxInitialize } from "../models/SdkInitialize";
+import {
+    wxGetUserInfo,
+    wxLoginData,
+    wxUserInfoCallback,
+} from "../models/LoginData";
+import { wxShareAppMessage } from "../models/ShareAppMessage";
+import { wxNavigateToScene } from "../models/NavigateToScene";
 
 /// 微信全局对象
 export declare const wx: any;
@@ -25,48 +32,53 @@ export class WeChatSdk extends CleverSdk {
                             project_id: this.project_id,
                             login_code: res.code,
                             Fields: {
-                                grant_type: 'authorization_code'
-                            }
+                                grant_type: "authorization_code",
+                            },
                         };
-                        const head = build_sdk_head(this.sdk_key, JSON.stringify(body));
+                        const head = build_sdk_head(
+                            this.sdk_key,
+                            JSON.stringify(body),
+                        );
                         // https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
                         wx.request({
                             url: this.sdk_login_url,
-                            method: 'POST',
+                            method: "POST",
                             header: head,
                             data: body,
-                            dataType: 'json',
+                            dataType: "json",
                             success: (fine: any) => {
-                                console.warn('微信登成功: ', fine);
+                                console.warn("微信登成功: ", fine);
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
                             },
                             fail: (fail: any) => {
-                                console.warn('微信登录失败: ', fail);
+                                console.warn("微信登录失败: ", fail);
                                 reject(fail);
-                            }
+                            },
                         });
                     } else {
-                        console.warn('微信登录失败！', res.errMsg);
+                        console.warn("微信登录失败！", res.errMsg);
                         reject(res.errMsg);
                     }
                 },
                 fail(err: any) {
-                    console.warn('微信登录凭证失败: ', err);
+                    console.warn("微信登录凭证失败: ", err);
                     reject(err);
-                }
+                },
             });
         });
     }
 
     async initialize(config: wxInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? 'https://api.salesagent.cc/game-analyzer/player/login';
+        this.sdk_login_url =
+            config.sdk_login_url ??
+            "https://api.salesagent.cc/game-analyzer/player/login";
         if (config.enableShare !== false) {
             wx.showShareMenu({
-                menus: ['shareAppMessage', 'shareTimeline']
+                menus: ["shareAppMessage", "shareTimeline"],
             });
         }
-        console.info('微信全局对象:', wx);
+        console.info("微信全局对象:", wx);
         return true;
     }
 
@@ -89,7 +101,9 @@ export class WeChatSdk extends CleverSdk {
     /**
      * https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createRewardedVideoAd.html
      */
-    public override playRewardedVideo(adInfo: wxCreateRewardedVideoAd): Promise<VideoReward> {
+    public override playRewardedVideo(
+        adInfo: wxCreateRewardedVideoAd,
+    ): Promise<VideoReward> {
         if (this.videoAd == null) {
             // console.log('微信快手激励视频广告');
             this.videoAd = wx.createRewardedVideoAd({
@@ -105,13 +119,13 @@ export class WeChatSdk extends CleverSdk {
                     // 正常播放结束，可以下发游戏奖励
                     resolve({
                         isEnded: true,
-                        count: 1
+                        count: 1,
                     });
                 } else {
                     // 播放中途退出，不下发游戏奖励
                     resolve({
                         isEnded: false,
-                        count: 0
+                        count: 0,
                     });
                 }
             });
@@ -125,7 +139,7 @@ export class WeChatSdk extends CleverSdk {
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createBannerAd.html
     async createBannerAd(adInfo: CreateBannerAd): Promise<VideoReward> {
         if (this.bannerAd == null) {
-            this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId});
+            this.bannerAd = wx.createBannerAd({ adUnitId: adInfo.adUnitId });
         }
         return this.showBannerAd();
     }
@@ -134,7 +148,6 @@ export class WeChatSdk extends CleverSdk {
     async showBannerAd(): Promise<VideoReward> {
         return super.showBannerAd();
     }
-
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.hide.html
     async hideBannerAd(): Promise<boolean> {
@@ -164,26 +177,25 @@ export class WeChatSdk extends CleverSdk {
     // }
 
     public async checkShortcut(): Promise<any> {
-        console.error('不支持checkShortcut');
+        console.error("不支持checkShortcut");
         return {
             isSupport: false,
             exist: true,
-            needUpdate: false
+            needUpdate: false,
         };
     }
 
-
     // 抖音侧边栏访问功能
     public async checkScene(): Promise<any> {
-        console.error('不支持checkScene');
+        console.error("不支持checkScene");
         return {
             isSupport: false,
-            isScene: false
+            isScene: false,
         };
     }
 
     public async navigateToScene(scene: wxNavigateToScene) {
-        console.error('微信不支持 navigateToScene');
+        console.error("微信不支持 navigateToScene");
         return false;
     }
 
@@ -193,7 +205,9 @@ export class WeChatSdk extends CleverSdk {
         return true;
     }
 
-    public async getUserInfo(param: wxGetUserInfo): Promise<wxUserInfoCallback> {
+    public async getUserInfo(
+        param: wxGetUserInfo,
+    ): Promise<wxUserInfoCallback> {
         // https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html
         return new Promise((resolve, reject) => {
             wx.getUserInfo({
@@ -203,7 +217,7 @@ export class WeChatSdk extends CleverSdk {
                 },
                 fail: (err: any) => {
                     reject(err);
-                }
+                },
             });
         });
     }

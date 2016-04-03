@@ -38,4 +38,4 @@ export type EventData = {
      * 如果 server_id 非空, 则查询 server 关联的版本
      */
     version_id?: string;
-}
+};

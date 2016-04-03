@@ -5,8 +5,9 @@ time-travel.*
 
 # IDE
 .vscode/
-.vs/
 .idea/
+.trae/
+.vs/
 *.iml
 
 # Rust
