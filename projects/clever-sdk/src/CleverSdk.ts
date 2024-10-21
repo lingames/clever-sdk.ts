@@ -1,9 +1,7 @@
-/*
- * @Author: vegapan@hotmail.com 
- * @Date: 2024-05-28 16:17:06 
- * @Last Modified by: vegapan@hotmail.com
- * @Last Modified time: 2024-09-02 23:44:37
- */
+import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
+import {CreateBannerAd} from "./models/CreateBannerAd.js";
+import {SdkInitialize} from "./models/SdkInitialize.js";
+import {AddShortcut} from "./models/AddShortcut.js";
 
 
 export class CleverSdk {
@@ -13,7 +11,9 @@ export class CleverSdk {
     protected game_id: number;
     protected sdk_url: string;
     protected sdk_key: string;
+    // 视屏激励广告
     protected videoAd: any = {};
+    // protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
 
@@ -49,7 +49,7 @@ export class CleverSdk {
      * @param config 平台特有参数
      * @returns 是否初始化成功
      * */
-    public async initialize(config: Record<string, any>): Promise<boolean> {
+    public async initialize(config: SdkInitialize): Promise<boolean> {
         return true;
     }
 
@@ -63,12 +63,18 @@ export class CleverSdk {
         return false;
     }
 
-    public createRewardedVideoAd(adInfo: any): Promise<any> {
+    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
+        return Promise.resolve({});
+    }
+
+    // 广告接口
+    public createBannerAd(adInfo: CreateBannerAd): Promise<object> {
         return Promise.resolve({});
     }
 
     // 设为常用
     public async addCommonUse() {
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
     }
 
     public async checkCommonUse(): Promise<any> {
@@ -79,7 +85,8 @@ export class CleverSdk {
     }
 
     // 加桌
-    public async addShortcut() {
+    public async addShortcut(options: AddShortcut): Promise<object> {
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
     }
 
     public async checkShortcut(): Promise<any> {
@@ -91,6 +98,7 @@ export class CleverSdk {
     }
 
     // 侧边栏复访
+    // 确认当前宿主版本是否支持跳转某个小游戏入口场景，目前仅支持「侧边栏」场景。
     public async checkScene(): Promise<any> {
         return Promise.resolve({
             isSupport: false,
@@ -111,10 +119,6 @@ export class CleverSdk {
         return Promise.resolve({});
     }
 
-    // 广告接口
-    async createBannerAd() {
-
-    }
 
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
     // get_game_url(): string {

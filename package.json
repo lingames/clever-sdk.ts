@@ -7,7 +7,6 @@
         "projects/*"
     ],
     "scripts": {
-        "build": "tsc --build projects/*",
         "lint": "eslint 'projects/**/*.{js,ts,tsx}'"
     },
     "devDependencies": {
@@ -19,7 +18,6 @@
         "typescript": "^5.7.3"
     },
     "dependencies": {
-        "@eslint/js": "^9.20.0",
-        "axios": "^1.7.9"
+        "@eslint/js": "^9.20.0"
     }
 }

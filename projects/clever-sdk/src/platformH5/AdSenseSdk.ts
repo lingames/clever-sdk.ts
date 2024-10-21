@@ -1,12 +1,13 @@
 //* 谷歌平台 */
-import {BrowserSdk} from "./BrowserSdk";
-import {AdSenseInitialize} from "../models";
+import {BrowserSdk} from "./BrowserSdk.js";
+import {ggCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {ggInitialize} from "../models/SdkInitialize.js";
 
 // @ts-ignore
 
 
 export class AdSenseSdk extends BrowserSdk {
-    async initialize(config: AdSenseInitialize): Promise<boolean> {
+    initialize(config: ggInitialize): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             const script = document.createElement('script');
             script.async = true;
@@ -45,8 +46,7 @@ export class AdSenseSdk extends BrowserSdk {
         })
     }
 
-    public override createRewardedVideoAd(adInfo: any): Promise<any> {
-
+    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<object> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
             window["adBreak"] && window["adBreak"]({

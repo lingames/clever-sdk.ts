@@ -1,14 +1,29 @@
 {
     "name": "@lingames/clever-sdk",
-    "version": "0.0.0",
+    "version": "0.1.1",
     "description": "Clever SDK",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "type": "module",
+    "exports": {
+        ".": {
+            "browser": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./src": {
+            "browser": "./src/index.ts"
+        }
+    },
     "scripts": {
         "build": "tsc",
         "lint": "eslint 'src/**/*.{js,ts,tsx}'"
     },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "dependencies": {
-        "axios": "^1.7.9"
+        "axios": "^1.7.9",
+        "jssha": "^3.3.1"
     }
 }

@@ -1,4 +1,6 @@
-export type DynamicSdkConfig = MyConfig & WeChatInitialize & AdSenseInitialize;
+import {SdkInitialize} from "./SdkInitialize.js";
+
+export type DynamicSdkConfig = MyConfig & SdkInitialize;
 
 export type MyConfig = {
     platform: string,
@@ -7,11 +9,3 @@ export type MyConfig = {
     game_id: number
 }
 
-
-export type WeChatInitialize = {
-    wx: any
-}
-
-export interface AdSenseInitialize {
-    adSenseId: string
-}

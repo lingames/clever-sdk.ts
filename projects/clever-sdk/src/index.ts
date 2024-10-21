@@ -1,21 +1,18 @@
-export * from "./platformH5";
-export * from "./platformMini";
-export {CleverSdk} from "./CleverSdk";
-
-import {BilibiliSdk, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from "./platformMini";
-import {AdSenseSdk, BrowserSdk} from "./platformH5";
-import {CleverSdk} from "./CleverSdk";
-import {DynamicSdkConfig} from "./models";
+export * from "./platformH5/index.js";
+export * from "./platformMini/index.js";
+export {CleverSdk} from "./CleverSdk.js";
+import {BilibiliSdk, DouyinSDK, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from "./platformMini/index.js";
+import {AdSenseSdk, BrowserSdk} from "./platformH5/index.js";
+import {CleverSdk} from "./CleverSdk.js";
+import {DynamicSdkConfig} from "./models/index.js";
 
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
-    console.log('my sdk create:', config.platform, config.game_id, typeof (config.wx));
+    console.log('my sdk create:', config.platform, config.game_id);
     if (config.platform == 'WECHAT_GAME') {
-        let sdk = new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
-        await sdk.initialize({wx: config.wx});
-        return sdk
+        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
     }
     if (config.platform == 'douyingame') {
-        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new DouyinSDK(config.platform, config.sdk_url, config.sdk_key, config.game_id);
     }
     if (config.platform == 'kuaishou') {
         return new KuaiShouSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
@@ -34,6 +31,5 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         await sdk.initialize({adSenseId: config.adSenseId});
         return sdk
     }
-
     return new BrowserSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
 }

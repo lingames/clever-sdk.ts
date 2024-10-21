@@ -1,5 +1,6 @@
-import {CleverSdk} from "../CleverSdk";
-import {build_sdk_req, generateRandomString, http_request} from "../helper";
+import {CleverSdk} from "../CleverSdk.js";
+import {build_sdk_req, generateRandomString, http_request} from "../helper.js";
+import {CreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 
 declare namespace sys {
     const localStorage: any;
@@ -39,25 +40,11 @@ export class BrowserSdk extends CleverSdk {
         }
     }
 
-    public override createRewardedVideoAd(adInfo: any): Promise<any> {
+    createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
         throw new Error('浏览器不支持广告');
     }
 
-    // public override async addCommonUse() {
-    //     throw new Error("浏览器不支持 addCommonUse")
-    // }
 
 
-    // public async checkCommonUse(): Promise<boolean> {
-    //     return false
-    // }
-
-    public override async addShortcut() {
-        throw new Error('浏览器不支持 addShortcut');
-    }
-
-    // public async checkShortcut(): Promise<any> {
-    //     return { isSupport: false, exist: true, needUpdate: false };
-    // }
 }
 
