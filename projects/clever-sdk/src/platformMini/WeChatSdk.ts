@@ -1,7 +1,7 @@
 import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
-import {CreateBannerAd, wxCreateBannerAd} from "../models/CreateBannerAd.js";
+import {wxCreateBannerAd} from "../models/CreateBannerAd.js";
 import {wxInitialize} from "../models/SdkInitialize.js";
 
 /// 微信全局对象
@@ -10,6 +10,7 @@ export declare const wx: any;
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
     private videoAd: any = null;
+    private bannerAd: any = null;
 
     override async login() {
         const login_ret: any = await promisify_wx('login')();
@@ -121,47 +122,48 @@ export class WeChatSdk extends CleverSdk {
     }
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createBannerAd.html
-    createBannerAd(adInfo: wxCreateBannerAd): Promise<object> {
-        return  wx.createBannerAd({adUnitId: adInfo.adUnitId})
+    async createBannerAd(adInfo: wxCreateBannerAd): Promise<object> {
+        this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId})
+        return this.bannerAd
     }
 
-    public override async addCommonUse() {
-        if (typeof (this.inner['addCommonUse']) == 'undefined') {
-            console.error('不支持addCommonUse');
-        }
-
-        const checkRet = await this.checkCommonUse();
-        if (!checkRet.isSupport || checkRet.isCommonUse) {
-            console.log('已经设置为常用，不再重复');
-            return;
-        }
-
-        await promisify_wx('addCommonUse')();
-    }
-
-    public async checkCommonUse(): Promise<any> {
-        if (typeof (this.inner['checkCommonUse']) == 'undefined') {
-            console.error('不支持checkCommonUse');
-            return {
-                isSupport: false,
-                isCommonUse: false
-            };
-        }
-
-        try {
-            const ret: any = await promisify_wx('checkCommonUse')();
-            console.log('checkCommonUse-ret:', ret);
-            return {
-                isSupport: true,
-                isCommonUse: ret.isCommonUse
-            };
-        } catch (e) {
-            return {
-                isSupport: true,
-                isCommonUse: false
-            };
+    /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.show.html
+    async showBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.show();
+            return true;
+        } else {
+            console.warn("未调用 createBannerAd")
+            return false;
         }
     }
+
+    /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.hide.html
+    async hideBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.hide();
+        }
+        return true;
+    }
+
+    /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.destroy.html
+    async destroyBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.destroy();
+            this.bannerAd = null;
+        }
+        return true
+    }
+
+    // 微信不支持
+    // async checkCommonUse(): Promise<any> {
+    //     return super.checkCommonUse();
+    // }
+
+    // 微信不支持
+    // async addCommonUse(): Promise<void> {
+    //     super.addCommonUse();
+    // }
 
     public async checkShortcut(): Promise<any> {
         if (typeof (this.inner['checkShortcut']) == 'undefined') {

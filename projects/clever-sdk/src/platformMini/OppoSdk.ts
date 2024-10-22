@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {hwCreateRewardedVideoAd, qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 
 // 硬核联盟全局对象
