@@ -15,7 +15,7 @@ export class KuaiShouSdk extends CleverSdk {
     // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
     // 全局只能有一个视频广告实例，重复创建没有用
     createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<object> {
-        this.videoAd = ks.createRewardedVideoAd({
+        const videoAd = ks.createRewardedVideoAd({
             type: adInfo.type,
             unitId: adInfo.adUnitId
         })
@@ -23,7 +23,7 @@ export class KuaiShouSdk extends CleverSdk {
         //         this.videoAd.load()
         //         // https://open.kuaishou.com/docs/develop/api-next/ad/RewardedVideoAd/RewardedVideoAd.show.html
         //         this.videoAd.show()
-        return Promise.resolve(this.videoAd)
+        return Promise.resolve(videoAd)
     }
 
     createBannerAd(adInfo: ksCreateBannerAd): Promise<object> {

@@ -7,6 +7,7 @@ export declare const qg: any;
 
 export class OppoSdk extends CleverSdk {
     protected videoAd: any = null
+    protected bannerAd: any = null
 
     async initialize(config: Record<string, any>): Promise<boolean> {
         console.info("OPPO 全局对象:", qg)
@@ -28,7 +29,6 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(true)
     }
 
-
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
         this.videoAd = qg.createRewardedVideoAd({
@@ -37,12 +37,38 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(this.videoAd)
     }
 
-    createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
+    async createBannerAd(adInfo: qgCreateBannerAd) {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/banner-ad?id=qgcreatebanneradobject
-        const bannerAd = qg.createBannerAd({
+        this.bannerAd = qg.createBannerAd({
             adUnitId: adInfo.adUnitId,
+            style: adInfo.style
         });
-        return Promise.resolve(bannerAd)
+        return this.bannerAd
+    }
+
+    async showBannerAd() {
+        if (this.bannerAd != null) {
+            this.bannerAd.show();
+            return true
+        } else {
+            console.warn("未调用 createBannerAd")
+            return false
+        }
+    }
+
+    async hideBannerAd() {
+        if (this.bannerAd != null) {
+            this.bannerAd.hide();
+        }
+        return true
+    }
+
+    async destroyBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.destroy();
+            this.bannerAd = null;
+        }
+        return true
     }
 
     // 不支持

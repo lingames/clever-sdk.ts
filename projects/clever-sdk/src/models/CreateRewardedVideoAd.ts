@@ -7,6 +7,8 @@ export type CreateRewardedVideoAd = {}
 export interface wxCreateRewardedVideoAd {
     // 广告单元 id
     adUnitId: string,
+    onError?: (e: any) => void,
+    onClose?: (e: any) => void,
 }
 
 // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
