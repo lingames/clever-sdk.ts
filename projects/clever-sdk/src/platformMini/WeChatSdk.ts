@@ -1,47 +1,64 @@
-import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
+import {build_sdk_head} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {wxCreateBannerAd} from "../models/CreateBannerAd.js";
 import {wxInitialize} from "../models/SdkInitialize.js";
+import {wxGetUserInfo, wxUserInfoCallback} from "../models/LoginData.js";
+import {wxShareAppMessage} from "../models/ShareAppMessage.js";
 
 /// 微信全局对象
 export declare const wx: any;
+
+export interface wxLoginData {
+
+}
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
     private videoAd: any = null;
     private bannerAd: any = null;
 
-    override async login() {
-        const login_ret: any = await promisify_wx('login')();
-        console.log('third-sdk login ret:', login_ret);
-        if (!login_ret.code) {
-            console.error('third-sdk login error:', login_ret.errMsg);
-            return;
-        }
-        console.log('third-sdk login ok:', login_ret.code);
-
-        const [req_body, req_header] = build_sdk_req(this.game_id, this.sdk_key, login_ret.code);
-        const req = {
-            url: this.sdk_login_url,
-            data: req_body,
-            method: 'POST',
-            header: req_header
-        };
-        console.log('my-sdk ready to code2session:', this.sdk_login_url, JSON.stringify(req));
-
-        // const ret: any = await promisify_wx2(this.inner.request)(req);
-        // const sdkResp: any = await http_request("POST", this.sdk_login_url, req_header, req_body)();
-        const ret = await promisify_request()(req);
-        // if (!ret.data){
-        //     throw new Error("fail to login sdk")
-        // }
-        console.log('my-sdk login resp:', ret);
-
-        const sdkResp = parse_sdk_resp(ret);
-        this.session_key = sdkResp.session_key;
-
-        return sdkResp;
+    override async login(): Promise<wxLoginData> {
+        return new Promise((resolve, reject) => {
+            wx.login({
+                success: (res: any) => {
+                    if (res.code) {
+                        const body = {
+                            game_id: this.game_id,
+                            session_id: res.code,
+                            Fields: {
+                                grant_type: 'authorization_code'
+                            }
+                        };
+                        const head = build_sdk_head(this.sdk_key, JSON.stringify(body))
+                        // https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
+                        wx.request({
+                            url: this.sdk_login_url,
+                            method: 'POST',
+                            header: head,
+                            data: body,
+                            dataType: 'json',
+                            success: (fine: any) => {
+                                console.warn("微信登成功: ", fine)
+                                this.session_key = fine.data.session_key
+                                resolve(fine.data)
+                            },
+                            fail: (fail: any) => {
+                                console.warn("微信登录失败: ", fail)
+                                reject(fail)
+                            }
+                        })
+                    } else {
+                        console.warn('微信登录失败！', res.errMsg)
+                        reject(res.errMsg)
+                    }
+                },
+                fail(err: any) {
+                    console.warn("微信登录凭证失败: ", err)
+                    reject(err)
+                }
+            })
+        });
     }
 
     async initialize(info: wxInitialize): Promise<boolean> {
@@ -63,7 +80,6 @@ export class WeChatSdk extends CleverSdk {
     // true表示session_key已经过期
     override async checkSession(): Promise<boolean> {
         try {
-            await promisify_wx('checkSession')();
             return true;
         } catch (e) {
             return false;
@@ -166,106 +182,48 @@ export class WeChatSdk extends CleverSdk {
     // }
 
     public async checkShortcut(): Promise<any> {
-        if (typeof (this.inner['checkShortcut']) == 'undefined') {
-            console.error('不支持checkShortcut');
-            return {
-                isSupport: false,
-                exist: true,
-                needUpdate: false
-            };
-        }
-
-        try {
-            const ret: any = await promisify_wx('checkShortcut')();
-            console.log('checkShortcut-ret:', ret);
-            return {
-                isSupport: true,
-                exist: ret.installed || ret.exist,
-                needUpdate: ret.needUpdate
-            };
-        } catch (e: any) {
-            if (e.msg === 'apk info is invalid') {
-                return {
-                    isSupport: true,
-                    exist: false,
-                    needUpdate: false
-                };
-            }
-            return {
-                isSupport: true,
-                exist: true,
-                needUpdate: false
-            };
-        }
+        console.error('不支持checkShortcut');
+        return {
+            isSupport: false,
+            exist: true,
+            needUpdate: false
+        };
     }
 
 
     // 抖音侧边栏访问功能
     public async checkScene(): Promise<any> {
-        if (typeof (this.inner['checkScene']) == 'undefined') {
-            console.error('不支持checkScene');
-            return {
-                isSupport: false,
-                isScene: false
-            };
-        }
-
-        try {
-            const ret: any = await promisify_wx_a('checkScene')({scene: 'sidebar'});
-            console.log('checkScene-ret:', ret);
-            return {
-                isSupport: false,
-                isScene: ret.isExist
-            };
-        } catch (e) {
-            return {
-                isSupport: true,
-                isScene: false
-            };
-        }
+        console.error('不支持checkScene');
+        return {
+            isSupport: false,
+            isScene: false
+        };
     }
 
     public async navigateToScene() {
-        if (typeof (this.inner['navigateToScene']) == 'undefined') {
-            console.error('不支持navigateToScene');
-            return;
-        }
-
-        try {
-            const ret: any = await promisify_wx_a('navigateToScene')({scene: 'sidebar'});
-            console.log('navigateToScene-ret:', ret);
-        } catch (e) {
-            console.error('navigateToScene', e);
-        }
+        console.error('不支持navigateToScene');
+        return;
     }
 
 
-    public async shareAppMessage(param: any): Promise<boolean> {
-        if (typeof (this.inner['shareAppMessage']) == 'undefined') {
-            console.error('不支持shareAppMessage');
-            return false;
-        }
-
-        try {
-            await promisify_wx_a('shareAppMessage')(param);
-            return true;
-        } catch (e: any) {
-            return false;
-        }
+    public async shareAppMessage(param: wxShareAppMessage): Promise<boolean> {
+        // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
+        wx.shareAppMessage(param)
+        return true;
     }
 
-    public async getUserInfo(): Promise<any> {
-        if (typeof (this.inner['getUserInfo']) == 'undefined') {
-            console.error('不支持getUserInfo');
-            return {};
-        }
-
-        try {
-            return await promisify_wx_a('getUserInfo')({});
-        } catch (e: any) {
-            return false;
-        }
+    public async getUserInfo(param: wxGetUserInfo): Promise<wxUserInfoCallback> {
+        // https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html
+        return new Promise((resolve, reject) => {
+            wx.getUserInfo({
+                ...param,
+                success: (fine: wxUserInfoCallback) => {
+                    resolve(fine)
+                },
+                fail: (err: any) => {
+                    reject(err)
+                }
+            })
+        });
     }
-
-
 }

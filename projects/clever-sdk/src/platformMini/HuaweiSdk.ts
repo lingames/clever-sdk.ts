@@ -1,25 +1,30 @@
 import {CleverSdk} from "../CleverSdk.js";
 import {hwCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {HuaweiLoginData} from "../models/LoginData.js";
 
 declare const qg: any;
+declare const account: any;
 
 export class HuaweiSdk extends CleverSdk {
     private videoAd: any = null
 
-    // async login(): Promise<any> {
-    //     qg.login({
-    //         success: function (res: any) {
-    //             console.log("Oppo 登录")
-    //             const data = JSON.stringify(res.data);
-    //             console.log(data);
-    //         },
-    //         fail: function (res: any) {
-    //             console.log("Oppo 登录失败")
-    //             console.log(JSON.stringify(res));
-    //         },
-    //     });
-    //     return Promise.resolve(true)
-    // }
+    async login(): Promise<HuaweiLoginData> {
+        // https://developer.huawei.com/consumer/cn/doc/quickApp-Guides/quickapp-access-account-kit-0000001079648144
+        return new Promise((resolve, reject) => {
+            account.authorize({
+                appid: this.game_id,
+                type: "token",
+                state: "feedbeef",
+                scope: "scope.baseProfile",
+                success(fine: HuaweiLoginData) {
+                    resolve(fine)
+                },
+                fail(data: any, code: any) {
+                    reject(data)
+                }
+            });
+        })
+    }
 
     // https://developer.huawei.com/consumer/cn/doc/quickApp-References/quickgame-api-ad-0000001130711971#section9772146486
     async createRewardedVideoAd(adInfo: hwCreateRewardedVideoAd): Promise<object> {
