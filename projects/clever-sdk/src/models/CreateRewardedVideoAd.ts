@@ -4,6 +4,11 @@ export type CreateRewardedVideoAd = {}
     & ksCreateRewardedVideoAd
     & ggCreateRewardedVideoAd;
 
+export interface RewardedVideo {
+    isEnded: Boolean,
+    count: number
+}
+
 export interface wxCreateRewardedVideoAd {
     // 广告单元 id
     adUnitId: string,
@@ -49,9 +54,11 @@ export interface qgCreateRewardedVideoAd {
 export interface qgOnClose {
     isEnded: boolean
 }
+
 export interface qgOnError {
 
 }
+
 export interface qgOnClick {
     code: number,
     msg: string

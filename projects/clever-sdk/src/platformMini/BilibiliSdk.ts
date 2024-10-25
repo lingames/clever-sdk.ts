@@ -1,4 +1,4 @@
-import {CleverSdk} from "../CleverSdk.js";
+import {CleverSdk} from '../CleverSdk.js';
 
 export class BilibiliSdk extends CleverSdk {
 

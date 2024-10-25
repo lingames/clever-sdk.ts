@@ -1,7 +1,7 @@
 //* 谷歌平台 */
-import {BrowserSdk} from "./BrowserSdk.js";
-import {ggCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
-import {ggInitialize} from "../models/SdkInitialize.js";
+import {BrowserSdk} from './BrowserSdk.js';
+import {ggCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {ggInitialize} from '../models/SdkInitialize.js';
 
 // @ts-ignore
 
@@ -22,44 +22,48 @@ export class AdSenseSdk extends BrowserSdk {
                 window.adBreak = function (o) {
                     // @ts-ignore
                     adsbygoogle.push(o);
-                }
+                };
                 // @ts-ignore
                 window.adConfig = function (o) {
                     // @ts-ignore
                     adsbygoogle.push(o);
-                }
+                };
                 // @ts-ignore
                 window.adConfig({
                     sound: 'on',
                     preloadAdBreaks: 'on',
                     onReady: () => {
-                        console.log("AdSense onReady");
+                        console.log('AdSense onReady');
                     },
-                })
+                });
                 resolve(true);
                 // 可以在这里初始化广告
             };
 
             script.onerror = function (err) {
-                resolve(false)
-            }
-        })
+                resolve(false);
+            };
+        });
     }
 
-    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<object> {
+    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<RewardedVideo> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
-            window["adBreak"] && window["adBreak"]({
+            window['adBreak'] && window['adBreak']({
                 // ad shows at start of next level
                 type: 'reward',
                 name: 'restart-game',
                 beforeAd: () => {
-                    console.log("激励视频开始播放");
+                    console.log('激励视频开始播放');
                 },
                 // You may also want to mute the game's sound.
                 afterAd: () => {
                     //关闭，观看完成都会走这里
-                    console.log("激励视频播放结束");
+                    console.log('激励视频播放结束');
+                    resolve({
+                        isEnded: true,
+                        count: 1
+                    });
                 },
                 // resume the game flow.
                 // @ts-ignore
@@ -67,17 +71,25 @@ export class AdSenseSdk extends BrowserSdk {
                     showAdFn && showAdFn();
                 },
                 adDismissed: () => {
-                    console.log("中途关闭广告");
+                    console.log('中途关闭广告');
+                    resolve({
+                        isEnded: false,
+                        count: 1
+                    });
                 },
                 adViewed: () => {
                     //google建议设置状态码，在afterAd中处理奖励逻辑
-                    console.log("玩家完整看完广告");
+                    console.log('玩家完整看完广告');
+                    resolve({
+                        isEnded: true,
+                        count: 1
+                    });
                 },
                 adBreakDone: () => {
                     //Always called (if provided) even if an ad didn't show（始终调用，即使广告展示失败了）
                 }
             });
-        })
+        });
     }
 
     async showRewardedVideoAd(): Promise<boolean> {
@@ -87,17 +99,17 @@ export class AdSenseSdk extends BrowserSdk {
             // 确保⼴告重新加载（可选）
             // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 
     async hideBannerAd(): Promise<boolean> {
         const adContainer = document.getElementById('adsense-container');
         if (adContainer) {
             adContainer.style.display = 'none';
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 }

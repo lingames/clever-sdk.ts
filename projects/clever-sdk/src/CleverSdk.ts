@@ -1,9 +1,9 @@
-import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
-import {CreateBannerAd} from "./models/CreateBannerAd.js";
-import {SdkInitialize} from "./models/SdkInitialize.js";
-import {AddShortcut} from "./models/AddShortcut.js";
-import {LoginData} from "./models/LoginData.js";
-import {CreateNativeAd} from "./models/CreateNativeAd.js";
+import {CreateRewardedVideoAd, RewardedVideo} from './models/CreateRewardedVideoAd.js';
+import {CreateBannerAd} from './models/CreateBannerAd.js';
+import {SdkInitialize} from './models/SdkInitialize.js';
+import {AddShortcut} from './models/AddShortcut.js';
+import {LoginData} from './models/LoginData.js';
+import {CreateNativeAd} from './models/CreateNativeAd.js';
 
 
 export class CleverSdk {
@@ -28,7 +28,7 @@ export class CleverSdk {
             if (t_sdk_url[t_sdk_url.length - 1] == '/') {
                 t_sdk_url = t_sdk_url.substring(0, t_sdk_url.length - 1);
             }
-            console.log('登录链接:', t_sdk_url)
+            console.log('登录链接:', t_sdk_url);
             if (platform == 'WECHAT_GAME') {
                 this.sdk_login_url = t_sdk_url + '/weChatLogin';
             } else if (platform == 'douyingame') {
@@ -56,7 +56,7 @@ export class CleverSdk {
 
     public async login(): Promise<LoginData> {
         console.log('dummy-sdk login');
-        return {}
+        return {};
     }
 
     // async update(){"dummy-sdk update"}
@@ -64,61 +64,64 @@ export class CleverSdk {
         return false;
     }
 
-    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
-        return Promise.resolve({});
+    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<RewardedVideo> {
+        return Promise.resolve({
+            isEnded: false,
+            count: 0
+        });
     }
 
     public async loadRewardedVideoAd(): Promise<boolean> {
-        return false
+        return false;
     }
 
     public async showRewardedVideoAd(): Promise<boolean> {
-        return false
+        return false;
     }
 
     public async destroyRewardedVideoAd(): Promise<boolean> {
-        return true
+        return true;
     }
 
     // 广告接口
     public async createBannerAd(adInfo: CreateBannerAd): Promise<object> {
-        return {}
+        return {};
     }
 
     public async showBannerAd(): Promise<boolean> {
-        return false
+        return false;
     }
 
     public async hideBannerAd(): Promise<boolean> {
-        return true
+        return true;
     }
 
     public async destroyBannerAd(): Promise<boolean> {
-        return true
+        return true;
     }
 
 
     // 原生广告接口
     public async createNativeAd(adInfo: CreateNativeAd): Promise<object> {
-        return {}
+        return {};
     }
 
     public async showNativeAd(): Promise<boolean> {
-        return false
+        return false;
     }
 
     public async hideNativeAd(): Promise<boolean> {
-        return true
+        return true;
     }
 
     public async destroyNativeAd(): Promise<boolean> {
-        return true
+        return true;
     }
 
 
     // 设为常用
     public async addCommonUse() {
-        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
     public async checkCommonUse(): Promise<any> {
@@ -130,7 +133,7 @@ export class CleverSdk {
 
     // 加桌
     public async addShortcut(options: AddShortcut): Promise<object> {
-        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
     public async checkShortcut(): Promise<any> {

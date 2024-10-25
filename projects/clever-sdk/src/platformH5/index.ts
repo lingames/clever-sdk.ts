@@ -1,2 +1,2 @@
-export {BrowserSdk} from "./BrowserSdk.js";
-export {AdSenseSdk} from "./AdSenseSdk.js";
+export {BrowserSdk} from './BrowserSdk.js';
+export {AdSenseSdk} from './AdSenseSdk.js';
