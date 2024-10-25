@@ -1,0 +1,21 @@
+{
+    "name": "clever-sdk-test",
+    "version": "0.1.6",
+    "description": "Clever SDK",
+    "main": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "lint": "eslint 'src/**/*.{js,ts,tsx}'",
+        "prepublish": "npm run build"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "dependencies": {
+        "@lingames/clever-sdk": "workspace:*",
+        "axios": "^1.7.9",
+        "jssha": "^3.3.1"
+    }
+}

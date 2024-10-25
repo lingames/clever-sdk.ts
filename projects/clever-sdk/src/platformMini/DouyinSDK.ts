@@ -9,7 +9,8 @@ export declare const tt: any;
 
 
 interface CheckSceneResult {
-    isExist: boolean
+    isSupport: boolean,
+    isScene: boolean
 }
 
 
@@ -39,7 +40,24 @@ export class DouyinSDK extends CleverSdk {
 
     public override async checkScene(): Promise<CheckSceneResult> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/sidebar-capacity/tt-check-scene
-        return tt.checkScene({scene: "sidebar"})
+        return new Promise((resolve, reject) => {
+            tt.checkScene({
+                scene: "sidebar",
+                success: (res: any) => {
+                    resolve({
+                        isSupport: true,
+                        isScene: res.isExist
+                    })
+                },
+                fail: (err: any) => {
+                    console.warn("侧边栏检测失败: ", err)
+                    resolve({
+                        isSupport: true,
+                        isScene: false
+                    })
+                }
+            })
+        })
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-banner-ad
@@ -85,15 +103,13 @@ export class DouyinSDK extends CleverSdk {
         return new Promise(
             (resolve, reject) => {
                 tt.addShortcut({
+                    ...options,
                     success() {
                         resolve({})
                     },
                     fail(err: any) {
                         reject(err.errMsg)
                     },
-                    complete() {
-                        options?.complete?.()
-                    }
                 })
             }
         )

@@ -1,42 +1,4 @@
-import sha256 from 'jssha/sha256';
-
-declare const GameGlobal: any;
-
-export function promisify_wx(fn: any) {
-    return async function (...args: any) {
-        return new Promise((resolve, reject) => {
-            GameGlobal['inner'][fn]({
-                ...(args || {}),
-                success: (res: any) => {
-                    console.log('promisify_wx ok:', res);
-                    resolve(res);
-                },
-                fail: (err: any) => {
-                    console.error('promisify_wx fail:', err);
-                    reject(err);
-                }
-            });
-        });
-    };
-}
-
-
-// const promisify_wx2 = (fn) => {
-//     return async function (args) {
-//         return new Promise((resolve, reject) => {
-//             args.success = function (res) {
-//                 resolve(res)
-//             };
-
-//             args.fail = function (err) {
-//                 reject(err)
-//             };
-
-//             fn(args);
-//         });
-//     };
-// }
-
+import sha256 from 'jssha';
 
 export function generateRandomString(length: number): string {
     let result = '';
@@ -53,7 +15,6 @@ export function build_sdk_head(key: string, req_body: string): any {
 
     const sign_str = key + '&POST&' + now + '&' + req_body;
     console.log('--------------get hash 111', typeof (sha256));
-    // @ts-ignore
     const sha_str = new sha256('SHA-256', 'TEXT', {encoding: 'UTF8'});
     console.log('--------------get hash 222');
     sha_str.update(sign_str);
