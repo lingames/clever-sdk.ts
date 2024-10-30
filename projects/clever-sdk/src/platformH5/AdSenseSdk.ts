@@ -1,6 +1,6 @@
 //* 谷歌平台 */
 import {BrowserSdk} from './BrowserSdk.js';
-import {ggCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {ggCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
 import {ggInitialize} from '../models/SdkInitialize.js';
 
 // @ts-ignore
@@ -46,7 +46,7 @@ export class AdSenseSdk extends BrowserSdk {
         });
     }
 
-    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<RewardedVideo> {
+    playRewardedVideo(adInfo: ggCreateRewardedVideoAd): Promise<VideoReward> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
             window['adBreak'] && window['adBreak']({
@@ -92,16 +92,16 @@ export class AdSenseSdk extends BrowserSdk {
         });
     }
 
-    async showRewardedVideoAd(): Promise<boolean> {
+    async showRewardedVideoAd(): Promise<VideoReward> {
         const adContainer = document.getElementById('adsense-container');
         if (adContainer) {
             adContainer.style.display = 'block';
             // 确保⼴告重新加载（可选）
             // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            return true;
+            return { isEnded: true, count: 1 };
         }
-        return false;
+        return { isEnded: false, count: 0 };
     }
 
     async hideBannerAd(): Promise<boolean> {

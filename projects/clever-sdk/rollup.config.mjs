@@ -14,8 +14,8 @@ export default [
                 name: 'CleverSDK'
             },
             {
-                file: 'dist/CleverSDK.cjs',
-                format: 'cjs',
+                file: 'dist/CleverSDK.js',
+                format: 'umd',
                 name: 'CleverSDK'
             }
         ],
@@ -48,8 +48,8 @@ export default [
                 name: 'CleverSDK'
             },
             {
-                file: 'dist/CleverSDK.min.cjs',
-                format: 'cjs',
+                file: 'dist/CleverSDK.min.js',
+                format: 'umd',
                 name: 'CleverSDK'
             }
         ],

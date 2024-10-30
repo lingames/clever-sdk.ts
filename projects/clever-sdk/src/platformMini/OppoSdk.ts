@@ -1,5 +1,5 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {qgCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {qgCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
 import {qgCreateBannerAd} from '../models/CreateBannerAd.js';
 import {OppoLoginData} from '../models/LoginData.js';
 import {qgCreateNativeAd} from '../models/CreateNativeAd.js';
@@ -37,7 +37,7 @@ export class OppoSdk extends CleverSdk {
         });
     }
 
-    createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<RewardedVideo> {
+    playRewardedVideo(adInfo: qgCreateRewardedVideoAd): Promise<VideoReward> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
         if (this.videoAd == null) {
             console.log('创建OPPO激励视频广告');
@@ -48,11 +48,9 @@ export class OppoSdk extends CleverSdk {
                 this.videoAd.show();
             });
         }
-
         return new Promise((resolve, reject) => {
             this.videoAd.onError((err: any) => {
                 console.error('广告异常', JSON.stringify(err));
-                adInfo.onError?.(err);
                 reject(err);
             });
             this.videoAd.onClick((obj: any) => {
@@ -82,10 +80,11 @@ export class OppoSdk extends CleverSdk {
                 reject(e);
             }
         });
+
     }
 
+    // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/banner-ad?id=qgcreatebanneradobject
     async createBannerAd(adInfo: qgCreateBannerAd) {
-        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/banner-ad?id=qgcreatebanneradobject
         this.bannerAd = qg.createBannerAd({
             adUnitId: adInfo.adUnitId,
             style: adInfo.style
@@ -93,14 +92,8 @@ export class OppoSdk extends CleverSdk {
         return this.bannerAd;
     }
 
-    async showBannerAd() {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+    async showBannerAd(): Promise<VideoReward> {
+        return super.showBannerAd();
     }
 
     async hideBannerAd() {
@@ -128,12 +121,12 @@ export class OppoSdk extends CleverSdk {
     async showNativeAd(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.customAd.show()
-                .then(() => {
-                    resolve(true);
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
+            .then(() => {
+                resolve(true);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
         });
     }
 

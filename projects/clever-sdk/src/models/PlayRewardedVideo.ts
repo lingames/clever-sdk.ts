@@ -1,17 +1,19 @@
-export type CreateRewardedVideoAd = {}
+export type PlayRewardedVideo = {}
     & wxCreateRewardedVideoAd
     & ttCreateRewardedVideoAd
     & ksCreateRewardedVideoAd
     & ggCreateRewardedVideoAd;
 
-export interface RewardedVideo {
+export interface VideoReward {
     isEnded: Boolean,
     count: number
 }
 
 export interface wxCreateRewardedVideoAd {
-    // 广告单元 id
-    adUnitId: string,
+    // 通用广告单元 id
+    adUnitId?: string,
+    // 微信专用广告 id
+    wxUnitId?: string,
     onError?: (e: any) => void,
     onClose?: (e: any) => void,
 }
@@ -26,12 +28,32 @@ export interface ttCreateRewardedVideoAd {
     progressTip?: boolean,
 }
 
-// https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
+/**
+ * https://open.kuaishou.com/miniGameDocs/gameDev/api/ad/rewardAd/ks.createRewardedVideoAd.html
+ */
 export interface ksCreateRewardedVideoAd {
-    // 广告类型
-    type: number,
-    // 广告单元 id
-    adUnitId: number
+    /**
+     * 通用广告单元 id, ksUnitId 为 undefined 时必填
+     */
+    adUnitId?: string
+    /**
+     * 快手专用广告 id
+     */
+    ksUnitId?: string,
+    /**
+     * 是否开启再得广告模式
+     */
+    multiton?: boolean,
+    /**
+     * multiton为true时必填
+     * 再得广告的奖励文案，玩家每看完一个广告会展示，如【再看1个获得xx】；xx就multitonRewardMsg中的文案，按顺序依次展示，单个文案最大长度为 7
+     */
+    multitonMessage?: string[],
+    /**
+     * multiton为true时必填
+     * 额外观看广告的次数，合法的数据范围为 1-4
+     */
+    multitonTimes?: 1 | 2 | 3 | 4,
 }
 
 /// 快应用

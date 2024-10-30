@@ -1,4 +1,5 @@
-import {CreateRewardedVideoAd, RewardedVideo} from './models/CreateRewardedVideoAd.js';
+/* eslint-disable no-unused-vars */
+import {PlayRewardedVideo, VideoReward} from './models/PlayRewardedVideo';
 import {CreateBannerAd} from './models/CreateBannerAd.js';
 import {SdkInitialize} from './models/SdkInitialize.js';
 import {AddShortcut} from './models/AddShortcut.js';
@@ -64,32 +65,26 @@ export class CleverSdk {
         return false;
     }
 
-    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<RewardedVideo> {
-        return Promise.resolve({
+    /**
+     * 播放激励广告
+     */
+    public async playRewardedVideo(adInfo: PlayRewardedVideo): Promise<VideoReward> {
+        return {
             isEnded: false,
             count: 0
-        });
-    }
-
-    public async loadRewardedVideoAd(): Promise<boolean> {
-        return false;
-    }
-
-    public async showRewardedVideoAd(): Promise<boolean> {
-        return false;
-    }
-
-    public async destroyRewardedVideoAd(): Promise<boolean> {
-        return true;
+        };
     }
 
     // 广告接口
-    public async createBannerAd(adInfo: CreateBannerAd): Promise<object> {
-        return {};
+    public async createBannerAd(adInfo: CreateBannerAd): Promise<VideoReward> {
+        return this.showBannerAd();
     }
 
-    public async showBannerAd(): Promise<boolean> {
-        return false;
+    public async showBannerAd(): Promise<VideoReward> {
+        return {
+            isEnded: false,
+            count: 0
+        };
     }
 
     public async hideBannerAd(): Promise<boolean> {
@@ -117,7 +112,6 @@ export class CleverSdk {
     public async destroyNativeAd(): Promise<boolean> {
         return true;
     }
-
 
     // 设为常用
     public async addCommonUse() {

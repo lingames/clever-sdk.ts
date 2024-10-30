@@ -1,7 +1,7 @@
 import {build_sdk_head} from '../helper.js';
 import {CleverSdk} from '../CleverSdk.js';
-import {RewardedVideo, wxCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
-import {wxCreateBannerAd} from '../models/CreateBannerAd.js';
+import {VideoReward, wxCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
+import {CreateBannerAd, wxCreateBannerAd} from '../models/CreateBannerAd.js';
 import {wxInitialize} from '../models/SdkInitialize.js';
 import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
 import {wxShareAppMessage} from '../models/ShareAppMessage.js';
@@ -62,7 +62,11 @@ export class WeChatSdk extends CleverSdk {
     }
 
     async initialize(info: wxInitialize): Promise<boolean> {
-        this.inner = wx;
+        if (info.enableShare !== false) {
+            wx.showShareMenu({
+                menus: ['shareAppMessage', 'shareTimeline']
+            })
+        }
         return true;
     }
 
@@ -88,7 +92,7 @@ export class WeChatSdk extends CleverSdk {
 
     // adInfo{adUnitId:广告单元id} 广告单元id需要在小程序后台 流量主界面创建
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
-    public override createRewardedVideoAd(adInfo: wxCreateRewardedVideoAd): Promise<RewardedVideo> {
+    public override playRewardedVideo(adInfo: wxCreateRewardedVideoAd): Promise<VideoReward> {
         let videoAd = this.videoAd['adUnitId'];
         console.log('createRewardedVideoAd', adInfo, videoAd);
         if (!videoAd) {
@@ -138,21 +142,18 @@ export class WeChatSdk extends CleverSdk {
     }
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createBannerAd.html
-    async createBannerAd(adInfo: wxCreateBannerAd): Promise<object> {
-        this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId});
-        return this.bannerAd;
+    async createBannerAd(adInfo: CreateBannerAd): Promise<VideoReward> {
+        if (this.bannerAd == null) {
+            this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId});
+        }
+        return this.showBannerAd();
     }
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.show.html
-    async showBannerAd(): Promise<boolean> {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+    async showBannerAd(): Promise<VideoReward> {
+        return super.showBannerAd();
     }
+
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.hide.html
     async hideBannerAd(): Promise<boolean> {
@@ -205,9 +206,8 @@ export class WeChatSdk extends CleverSdk {
         return;
     }
 
-
+    // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
     public async shareAppMessage(param: wxShareAppMessage): Promise<boolean> {
-        // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
         wx.shareAppMessage(param);
         return true;
     }

@@ -1,5 +1,5 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {RewardedVideo, ttCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
+import {VideoReward, ttCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
 import {ttCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ttInitialize} from '../models/SdkInitialize.js';
 import {ttAddShortcut} from '../models/AddShortcut.js';
@@ -25,7 +25,7 @@ export class DouyinSDK extends CleverSdk {
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
     // 全局只能有一个视频广告实例，重复创建没有用
-    createRewardedVideoAd(config: ttCreateRewardedVideoAd): Promise<RewardedVideo> {
+    playRewardedVideo(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
         const videoAd = tt.createRewardedVideoAd({
             adUnitId: config.adUnitId,
             progressTip: config.progressTip || false
@@ -61,7 +61,7 @@ export class DouyinSDK extends CleverSdk {
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-banner-ad
-    async createBannerAd(adInfo: ttCreateBannerAd): Promise<object> {
+    async createBannerAd(adInfo: ttCreateBannerAd): Promise<VideoReward> {
         this.bannerAd = tt.createBannerAd({
             adUnitId: adInfo.adUnitId,
             adIntervals: adInfo.adIntervals,
@@ -71,14 +71,8 @@ export class DouyinSDK extends CleverSdk {
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-show
-    async showBannerAd(): Promise<boolean> {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+    async showBannerAd(): Promise<VideoReward> {
+        return super.showBannerAd();
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-hide

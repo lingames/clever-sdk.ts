@@ -1,5 +1,5 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {ksCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {ksCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
 import {ksCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
@@ -61,75 +61,49 @@ export class KuaiShouSdk extends CleverSdk {
         });
     }
 
-    // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
-    // 全局只能有一个视频广告实例，重复创建没有用
-    createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<RewardedVideo> {
-        console.log('创建快手激励视频广告');
-        this.videoAd = ks.createRewardedVideoAd({
-            type: adInfo.type,
-            unitId: adInfo.adUnitId
-        });
-        return new Promise((resolve, reject) => {
-            let fn = '';
-            if (typeof (this.videoAd.show) !== 'undefined') {
-                fn = 'show';
-            } else if (typeof (this.videoAd.load) !== 'undefined') {
-                fn = 'load';
-            } else {
-                console.error('unsupported createRewardedVideoAd');
-                return;
-            }
-
-            this.videoAd.onError((err: any) => {
-                console.error('广告异常', JSON.stringify(err));
-                // adInfo.onError?.(err)
+    /**
+     * 创建激励广告对象并播放
+     * 全局只能有一个视频广告实例，重复创建没有用
+     * https://open.kuaishou.com/miniGameDocs/gameDev/api/ad/rewardAd/ks.createRewardedVideoAd.html
+     */
+    playRewardedVideo(adInfo: ksCreateRewardedVideoAd): Promise<VideoReward> {
+        if (this.videoAd == null) {
+            // console.log('创建快手激励视频广告');
+            this.videoAd = ks.createRewardedVideoAd({
+                adUnitId: adInfo.ksUnitId || adInfo.adUnitId,
+                multiton: adInfo.multiton,
+                multitonRewardMsg: adInfo.multitonMessage,
+                multitonRewardTimes: adInfo.multitonTimes,
             });
-
-            // 视频关闭
-            this.videoAd.onClose((res: any) => {
-                console.log(JSON.stringify(res));
-                if ((res && res.isEnded) || res === undefined) {
-                    res = res || {
+        }
+        return new Promise((resolve, reject) => {
+            this.videoAd.show().then(function (result: any) {
+                console.log(`快手播放成功 ${JSON.stringify(result)}`);
+                if (result && result.isEnded) {
+                    // 正常播放结束，可以下发游戏奖励
+                    resolve({
                         isEnded: true,
                         count: 1
-                    };
-                    res.count = res.count || 1;
-                    console.info('广告观看结束，此处添加奖励代码', JSON.stringify(res));
-                    resolve(res);
+                    });
                 } else {
-                    console.error('广告没看完，不能获奖', JSON.stringify(res));
-                    resolve(res);
+                    // 播放中途退出，不下发游戏奖励
+                    resolve({
+                        isEnded: false,
+                        count: 0
+                    });
                 }
+            }).catch(function (error: any) {
+                console.log(`快手播放异常 ${JSON.stringify(error)}`);
+                reject(error);
             });
-
-            try {
-                this.videoAd[fn](adInfo);
-            } catch (e: any) {
-                console.error('show videoAd err:', JSON.stringify(e));
-            }
         });
     }
 
-    async loadRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.load();
-        return true;
-    }
-
-    async showRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.show();
-        return true;
-    }
-
-    async destroyRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.destroy();
-        return true;
-    }
-
-    createBannerAd(adInfo: ksCreateBannerAd): Promise<object> {
+    createBannerAd(adInfo: ksCreateBannerAd): Promise<VideoReward> {
         return super.createBannerAd(adInfo);
     }
 
-    async showBannerAd(): Promise<boolean> {
+    async showBannerAd(): Promise<VideoReward> {
         return super.showBannerAd();
     }
 
