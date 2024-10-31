@@ -1,4 +1,5 @@
-import {CreateRewardedVideoAd, VideoReward} from './models/CreateRewardedVideoAd.js';
+/* eslint-disable no-unused-vars */
+import {PlayRewardedVideo, VideoReward} from './models/PlayRewardedVideo';
 import {CreateBannerAd} from './models/CreateBannerAd.js';
 import {SdkInitialize} from './models/SdkInitialize.js';
 import {AddShortcut} from './models/AddShortcut.js';
@@ -93,7 +94,6 @@ export class CleverSdk {
         return true;
     }
 
-
     // 设为常用
     public async addCommonUse() {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
@@ -141,11 +141,9 @@ export class CleverSdk {
         return Promise.resolve({});
     }
 
-
     public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
         return Promise.resolve(false);
     }
-
 
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
     // get_game_url(): string {
