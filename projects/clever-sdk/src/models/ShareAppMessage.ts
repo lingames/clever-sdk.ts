@@ -1,4 +1,4 @@
-export type ShareAppMessage = {} & wxShareAppMessage;
+export type ShareAppMessage = {} | wxShareAppMessage | ksShareAppMessage;
 
 
 export interface wxShareAppMessage {
@@ -19,4 +19,13 @@ export interface wxShareAppMessage {
 
     /** 独立分包路径。详见 小游戏独立分包指南 */
     path?: string;
+}
+
+// https://ks-game-docs.kuaishou.com/minigame/api/open/repost/ks.shareAppMessage.html#%E5%8F%82%E6%95%B0
+export interface ksShareAppMessage {
+    /** 分享模版id，不传走默认分享文案*/
+    templateId?: string;
+
+    /** 查询字符串，从这条转发消息进入后，可通过 ks.getLaunchOptionsSync() 或 ks.onShow() 获取启动参数中的 query。必须是 key1=val1&key2=val2 的格式。 */
+    query?: string;
 }

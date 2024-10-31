@@ -207,8 +207,8 @@ export class WeChatSdk extends CleverSdk {
     }
 
     // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
-    public async shareAppMessage(param: wxShareAppMessage): Promise<boolean> {
-        wx.shareAppMessage(param);
+    public async shareAppMessage(share: wxShareAppMessage): Promise<boolean> {
+        wx.shareAppMessage(share);
         return true;
     }
 
