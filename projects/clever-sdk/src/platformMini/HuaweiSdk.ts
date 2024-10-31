@@ -45,17 +45,17 @@ export class HuaweiSdk extends CleverSdk {
     async playRewardedVideo(adInfo: hwCreateRewardedVideoAd): Promise<VideoReward> {
         if (this.videoAd == null) {
             this.videoAd = qg.createRewardedVideoAd({
-                adUnitId: adInfo.adUnitId,
+                adUnitId: adInfo.hwUnitId || adInfo.adUnitId,
                 multiton: adInfo.multiton || false,
                 success: (data: any) => {
-                    console.log(`广告创建成功: ${JSON.stringify(data)}`);
+                    console.log(`华为激励广告创建成功: ${JSON.stringify(data)}`);
                 },
                 fail: (data: any, code: any) => {
-                    console.error(`广告创建失败 ${code}: ${JSON.stringify(data)}`);
+                    console.error(`华为激励广告创建失败 ${code}: ${JSON.stringify(data)}`);
                 },
             });
             this.videoAd.onLoad(() => {
-                console.log('广告已加载');
+                console.log('华为激励广告已加载');
                 this.videoAd.show();
             });
         }

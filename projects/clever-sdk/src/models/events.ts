@@ -1,7 +1,7 @@
 /**
  * OnEvent
  */
-export type EventReport = {
+export type EventData = {
     /**
      * Semantic64，渠道 uuid, 可匿名上报
      */
