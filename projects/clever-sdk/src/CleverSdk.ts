@@ -6,6 +6,7 @@ import {AddShortcut} from './models/AddShortcut.js';
 import {LoginData} from './models/LoginData.js';
 import {CreateNativeAd} from './models/CreateNativeAd.js';
 import {ShareAppMessage} from "./models/ShareAppMessage";
+import {NavigateToScene} from "./models/NavigateToScene";
 
 
 export class CleverSdk {
@@ -95,7 +96,7 @@ export class CleverSdk {
     }
 
     // 设为常用
-    public async addCommonUse() {
+    public async addCommonUse(): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
@@ -107,7 +108,7 @@ export class CleverSdk {
     }
 
     // 加桌
-    public async addShortcut(options: AddShortcut): Promise<object> {
+    public async addShortcut(options: AddShortcut): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
@@ -128,7 +129,14 @@ export class CleverSdk {
         });
     }
 
-    public async navigateToScene() {
+
+    public async checkSliderBarIsAvailable(): Promise<boolean> {
+        return false;
+    }
+
+
+    public async navigateToScene(scene: NavigateToScene): Promise<boolean> {
+        return false;
     }
 
     // 分享
@@ -144,16 +152,6 @@ export class CleverSdk {
     public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
         return Promise.resolve(false);
     }
-
-    // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
-    // get_game_url(): string {
-    //     // const useLocalNet = GGameData.GlobalData.get(GlobalDataType.UseLocalNet, false);
-    //     const useLocalNet = true;
-    //     if (useLocalNet)
-    //         return "ws://localhost:8089/ws";
-    //     return "wss://lingame.cn/ws/";
-    //     // return "ws://124.222.91.167/ws/";
-    // }
 }
 
 

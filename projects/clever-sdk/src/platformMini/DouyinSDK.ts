@@ -93,13 +93,13 @@ export class DouyinSDK extends CleverSdk {
     }
 
     /// https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
-    async addShortcut(options: ttAddShortcut): Promise<object> {
+    async addShortcut(options: ttAddShortcut): Promise<boolean> {
         return new Promise(
             (resolve, reject) => {
                 tt.addShortcut({
                     ...options,
                     success() {
-                        resolve({});
+                        resolve(true);
                     },
                     fail(err: any) {
                         reject(err.errMsg);
