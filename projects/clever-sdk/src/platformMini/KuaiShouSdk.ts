@@ -198,6 +198,10 @@ export class KuaiShouSdk extends CleverSdk {
             url: 'https://api.salesagent.cc/game-logger/event',
             method: 'POST',
             data: {
+                player_anonymous: this.player_anonymous,
+                player_id: this.player_id,
+                channel_id: this.channel_id,
+                version_id: this.version_id,
                 event_id: id,
                 custom: custom
             },

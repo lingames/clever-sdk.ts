@@ -1,17 +1,23 @@
 /* eslint-disable no-unused-vars */
 import {PlayRewardedVideo, VideoReward} from './models/PlayRewardedVideo';
-import {CreateBannerAd} from './models/CreateBannerAd.js';
-import {SdkInitialize} from './models/SdkInitialize.js';
-import {AddShortcut} from './models/AddShortcut.js';
-import {LoginData} from './models/LoginData.js';
-import {CreateNativeAd} from './models/CreateNativeAd.js';
-import {ShareAppMessage} from "./models/ShareAppMessage";
-import {NavigateToScene} from "./models/NavigateToScene";
+import {CreateBannerAd} from './models/CreateBannerAd';
+import {SdkInitialize} from './models/SdkInitialize';
+import {AddShortcut} from './models/AddShortcut';
+import {LoginData} from './models/LoginData';
+import {CreateNativeAd} from './models/CreateNativeAd';
+import {ShareAppMessage} from './models/ShareAppMessage';
+import {NavigateToScene} from './models/NavigateToScene';
+import {AdvertiseStage} from './models/AdvertiseStage';
+import {ReportContext} from './models/ReportContext';
 
 
 export class CleverSdk {
     // 平台名称
     protected project_id: string;
+    protected channel_id?: string;
+    protected player_anonymous?: string;
+    protected player_id?: string;
+    protected version_id?: string;
     protected platform: string;
     // game_id 游戏编号，每个游戏 game_id 唯一
     protected game_id: string;
@@ -38,7 +44,6 @@ export class CleverSdk {
 
 
     public async login(): Promise<LoginData> {
-        console.log('dummy-sdk login');
         return {};
     }
 
@@ -147,6 +152,36 @@ export class CleverSdk {
     // 获取用户信息
     public async getUserInfo(options: any): Promise<any> {
         return Promise.resolve({});
+    }
+
+    public reportContext(context: ReportContext): void {
+        if (context.channel_id != undefined) {
+            this.channel_id = context.channel_id;
+        }
+        if (context.player_anonymous != undefined) {
+            this.player_anonymous = context.player_anonymous;
+        }
+        if (context.player_id != undefined) {
+            this.player_id = context.player_id;
+        }
+        if (context.version_id != undefined) {
+            this.version_id = context.version_id;
+        }
+    }
+
+    public async reportAdvertise(id: string, stage: AdvertiseStage, data: Record<string, any>): Promise<boolean> {
+        if (stage == AdvertiseStage.Expose) {
+            data.status = 0;
+        } else if (stage == AdvertiseStage.Click) {
+            data.status = 1;
+        } else if (stage == AdvertiseStage.Fill) {
+            data.status = 2;
+        } else if (stage == AdvertiseStage.Complete) {
+            data.status = 3;
+        } else {
+            data.status = -1;
+        }
+        return await this.reportEvent(id, data);
     }
 
     public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
