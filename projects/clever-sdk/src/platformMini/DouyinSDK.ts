@@ -20,6 +20,7 @@ export class DouyinSDK extends CleverSdk {
     private bannerAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
+        this.sdk_login_url = config.sdk_login_url ?? 'https://api.salesagent.cc/game-analyzer/player/login';
         console.info('抖音全局对象:', tt);
         return true;
     }
