@@ -3,7 +3,7 @@ import {ttCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo'
 import {ttCreateBannerAd} from '../models/CreateBannerAd';
 import {ttInitialize} from '../models/SdkInitialize';
 import {ttAddShortcut} from '../models/AddShortcut';
-import {LoginData} from "../models/LoginData";
+import {LoginData} from '../models/LoginData';
 
 /// 抖音全局对象
 export declare const tt: any;
@@ -16,7 +16,7 @@ interface CheckSceneResult {
 
 
 export class DouyinSDK extends CleverSdk {
-
+    private videoAd: any = null;
     private bannerAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
@@ -37,7 +37,7 @@ export class DouyinSDK extends CleverSdk {
                             platform: 'dou-yin',
                             login_code: res.code,
                         };
-                        console.trace('抖音登录请求鉴权', this.sdk_login_url);
+                        // console.trace('抖音登录请求鉴权', this.sdk_login_url);
                         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request
                         tt.request({
                             url: this.sdk_login_url,
@@ -45,7 +45,7 @@ export class DouyinSDK extends CleverSdk {
                             data: body,
                             dataType: 'json',
                             success: (fine: any) => {
-                                console.warn('抖音登录成功: ', fine);
+                                // console.trace('抖音登录成功: ', fine);
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
                             },
@@ -67,18 +67,38 @@ export class DouyinSDK extends CleverSdk {
         });
     }
 
-    // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
-    // 全局只能有一个视频广告实例，重复创建没有用
     playRewardedVideo(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
-        const videoAd = tt.createRewardedVideoAd({
-            adUnitId: config.adUnitId,
-            progressTip: config.progressTip || false
+        if (this.videoAd == null) {
+            console.log('创建抖音激励视频广告');
+            // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
+            this.videoAd = tt.createRewardedVideoAd({
+                adUnitId: config.ttUnitId || config.adUnitId,
+                multiton: config.multiton,
+                multitonRewardMsg: config.multitonMessage,
+                multitonRewardTimes: config.multitonTimes,
+            });
+        }
+        return new Promise((resolve, reject) => {
+            this.videoAd.onClose((res: any) => {
+                if (res && res.isEnded) {
+                    // 正常播放结束，可以下发游戏奖励
+                    resolve({
+                        isEnded: true,
+                        count: 1
+                    });
+                } else {
+                    // 播放中途退出，不下发游戏奖励
+                    resolve({
+                        isEnded: false,
+                        count: 0
+                    });
+                }
+            });
+            this.videoAd.show().catch((error: any) => {
+                console.log(`抖音播放异常 ${JSON.stringify(error)}`);
+                reject(error);
+            });
         });
-        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/rewarded-video-ad/rewarded-video-ad-load
-        // this.videoAd.load()
-        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/rewarded-video-ad/rewarded-video-ad-show
-        // this.videoAd.show()
-        return Promise.resolve(videoAd);
     }
 
     public override async checkScene(): Promise<CheckSceneResult> {
@@ -135,8 +155,12 @@ export class DouyinSDK extends CleverSdk {
         return true;
     }
 
-    /// https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
+    async addCommonUse(): Promise<boolean> {
+        return super.addCommonUse();
+    }
+
     async addShortcut(options: ttAddShortcut): Promise<boolean> {
+        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
         return new Promise(
             (resolve, reject) => {
                 tt.addShortcut({
@@ -151,6 +175,27 @@ export class DouyinSDK extends CleverSdk {
             }
         );
     }
+
+    async checkShortcut(): Promise<any> {
+        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/check-shortcut
+        return new Promise(
+            (resolve, reject) => {
+                tt.checkShortcut({
+                    success(fine: any) {
+                        resolve({
+                            isSupport: true,
+                            exist: fine.status.exist,
+                            needUpdate: fine.status.needUpdate
+                        });
+                    },
+                    fail(fail: any) {
+                        reject(fail.errMsg);
+                    },
+                });
+            }
+        );
+    }
+
 
     async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {
         return tt.request({
