@@ -32,6 +32,7 @@ export class CleverSdk {
         this.platform = platform;
         this.project_id = project_id;
         this.game_id = game_id;
+        this.session_key = '';
     }
 
     /** 初始化平台参数
@@ -118,7 +119,7 @@ export class CleverSdk {
      * 添加到桌面
      */
     public async addShortcut(options: AddShortcut): Promise<boolean> {
-        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
+        throw new Error(`${this.platform} 平台不支持 'addShortcut'`);
     }
 
     /**
@@ -195,5 +196,3 @@ export class CleverSdk {
         return Promise.resolve(false);
     }
 }
-
-

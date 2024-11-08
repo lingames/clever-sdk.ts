@@ -106,12 +106,12 @@ export class HuaweiSdk extends CleverSdk {
                     count: res.isEnded ? 1 : 0
                 });
             });
-            this.videoAd.onError((e: any) => {
-                // console.error('激励错误:' + JSON.stringify(e));
+            this.bannerAd.onError((e: any) => {
+                // console.error('Banner错误:' + JSON.stringify(e));
                 reject(e);
             });
             try {
-                this.videoAd.load();
+                this.bannerAd.load();
             } catch (e: any) {
                 // console.error('播放失败:', e);
                 reject(e);

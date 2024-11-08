@@ -3,6 +3,10 @@ import {DefaultTheme} from 'vitepress';
 export const zhHans: DefaultTheme.Config = {
     nav: [
         {
+            text: '灵镜引擎',
+            link: '/zh-hans/engine/index',
+        },
+        {
             text: 'Cocos',
             link: '/zh-hans/cocos/index',
         },
@@ -12,6 +16,21 @@ export const zhHans: DefaultTheme.Config = {
         },
     ],
     sidebar: {
+        '/zh-hans/engine/': [
+            {
+                text: '灵镜引擎用户手册',
+                items: [
+                    {text: '快速开始', link: '/zh-hans/engine/index'},
+                    {text: '用户注册', link: '/zh-hans/engine/registration'},
+                    {text: '用户登录', link: '/zh-hans/engine/login'},
+                    {text: '创建项目', link: '/zh-hans/engine/creating-projects'},
+                    {text: '菜单管理', link: '/zh-hans/engine/managing-menus'},
+                    {text: '事件管理', link: '/zh-hans/engine/adding-events'},
+                    {text: '创建分析', link: '/zh-hans/engine/creating-analysis'},
+                    {text: '常见问题', link: '/zh-hans/engine/faq'},
+                ],
+            },
+        ],
         '/zh-hans/cocos/': [
             {
                 text: 'Cocos',
@@ -45,4 +64,4 @@ export const zhHans: DefaultTheme.Config = {
             },
         ],
     },
-}
+};

@@ -1,18 +1,14 @@
-import {build_sdk_head} from '../helper.js';
-import {CleverSdk} from '../CleverSdk.js';
+import {build_sdk_head} from '../helper';
+import {CleverSdk} from '../CleverSdk';
 import {VideoReward, wxCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
-import {CreateBannerAd, wxCreateBannerAd} from '../models/CreateBannerAd.js';
-import {wxInitialize} from '../models/SdkInitialize.js';
-import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
-import {wxShareAppMessage} from '../models/ShareAppMessage.js';
-import {ksNavigateToScene, wxNavigateToScene} from "../models/NavigateToScene";
+import {CreateBannerAd} from '../models/CreateBannerAd';
+import {wxInitialize} from '../models/SdkInitialize';
+import {wxGetUserInfo, wxLoginData, wxUserInfoCallback} from '../models/LoginData';
+import {wxShareAppMessage} from '../models/ShareAppMessage';
+import {wxNavigateToScene} from '../models/NavigateToScene';
 
 /// 微信全局对象
 export declare const wx: any;
-
-export interface wxLoginData {
-
-}
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
@@ -25,8 +21,9 @@ export class WeChatSdk extends CleverSdk {
                 success: (res: any) => {
                     if (res.code) {
                         const body = {
-                            game_id: this.game_id,
-                            session_id: res.code,
+                            platform: this.platform,
+                            project_id: this.project_id,
+                            login_code: res.code,
                             Fields: {
                                 grant_type: 'authorization_code'
                             }
@@ -62,12 +59,14 @@ export class WeChatSdk extends CleverSdk {
         });
     }
 
-    async initialize(info: wxInitialize): Promise<boolean> {
-        if (info.enableShare !== false) {
+    async initialize(config: wxInitialize): Promise<boolean> {
+        this.sdk_login_url = config.sdk_login_url ?? 'https://api.salesagent.cc/game-analyzer/player/login';
+        if (config.enableShare !== false) {
             wx.showShareMenu({
                 menus: ['shareAppMessage', 'shareTimeline']
-            })
+            });
         }
+        console.info('微信全局对象:', wx);
         return true;
     }
 
@@ -84,61 +83,42 @@ export class WeChatSdk extends CleverSdk {
     // }
     // true表示session_key已经过期
     override async checkSession(): Promise<boolean> {
-        try {
-            return true;
-        } catch (e) {
-            return false;
-        }
+        return true;
     }
 
-    // adInfo{adUnitId:广告单元id} 广告单元id需要在小程序后台 流量主界面创建
-    // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
+    /**
+     * https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createRewardedVideoAd.html
+     */
     public override playRewardedVideo(adInfo: wxCreateRewardedVideoAd): Promise<VideoReward> {
-        let videoAd = this.videoAd['adUnitId'];
-        console.log('createRewardedVideoAd', adInfo, videoAd);
-        if (!videoAd) {
-            videoAd = this.inner.createRewardedVideoAd(adInfo);
-            this.videoAd['adUnitId'] = videoAd;
-        }
-
-        return new Promise((resolve, reject) => {
-            let fn = '';
-            if (typeof (videoAd.show) !== 'undefined') {
-                fn = 'show';
-            } else if (typeof (videoAd.load) !== 'undefined') {
-                fn = 'load';
-            } else {
-                console.error('unsupported createRewardedVideoAd');
-                return;
-            }
-
-            videoAd.onError((err: any) => {
-                console.error(err);
-                adInfo.onError?.(err);
+        if (this.videoAd == null) {
+            // console.log('微信快手激励视频广告');
+            this.videoAd = wx.createRewardedVideoAd({
+                adUnitId: adInfo.wxUnitId || adInfo.adUnitId,
+                multiton: adInfo.multiton,
+                disableFallbackSharePage: adInfo.disableFallbackSharePage,
+                // multitonRewardTimes: adInfo.multitonTimes,
             });
-
-            // 视频关闭
-            videoAd.onClose((res: any) => {
-                console.log(res);
-                if ((res && res.isEnded) || res === undefined) {
-                    res = res || {
+        }
+        return new Promise((resolve, reject) => {
+            this.videoAd.onClose((res: any) => {
+                if (res && res.isEnded) {
+                    // 正常播放结束，可以下发游戏奖励
+                    resolve({
                         isEnded: true,
                         count: 1
-                    };
-                    res.count = res.count || 1;
-                    console.info('广告观看结束，此处添加奖励代码', res);
-                    resolve(res);
+                    });
                 } else {
-                    resolve(res);
-                    console.error('广告没看完，不能获奖');
+                    // 播放中途退出，不下发游戏奖励
+                    resolve({
+                        isEnded: false,
+                        count: 0
+                    });
                 }
             });
-
-            try {
-                videoAd[fn](adInfo);
-            } catch (e: any) {
-                console.error('show videoAd err:', e);
-            }
+            this.videoAd.show().catch((error: any) => {
+                console.log(`微信播放异常 ${JSON.stringify(error)}`);
+                reject(error);
+            });
         });
     }
 

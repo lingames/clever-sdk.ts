@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@lingames/clever-sdk':
-        specifier: 0.1.10
-        version: 0.1.10
     devDependencies:
       '@eslint/js':
         specifier: ^9.20.0
@@ -93,18 +89,6 @@ importers:
       vue:
         specifier: ^3.2.44
         version: 3.5.16(typescript@5.8.3)
-
-  projects/clever-sdk-test:
-    dependencies:
-      '@lingames/clever-sdk':
-        specifier: workspace:*
-        version: link:../clever-sdk
-      axios:
-        specifier: ^1.7.9
-        version: 1.8.4
-      jssha:
-        specifier: ^3.3.1
-        version: 3.3.1
 
 packages:
 
@@ -590,9 +574,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
-  '@lingames/clever-sdk@0.1.10':
-    resolution: {integrity: sha512-egfvf9Kk8pJh32BPKv7M5dXHFOeOdJE2ArCzjMm19JUG5zInE7G26E3vLqwqPM+QsRUwnxv/RtswvK8rTBz14g==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2615,8 +2596,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
-
-  '@lingames/clever-sdk@0.1.10': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

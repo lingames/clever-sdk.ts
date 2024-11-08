@@ -4,7 +4,7 @@ import {ttCreateBannerAd} from '../models/CreateBannerAd';
 import {ttInitialize} from '../models/SdkInitialize';
 import {ttAddShortcut} from '../models/AddShortcut';
 import {LoginData} from '../models/LoginData';
-import {ShareAppMessage, ttShareAppMessage} from "../models/ShareAppMessage";
+import {ShareAppMessage, ttShareAppMessage} from '../models/ShareAppMessage';
 
 /// 抖音全局对象
 export declare const tt: any;

@@ -5,7 +5,7 @@ import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
 import {ksShareAppMessage} from '../models/ShareAppMessage';
 import {AddShortcut} from '../models/AddShortcut';
-import {ksNavigateToScene} from "../models/NavigateToScene";
+import {ksNavigateToScene} from '../models/NavigateToScene';
 
 export declare const ks: any;
 
@@ -28,7 +28,7 @@ export class KuaiShouSdk extends CleverSdk {
                     if (res.code) {
                         const body = {
                             project_id: this.project_id,
-                            platform: 'kuai-shou',
+                            platform: this.platform,
                             login_code: res.code,
                             Fields: {
                                 grant_type: 'authorization_code'
@@ -121,6 +121,10 @@ export class KuaiShouSdk extends CleverSdk {
 
     public async checkScene(): Promise<any> {
         console.error('快手不支持该能力');
+        return Promise.resolve({
+            isSupport: false,
+            isScene: false
+        });
     }
 
     // https://ks-game-docs.kuaishou.com/minigame/api/open/repost/ks.shareAppMessage.html

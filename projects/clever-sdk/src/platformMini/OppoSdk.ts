@@ -121,12 +121,12 @@ export class OppoSdk extends CleverSdk {
     async showNativeAd(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.customAd.show()
-            .then(() => {
-                resolve(true);
-            })
-            .catch((err: any) => {
-                reject(err);
-            });
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err: any) => {
+                    reject(err);
+                });
         });
     }
 

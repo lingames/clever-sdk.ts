@@ -29,6 +29,6 @@ export default [
         },
     },
     {
-        ignores: ['dist/**/*'],
+        ignores: ['**/dist/**/*', '**/.vitepress/cache/**/*', '**/.vitepress/dist/**/*'],
     },
 ];

@@ -107,3 +107,140 @@
     <div id="adsense-container" style="width: 100%; height: 100px;"></div>
     ```
     * Clever SDK 会自动处理 Google AdSense 的加载和展示逻辑。
+
+## 11. 参数配置相关问题
+
+### 11.1 platform 参数配置错误
+
+* **问题描述**: 初始化时 `platform` 参数配置错误，导致 SDK 功能异常。
+* **可能原因**: 
+    * `platform` 参数值与实际运行平台不匹配。
+    * 自建服务器时未正确配置 `platform` 参数。
+* **解决方案**: 
+    * 确保 `platform` 参数与实际运行平台一致（如：`wechat`、`huawei`、`google` 等）。
+    * 对于自建服务器，可以根据后端路由需求自定义 `platform` 值。
+    * 参考 [安装配置文档](../install/) 中的平台参数说明。
+
+### 11.2 project_id 获取和配置问题
+
+* **问题描述**: 不知道如何获取或配置 `project_id` 参数。
+* **解决方案**: 
+    * `project_id` 用于 SDK 服务器识别项目，需要从 Clever SDK 管理后台获取。
+    * 登录 Clever SDK 管理后台，在项目设置中查看项目 ID。
+    * 确保 `project_id` 与后台配置的项目 ID 完全一致。
+
+### 11.3 game_id 配置问题
+
+* **问题描述**: `game_id` 配置错误导致平台登录失败。
+* **可能原因**: 
+    * `game_id` 与平台开发者后台配置不一致。
+    * 不同平台的 `game_id` 格式要求不同。
+* **解决方案**: 
+    * **微信小游戏**: 使用微信公众平台分配的 AppID。
+    * **华为快游戏**: 使用华为开发者联盟分配的应用 ID。
+    * **字节跳动小游戏**: 使用字节跳动开发者平台的 App ID。
+    * **快手小游戏**: 使用快手开放平台的应用 ID。
+    * 参考相关平台文档获取游戏 ID 申请说明。
+
+### 11.4 sdk_login_url 配置问题
+
+* **问题描述**: SDK 登录失败，提示服务器连接错误。
+* **可能原因**: 
+    * `sdk_login_url` 配置错误或服务器不可访问。
+    * 网络环境限制访问 SDK 服务器。
+* **解决方案**: 
+    * 检查 `sdk_login_url` 是否正确，确保 URL 格式完整（包含协议、域名、端口）。
+    * 测试服务器连通性，确保网络环境可以访问 SDK 服务器。
+    * 联系技术支持确认正确的 SDK 服务器地址。
+
+### 11.5 动态配置与静态配置选择
+
+* **问题描述**: 不确定应该使用动态配置还是静态配置方式。
+* **解决方案**: 
+    * **动态配置** (`createSdk`): 适用于需要支持多平台的项目，运行时根据环境自动选择 SDK。
+    * **静态配置** (直接实例化): 适用于单一平台部署，编译时确定 SDK 类型，性能更优。
+    * 参考 [安装文档](../install/) 中的配置方式对比。
+
+### 11.6 参数验证失败
+
+* **问题描述**: SDK 初始化时提示参数验证失败。
+* **解决方案**: 
+    * 检查所有必需参数是否都已提供且格式正确。
+    * 确保参数值不包含特殊字符或空格。
+    * 使用开发者工具检查参数传递是否正确：
+    ```ts
+    console.log('SDK 配置参数:', {
+        platform: 'your_platform',
+        project_id: 'your_project_id',
+        game_id: 'your_game_id',
+        sdk_login_url: 'your_sdk_url'
+    });
+    ```
+
+### 11.7 多环境配置管理
+
+* **问题描述**: 如何在开发、测试、生产环境中管理不同的配置参数。
+* **解决方案**: 
+    * 使用环境变量或配置文件管理不同环境的参数：
+    ```ts
+    const config = {
+        development: {
+            platform: 'wechat',
+            project_id: 'dev_project_id',
+            game_id: 'dev_game_id',
+            sdk_login_url: 'https://dev-sdk.example.com'
+        },
+        production: {
+            platform: 'wechat',
+            project_id: 'prod_project_id', 
+            game_id: 'prod_game_id',
+            sdk_login_url: 'https://sdk.example.com'
+        }
+    };
+    
+    const currentConfig = config[process.env.NODE_ENV || 'development'];
+    ```
+
+### 11.8 Mock 平台使用
+
+* **问题描述**: 如何在开发环境中使用 Mock 平台进行测试。
+* **解决方案**: 
+    * Mock 平台提供完整的 SDK 功能模拟，适用于开发和测试环境：
+    ```ts
+    const mockConfig: DynamicSdkConfig = {
+        platform: "mock",
+        project_id: "test_project",
+        game_id: "mock_game_id",
+        sdk_login_url: "https://mock-api.example.com",
+        sdk_event_key: "mock_key",
+        mockConfig: {
+            enableMockAds: true,        // 启用模拟广告
+            mockAdDelay: 1000,          // 1秒延迟
+            mockAdSuccessRate: 0.8,     // 80%成功率
+            enableConsoleLog: true      // 启用日志
+        }
+    };
+    ```
+    * Mock SDK 会在控制台输出详细的操作日志，方便调试。
+    * 可以通过 `mockConfig` 参数调整模拟行为，如广告成功率、延迟时间等。
+
+### 11.9 Mock 广告测试
+
+* **问题描述**: 如何测试广告功能而不依赖真实的广告平台。
+* **解决方案**: 
+    * 使用 Mock 平台可以模拟各种广告场景：
+    ```ts
+    // 配置不同的广告成功率进行测试
+    mockSdk.configureMock({
+        mockAdSuccessRate: 0.5  // 50% 成功率，模拟网络不稳定
+    });
+    
+    // 测试广告加载
+    mySdk.playRewardedVideo().then(() => {
+        console.log('广告播放成功');
+    }).catch(err => {
+        console.log('广告播放失败', err);
+    });
+    ```
+    * Mock 广告会显示可视化的模拟界面，帮助验证 UI 集成。
+    * 支持横幅广告、原生广告等多种广告类型的模拟。
