@@ -1,0 +1,11 @@
+{
+    "name": "clever-sdk-native",
+    "version": "1.0.0",
+    "description": "Native support for Clever SDK in Cocos Creator",
+    "author": "Lingames",
+    "engine": "cocos-creator",
+    "platforms": ["android"],
+    "android": {
+        "path": "android"
+    }
+}

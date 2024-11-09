@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+    }
+}
+
+// 自动配置 4399 在线 Maven 仓库
+repositories {
+    maven { url 'https://mvn.4399doc.com/repository/maven-releases' }
+    maven { url 'https://mvn.4399doc.com/repository/maven-snapshots' }
+}
+
+dependencies {
+    // 1. 在线拉取 4399 运营 SDK
+    implementation "cn.m4399.sdk:operate:3.14.4"
+    
+    // 2. 4399 SDK 必需的第三方辅助库
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation "com.android.support:support-v4:28.0.0"
+    
+    // 3. 兼容本地 libs 目录，网不好可以下下来放在本地
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    
+    // Cocos 基础库依赖（由 Cocos 项目构建时自动解析）
+    compileOnly fileTree(dir: "${prop_cocos_engine_path}/cocos/platform/android/java/libs", include: ['*.jar'])
+}

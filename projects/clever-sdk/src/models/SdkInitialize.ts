@@ -1,4 +1,8 @@
-export type SdkInitialize = {} | wxInitialize | ttInitialize | ksInitialize | ggInitialize | mockInitialize;
+export type SdkInitialize = {} | wxInitialize | ttInitialize | ksInitialize | ggInitialize | m4399Initialize | mockInitialize;
+
+export interface m4399Initialize {
+    sdk_login_url?: string;
+}
 
 export interface ttInitialize {
     sdk_login_url?: string;

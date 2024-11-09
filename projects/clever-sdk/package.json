@@ -5,6 +5,11 @@
     "main": "./dist/CleverSDK.js",
     "module": "./dist/CleverSDK.mjs",
     "types": "./dist/CleverSDK.d.ts",
+    "files": [
+        "dist",
+        "native",
+        "src"
+    ],
     "exports": {
         ".": {
             "require": "./dist/CleverSDK.js",
