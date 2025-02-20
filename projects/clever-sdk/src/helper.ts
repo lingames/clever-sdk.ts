@@ -1,5 +1,5 @@
 // @ts-ignore
-import {sha256} from './sha256.js';
+import {sha256} from 'jssha/sha256';
 import {createSdk} from "./index";
 
 
