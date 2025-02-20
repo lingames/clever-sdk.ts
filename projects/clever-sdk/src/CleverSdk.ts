@@ -14,6 +14,7 @@ export class CleverSdk {
     protected sdk_url: string;
     protected sdk_key: string;
     protected videoAd: any = {};
+    protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
 
