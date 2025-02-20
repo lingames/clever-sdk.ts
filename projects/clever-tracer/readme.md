@@ -35,28 +35,12 @@ export enum MyGameEvents {
 export class MyGameTracer extends CeTracer {
     public override channel?: MyGameChannels | string = undefined
     public override version?: MyGameVersions | string = undefined
-
-
-    /**
-     * report the LOGIN_IN event
-     * @param custom custom
-     */
     reportLoginIn(custom?: any) {
         this.callEventReport(MyGameEvents.LOGIN_IN, custom)
     }
-
-    /**
-     * report the RECHARGE event
-     * @param custom custom
-     */
     reportRecharge(custom?: any) {
         this.callEventReport(MyGameEvents.RECHARGE, custom)
     }
-
-    /**
-     * report the LOGIN_OUT event
-     * @param custom custom
-     */
     reportLoginOut(custom?: any) {
         this.callEventReport(MyGameEvents.LOGIN_OUT, custom)
     }

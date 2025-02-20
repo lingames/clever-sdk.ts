@@ -1,2 +1,3 @@
-export {callLogger, reportEvent} from "./report";
-export {setToken, getToken} from "./access_tokens";
+export {CeTracer} from "./report.js";
+export {CeEvent} from "@lingames/clever-tracer"
+export {setToken, getToken} from "./tokens.js"

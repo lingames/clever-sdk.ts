@@ -18,5 +18,8 @@
         "lint": "eslint 'src/**/*.{js,ts,tsx}'",
         "prepublish": "npm run tsc"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@lingames/clever-tracer": "^0.0.3",
+        "axios": "^1.7.9"
+    }
 }

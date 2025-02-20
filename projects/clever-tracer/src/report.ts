@@ -1,42 +1,5 @@
-import {Method} from 'axios';
+import {CeEvent} from "./models/index.js";
 
-export interface CeEvent {
-    /**
-     * 事件 id 形如 "event-xxx"
-     */
-    event_id: string;
-    /**
-     * 玩家 uuid, 优先使用
-     */
-    player_id?: string;
-    /**
-     * 未注册用户(外部用户名), 给与随机 player_id
-     */
-    player_anonymous?: string;
-    /**
-     * Semantic64，渠道 uuid, 可匿名上报
-     */
-    channel_id?: string;
-    /**
-     * Semantic64，版本 uuid, 可匿名上报  如果 server_id 非空, 则查询 server 关联的版本
-     */
-    version_id?: string;
-    version_name?: string;
-    /**
-     * 用户设备信息
-     */
-    user_agent?: string;
-    /**
-     * 事件的触发时间
-     *
-     * - undefined 表示使用服务器时间
-     */
-    time?: string;
-    /**
-     * 自定义信息
-     */
-    custom?: any;
-}
 
 export abstract class CeTracer {
     public host = 'https://api.salesagent.cc/game-logger';
@@ -48,7 +11,7 @@ export abstract class CeTracer {
      */
     public autoVersion = false
 
-    constructor() {
+    protected constructor() {
 
     }
 
@@ -61,7 +24,7 @@ export abstract class CeTracer {
      * @param endPoint 可选的自定义数据，用于提供额外的事件信息
      * @param data 事件数据对象，包含事件ID、自定义数据等属性
      */
-    public async apiRequest<O>(method: Method, endPoint: string, data: any): Promise<O | undefined> {
+    public async apiRequest<O>(method: string, endPoint: string, data: any): Promise<O | undefined> {
         try {
             const response = await fetch(`${this.host}/${endPoint}`, {
                 method: method,
