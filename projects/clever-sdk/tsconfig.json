@@ -4,6 +4,7 @@
         "target": "ES6",
         "module": "AMD",
         "allowJs": true,
+        "checkJs": false,
         "moduleResolution": "node",
         "removeComments": true,
         "lib": ["es5", "es6", "dom"],
