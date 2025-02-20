@@ -4,6 +4,18 @@
 
 ## Cocos
 
+### 动态判断法
+
+使用 `createSdk` 函数动态派发 SDK 实现
+
+```ts
+import {createSdk} from "@lingames/clever-sdk/src";
+const sdk = await createSdk({...})
+
+Global["mySdk"] = sdk
+```
+
+
 ### 静态编译法
 
 在 Cocos 中创建 `GAME_PLATFORM` 宏, 静态派发 SDK 实现
@@ -43,12 +55,3 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
 
 
 
-### 动态判断法
-
-使用 `createSdk` 函数动态派发 SDK 实现
-
-```ts
-import {createSdk} from "@lingames/clever-sdk/src";
-
-const sdk = await createSdk({...})
-```
