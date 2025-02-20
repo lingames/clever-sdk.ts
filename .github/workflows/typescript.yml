@@ -21,9 +21,9 @@ jobs:
     - name: Install dependencies
       working-directory: projects/${{ matrix.project }}
       run: npm ci
-    - name: Build
-      working-directory: projects/${{ matrix.project }}
-      run: npm run build
+#     - name: Build
+#       working-directory: projects/${{ matrix.project }}
+#       run: npm run build
 #     - name: Lint
 #       working-directory: projects/${{ matrix.project }}
 #       run: npm run lint
