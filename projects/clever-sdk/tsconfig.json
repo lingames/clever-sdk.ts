@@ -2,14 +2,14 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "target": "ES6",
-        "module": "AMD",
+        //        "module": "AMD",
         "allowJs": true,
         "checkJs": false,
-        "moduleResolution": "node",
+//        "moduleResolution": "node",
         "removeComments": true,
         "lib": ["es5", "es6", "dom"],
-        //        "outDir": "dist",
-        "outFile": "dist/sdk.js",
+        "outDir": "dist",
+        //        "outFile": "dist/sdk.js",
         "declaration": true
     },
     "include": [

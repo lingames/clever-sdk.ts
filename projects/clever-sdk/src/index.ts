@@ -1,7 +1,7 @@
 export * from "./platformH5";
 export * from "./platformMini";
 export {CleverSdk} from "./CleverSdk";
-
+import {DouyinSDK} from "./platformMini";
 import {BilibiliSdk, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from "./platformMini";
 import {AdSenseSdk, BrowserSdk} from "./platformH5";
 import {CleverSdk} from "./CleverSdk";
@@ -15,7 +15,7 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         return sdk
     }
     if (config.platform == 'douyingame') {
-        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new DouyinSDK(config.platform, config.sdk_url, config.sdk_key, config.game_id);
     }
     if (config.platform == 'kuaishou') {
         return new KuaiShouSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);

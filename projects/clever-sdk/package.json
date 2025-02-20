@@ -1,9 +1,12 @@
 {
     "name": "@lingames/clever-sdk",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Clever SDK",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js"
+    },
     "scripts": {
         "build": "tsc",
         "lint": "eslint 'src/**/*.{js,ts,tsx}'"
