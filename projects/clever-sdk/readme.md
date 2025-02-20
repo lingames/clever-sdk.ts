@@ -16,7 +16,7 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     console.log('my sdk create:', GAME_PLATFORM, config.game_id, typeof (config.wx));
     if (GAME_PLATFORM == 'WECHAT_GAME') {
         let sdk = new WeChatSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
-        await sdk.initialize({wx: config.wx});
+        await sdk.initialize({wx: window.wx});
         return sdk
     }
     if (GAME_PLATFORM == 'douyingame') {

@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "allowJs": false,
+        "lib": ["es6", "dom"],
+        "outDir": "dist"
+    },
+    "include": [
+        "src/index.ts"
+    ]
+}
