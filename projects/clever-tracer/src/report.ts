@@ -20,10 +20,8 @@ export interface CeEvent {
     /**
      * Semantic64，版本 uuid, 可匿名上报  如果 server_id 非空, 则查询 server 关联的版本
      */
-    version_id?: {
-        type: "auto",
-        name: "v0.0.1"
-    };
+    version_id?: string;
+    version_name?: string;
     /**
      * 用户设备信息
      */
@@ -45,9 +43,15 @@ export abstract class CeTracer {
     public bearer = '';
     public channel?: any = undefined
     public version?: any = undefined
+    /**
+     * Auto create version id by version name
+     */
+    public autoVersion = false
+
     constructor() {
 
     }
+
     /**
      * 调用事件上报接口
      *
@@ -94,11 +98,15 @@ export abstract class CeTracer {
      */
     public callEventReport(id: string, custom: any): void {
         const data: CeEvent = {
-            event_id: '',
+            event_id: id,
             channel_id: this.channel || '',
-            version_id: this.version || '',
             custom: custom || {},
             time: new Date().toISOString()
+        }
+        if (this.autoVersion) {
+            data.version_name = this.version
+        } else {
+            data.version_id = this.version
         }
         this.apiRequest('POST', 'event', data)
         .catch((e) => console.error(e))

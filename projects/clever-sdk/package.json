@@ -8,6 +8,10 @@
         "build": "tsc",
         "lint": "eslint 'src/**/*.{js,ts,tsx}'"
     },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "dependencies": {
         "axios": "^1.7.9"
     }

@@ -1,13 +1,22 @@
 {
     "name": "@lingames/clever-tracer",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Clever Engine Tracer",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "type": "module",
+    "exports": {
+        ".": "./dist/index.js",
+        "./report": "./dist/report.js"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "scripts": {
         "build": "tsc",
         "lint": "eslint 'src/**/*.{js,ts,tsx}'",
-        "prepublish": "npm run build"
+        "prepublish": "npm run tsc"
     },
     "dependencies": {}
 }

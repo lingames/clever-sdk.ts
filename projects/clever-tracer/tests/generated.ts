@@ -1,40 +1,80 @@
-import {CeTracer} from "../src";
+import {CeTracer} from "@lingames/clever-tracer";
 
 /**
- url: https://api.clever-tracer.com/v1/report/event
- */
-export enum ProjectAChannel {
-    wechat = 'wechat',
-}
-/**
- url: https://api.clever-tracer.com/v1/report/version
- */
-export enum ProjectVersion {
-    v1_0 = 'v1.0',
-    v2_0 = 'v2.0',
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum MyGameChannels {
+
+	DOUYIN = 'hash-y',
+
 }
 
 /**
- ```ts
- export const tracer = new MyTracer()
- tracer.version = ProjectVersion.v2_0
- tracer.channel = ProjectAChannel.wechat
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum MyGameVersions {
 
- tracer.report_event_aa()
- tracer.report_event_aa()
- ```
- */
-export class MyTracer extends CeTracer {
-    public override channel?: ProjectAChannel = undefined
-    public override version?: ProjectVersion = undefined
+	V_1_0_0 = 'hash-xx',
 
-    /**
-     * 追踪 event-aa 事件
-     * @param custom 自定义数据
-     */
-    report_event_aa(custom?: any) {
-        this.callEventReport('aa', custom)
-    }
+	V_1_1_0 = 'hash-yy',
+
+	V_2_0_0 = 'hash-zz',
+
 }
 
+/**
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum MyGameEvents {
 
+	LOGIN_IN = 'hash-xxx',
+
+	RECHARGE = 'hash-yyy',
+
+	LOGIN_OUT = 'hash-zzz',
+
+}
+
+/**
+@description
+upload_data
+@example
+```ts
+const tracer = new MyGameTracer()
+// Use environment variables or macros to dispatch
+tracer.version = MyGameVersions.v1_0_0
+tracer.channel = MyGameChannels.WECHAT
+// report the event
+tracer.reportCustomEvent({})
+```
+*/
+export class MyGameTracer extends CeTracer {
+	public override channel?: MyGameChannels | string = undefined
+	public override version?: MyGameVersions | string = undefined
+
+
+	/**
+	* report the LOGIN_IN event
+	* @param custom custom
+	*/
+	reportLoginIn(custom?: any) {
+		this.callEventReport(MyGameEvents.LOGIN_IN, custom)
+	}
+
+	/**
+	* report the RECHARGE event
+	* @param custom custom
+	*/
+	reportRecharge(custom?: any) {
+		this.callEventReport(MyGameEvents.RECHARGE, custom)
+	}
+
+	/**
+	* report the LOGIN_OUT event
+	* @param custom custom
+	*/
+	reportLoginOut(custom?: any) {
+		this.callEventReport(MyGameEvents.LOGIN_OUT, custom)
+	}
+
+}

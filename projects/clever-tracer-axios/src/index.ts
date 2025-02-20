@@ -1,66 +1,73 @@
-import axios, {Method} from "axios";
-import {CeTracer} from "./report";
+import {CeTracer} from "@lingames/clever-tracer";
 
-export * from "./report";
+/**
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum ProjectAChannels {
 
+	WECHAT = 'hash-xxx',
 
-export enum ProjectAChannel {
-    wechat = 'wechat',
 }
 
-export enum ProjectVersion {
-    v1_0 = 'v1.0',
-    v2_0 = 'v2.0',
+/**
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum ProjectAVersions {
+
+	V_1_0 = 'hash-xxx',
+
+	V_2_0 = 'hash-yyy',
+
 }
 
+/**
+See {@link https://api.clever-tracer.com/v1/report/version events}.
+*/
+export enum ProjectAEvents {
 
-export class MyTracer extends CeTracer {
+	AA_SS = 'hash-xx',
 
+	CC_DD = 'hash-yy',
 
-    public override channel?: ProjectAChannel = undefined
-    public override version?: ProjectVersion = undefined
-
-    public override async callGameLogger<O>(method: Method, endPoint: string, data: any): Promise<O | null> {
-        try {
-            const response = await axios({
-                method: method,
-                url: `${this.host}/${endPoint}`,
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': this.bearer
-                },
-                data: data
-            });
-            if (response.status !== 200) {
-                console.error(response.statusText);
-                return null;
-            }
-            const result = response.data;
-            if (result.code < 0) {
-                console.error(result.message);
-                return null;
-            } else {
-                return result.data;
-            }
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    }
-
-    /**
-     * 追踪 event-aa 事件
-     * @param custom 自定义数据
-     */
-    report_event_aa(custom?: any) {
-        this.callEventReport('aa', custom)
-    }
 }
 
+/**
+@description
+upload_data
+@example
+```ts
+const tracer = new ProjectATracer()
+tracer.version = ProjectAVersions.v1_0
+tracer.channel = ProjectAChannels.WECHAT
 
-export const tracer = new MyTracer()
-tracer.version = ProjectVersion.v2_0
-tracer.channel = ProjectAChannel.wechat
+tracer.reportEventAa()
+```
+*/
+export class ProjectATracer extends CeTracer {
+	public override channel?: ProjectAChannels | string = undefined
+	public override version?: ProjectAVersions | string = undefined
 
-tracer.report_event_aa()
-tracer.report_event_aa()
+
+	/**
+	* report the AA_SS event
+	* @param custom custom
+	*/
+	reportAaSs(custom?: any) {
+		this.callEventReport(ProjectAEvents.AA_SS, custom)
+	}
+
+	/**
+	* report the CC_DD event
+	* @param custom custom
+	*/
+	reportCcDd(custom?: any) {
+		this.callEventReport(ProjectAEvents.CC_DD, custom)
+	}
+
+}
+
+const tracer = new ProjectATracer()
+tracer.version = ProjectAVersions.v1_0_0
+tracer.channel = ProjectAChannels.WECHAT
+
+tracer.reportCustomEvent({})
