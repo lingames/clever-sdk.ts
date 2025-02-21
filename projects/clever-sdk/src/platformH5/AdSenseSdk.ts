@@ -1,6 +1,6 @@
 //* 谷歌平台 */
-import {BrowserSdk} from "./BrowserSdk";
-import {AdSenseInitialize} from "../models";
+import {BrowserSdk} from "./BrowserSdk.js";
+import {AdSenseInitialize} from "../models/index.js";
 
 // @ts-ignore
 

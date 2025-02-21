@@ -1,4 +1,4 @@
-import {CleverSdk} from "../CleverSdk";
+import {CleverSdk} from "../CleverSdk.js";
 
 declare const qg: any;
 

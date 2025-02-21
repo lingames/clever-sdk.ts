@@ -1,6 +1,6 @@
-import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper";
-import {CleverSdk} from "../CleverSdk";
-import {WeChatInitialize} from "../models";
+import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
+import {CleverSdk} from "../CleverSdk.js";
+import {WeChatInitialize} from "../models/index.js";
 
 
 export class WeChatSdk extends CleverSdk {

@@ -13,8 +13,9 @@ export class CleverSdk {
     protected game_id: number;
     protected sdk_url: string;
     protected sdk_key: string;
+    // 视屏激励广告
     protected videoAd: any = {};
-    protected adUnitId: string = '';
+    // protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
 
@@ -92,6 +93,7 @@ export class CleverSdk {
     }
 
     // 侧边栏复访
+    // 确认当前宿主版本是否支持跳转某个小游戏入口场景，目前仅支持「侧边栏」场景。
     public async checkScene(): Promise<any> {
         return Promise.resolve({
             isSupport: false,

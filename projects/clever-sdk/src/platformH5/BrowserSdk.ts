@@ -1,5 +1,5 @@
-import {CleverSdk} from "../CleverSdk";
-import {build_sdk_req, generateRandomString, http_request} from "../helper";
+import {CleverSdk} from "../CleverSdk.js";
+import {build_sdk_req, generateRandomString, http_request} from "../helper.js";
 
 declare namespace sys {
     const localStorage: any;

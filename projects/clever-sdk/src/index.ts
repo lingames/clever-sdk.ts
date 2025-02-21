@@ -1,11 +1,10 @@
-export * from "./platformH5";
-export * from "./platformMini";
-export {CleverSdk} from "./CleverSdk";
-import {DouyinSDK} from "./platformMini";
-import {BilibiliSdk, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from "./platformMini";
-import {AdSenseSdk, BrowserSdk} from "./platformH5";
-import {CleverSdk} from "./CleverSdk";
-import {DynamicSdkConfig} from "./models";
+export * from "./platformH5/index.js";
+export * from "./platformMini/index.js";
+export {CleverSdk} from "./CleverSdk.js";
+import {BilibiliSdk, DouyinSDK, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from "./platformMini/index.js";
+import {AdSenseSdk, BrowserSdk} from "./platformH5/index.js";
+import {CleverSdk} from "./CleverSdk.js";
+import {DynamicSdkConfig} from "./models/index.js";
 
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     console.log('my sdk create:', config.platform, config.game_id, typeof (config.wx));
