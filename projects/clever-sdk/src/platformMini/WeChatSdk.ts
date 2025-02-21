@@ -1,6 +1,8 @@
 import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {WeChatInitialize} from "../models/index.js";
+import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {CreateBannerAd} from "../models/CreateBannerAd.js";
 
 
 export class WeChatSdk extends CleverSdk {
@@ -66,7 +68,7 @@ export class WeChatSdk extends CleverSdk {
 
     // adInfo{adUnitId:广告单元id} 广告单元id需要在小程序后台 流量主界面创建
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
-    public override createRewardedVideoAd(adInfo: any): Promise<any> {
+    public override createRewardedVideoAd(adInfo: wxCreateRewardedVideoAd): Promise<any> {
         let videoAd = this.videoAd['adUnitId'];
         console.log('createRewardedVideoAd', adInfo, videoAd);
         if (!videoAd) {
@@ -114,6 +116,10 @@ export class WeChatSdk extends CleverSdk {
         });
     }
 
+    createBannerAd(adInfo: CreateBannerAd): Promise<object> {
+        return this.inner.createBannerAd();
+    }
+
     public override async addCommonUse() {
         if (typeof (this.inner['addCommonUse']) == 'undefined') {
             console.error('不支持addCommonUse');
@@ -157,7 +163,6 @@ export class WeChatSdk extends CleverSdk {
         if (typeof (this.inner['addShortcut']) == 'undefined') {
             console.error('不支持addShortcut');
         }
-
 
         // const needAdd = await this.checkShortcut()
         // if (needAdd.exist || needAdd.needUpdate) {
@@ -249,7 +254,6 @@ export class WeChatSdk extends CleverSdk {
             return false;
         }
 
-
         try {
             await promisify_wx_a('shareAppMessage')(param);
             return true;
@@ -271,7 +275,5 @@ export class WeChatSdk extends CleverSdk {
         }
     }
 
-    async createBannerAd(): Promise<void> {
-        this.inner.createBannerAd();
-    }
+
 }

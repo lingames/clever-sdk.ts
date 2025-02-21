@@ -46,7 +46,6 @@ export class AdSenseSdk extends BrowserSdk {
     }
 
     public override createRewardedVideoAd(adInfo: any): Promise<any> {
-
         return new Promise((resolve, reject) => {
             // @ts-ignore
             window["adBreak"] && window["adBreak"]({

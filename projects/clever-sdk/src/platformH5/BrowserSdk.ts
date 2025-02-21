@@ -1,5 +1,6 @@
 import {CleverSdk} from "../CleverSdk.js";
 import {build_sdk_req, generateRandomString, http_request} from "../helper.js";
+import {CreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 
 declare namespace sys {
     const localStorage: any;
@@ -39,7 +40,7 @@ export class BrowserSdk extends CleverSdk {
         }
     }
 
-    public override createRewardedVideoAd(adInfo: any): Promise<any> {
+    createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
         throw new Error('浏览器不支持广告');
     }
 

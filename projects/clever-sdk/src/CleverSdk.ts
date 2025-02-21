@@ -1,9 +1,6 @@
-/*
- * @Author: vegapan@hotmail.com 
- * @Date: 2024-05-28 16:17:06 
- * @Last Modified by: vegapan@hotmail.com
- * @Last Modified time: 2024-09-02 23:44:37
- */
+import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
+import {CreateBannerAd} from "./models/CreateBannerAd.js";
+import {SdkInitialize} from "./models/SdkInitialize.js";
 
 
 export class CleverSdk {
@@ -51,7 +48,7 @@ export class CleverSdk {
      * @param config 平台特有参数
      * @returns 是否初始化成功
      * */
-    public async initialize(config: Record<string, any>): Promise<boolean> {
+    public async initialize(config: SdkInitialize): Promise<boolean> {
         return true;
     }
 
@@ -65,7 +62,12 @@ export class CleverSdk {
         return false;
     }
 
-    public createRewardedVideoAd(adInfo: any): Promise<any> {
+    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
+        return Promise.resolve({});
+    }
+
+    // 广告接口
+    public createBannerAd(adInfo: CreateBannerAd): Promise<object> {
         return Promise.resolve({});
     }
 
@@ -114,10 +116,6 @@ export class CleverSdk {
         return Promise.resolve({});
     }
 
-    // 广告接口
-    async createBannerAd() {
-
-    }
 
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
     // get_game_url(): string {

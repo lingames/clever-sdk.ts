@@ -1,41 +1,36 @@
 import {CleverSdk} from "../CleverSdk.js";
+import {ksCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {ksCreateBannerAd} from "../models/CreateBannerAd.js";
+import {ksInitialize} from "../models/SdkInitialize.js";
 
 declare const ks: any;
 
-type KuaiShouInitialize = {
-    // 广告类型
-    type: number,
-    // 广告单元 id
-    unitId: number
-}
 
 export class KuaiShouSdk extends CleverSdk {
-    async initialize(config: KuaiShouInitialize): Promise<boolean> {
-        console.info("抖音全局对象:", ks)
-        // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
-        // 全局只能有一个视频广告实例，重复创建没有用
-        this.videoAd = ks.createRewardedVideoAd({
-            type: config.type,
-            unitId: config.unitId
-        })
+    async initialize(config: ksInitialize): Promise<boolean> {
+        console.info("快手全局对象:", ks)
         return true
     }
 
-    createRewardedVideoAd(): Promise<boolean> {
-        // https://open.kuaishou.com/docs/develop/api-next/ad/RewardedVideoAd/RewardedVideoAd.load.html
-        this.videoAd.load()
-        // https://open.kuaishou.com/docs/develop/api-next/ad/RewardedVideoAd/RewardedVideoAd.show.html
-        this.videoAd.show()
-        return Promise.resolve(true)
+    // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
+    // 全局只能有一个视频广告实例，重复创建没有用
+    createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<object> {
+        this.videoAd = ks.createRewardedVideoAd({
+            type: adInfo.type,
+            unitId: adInfo.adUnitId
+        })
+        //         // https://open.kuaishou.com/docs/develop/api-next/ad/RewardedVideoAd/RewardedVideoAd.load.html
+        //         this.videoAd.load()
+        //         // https://open.kuaishou.com/docs/develop/api-next/ad/RewardedVideoAd/RewardedVideoAd.show.html
+        //         this.videoAd.show()
+        return Promise.resolve(this.videoAd)
     }
 
+    createBannerAd(adInfo: ksCreateBannerAd): Promise<object> {
+        return super.createBannerAd(adInfo);
+    }
 
     public async checkScene(): Promise<any> {
         console.error("快手不支持该能力")
-    }
-
-
-    async createBannerAd(): Promise<void> {
-        await super.createBannerAd();
     }
 }

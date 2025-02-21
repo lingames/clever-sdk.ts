@@ -1,16 +1,16 @@
 import {CleverSdk} from "../CleverSdk.js";
+import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 
-declare const qg: any;
+// 硬核联盟全局对象
+export declare const qg: any;
 
 export class OppoSdk extends CleverSdk {
     protected videoAd: any = null
 
-    constructor(platform: string, sdk_url: string, sdk_key: string, game_id: number) {
-        super(platform, sdk_url, sdk_key, game_id);
-        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
-        this.videoAd = qg.createRewardedVideoAd({
-            adUnitId: game_id,
-        });
+    async initialize(config: Record<string, any>): Promise<boolean> {
+        console.info("OPPO 全局对象:", qg)
+        return Promise.resolve(true);
     }
 
     async login(): Promise<any> {
@@ -28,9 +28,20 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(true)
     }
 
-    createRewardedVideoAd(adInfo: any): Promise<any> {
-        this.videoAd.load();
-        this.videoAd.show();
-        return Promise.resolve(true)
+
+    createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
+        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
+        this.videoAd = qg.createRewardedVideoAd({
+            adUnitId: adInfo.adUnitId,
+        });
+        return Promise.resolve(this.videoAd)
+    }
+
+    override async createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
+        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/banner-ad?id=qgcreatebanneradobject
+        const bannerAd = qg.createBannerAd({
+            adUnitId: adInfo.adUnitId,
+        });
+        return Promise.resolve(bannerAd)
     }
 }
