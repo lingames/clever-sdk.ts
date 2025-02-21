@@ -11,8 +11,6 @@ export class CleverSdk {
     protected game_id: number;
     protected sdk_url: string;
     protected sdk_key: string;
-    // 视屏激励广告
-    protected videoAd: any = {};
     // protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
@@ -68,8 +66,20 @@ export class CleverSdk {
     }
 
     // 广告接口
-    public createBannerAd(adInfo: CreateBannerAd): Promise<object> {
-        return Promise.resolve({});
+    public async createBannerAd(adInfo: CreateBannerAd): Promise<object> {
+        return {}
+    }
+
+    public async showBannerAd(): Promise<boolean> {
+        return false
+    }
+
+    public async hideBannerAd(): Promise<boolean> {
+        return true
+    }
+
+    public async destroyBannerAd(): Promise<boolean> {
+        return true
     }
 
     // 设为常用

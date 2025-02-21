@@ -1,7 +1,7 @@
 import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
-import {CreateBannerAd} from "../models/CreateBannerAd.js";
+import {CreateBannerAd, wxCreateBannerAd} from "../models/CreateBannerAd.js";
 import {wxInitialize} from "../models/SdkInitialize.js";
 
 /// 微信全局对象
@@ -9,6 +9,7 @@ export declare const wx: any;
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
+    private videoAd: any = null;
 
     override async login() {
         const login_ret: any = await promisify_wx('login')();
@@ -91,6 +92,7 @@ export class WeChatSdk extends CleverSdk {
 
             videoAd.onError((err: any) => {
                 console.error(err);
+                adInfo.onError?.(err)
             });
 
             // 视频关闭
@@ -118,8 +120,9 @@ export class WeChatSdk extends CleverSdk {
         });
     }
 
-    createBannerAd(adInfo: CreateBannerAd): Promise<object> {
-        return this.inner.createBannerAd();
+    /// https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createBannerAd.html
+    createBannerAd(adInfo: wxCreateBannerAd): Promise<object> {
+        return  wx.createBannerAd({adUnitId: adInfo.adUnitId})
     }
 
     public override async addCommonUse() {

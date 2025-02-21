@@ -4,8 +4,6 @@ import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 declare const qg: any;
 
 export class HuaweiSdk extends CleverSdk {
-    protected videoAd: any = null
-
 
     // async login(): Promise<any> {
     //     qg.login({
@@ -24,7 +22,7 @@ export class HuaweiSdk extends CleverSdk {
 
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
         // https://developer.huawei.com/consumer/cn/doc/quickApp-References/quickgame-api-ad-0000001130711971#section443419211957
-        this.videoAd = qg.createRewardedVideoAd({
+        const videoAd = qg.createRewardedVideoAd({
             adUnitId: adInfo.adUnitId,
             success: (code: any) => {
                 console.log("ad demo : loadAndShowVideoAd createRewardedVideoAd: success");
@@ -36,6 +34,6 @@ export class HuaweiSdk extends CleverSdk {
                 console.log("ad demo : loadAndShowVideoAd createRewardedVideoAd complete");
             }
         });
-        return Promise.resolve(this.videoAd)
+        return Promise.resolve(videoAd)
     }
 }
