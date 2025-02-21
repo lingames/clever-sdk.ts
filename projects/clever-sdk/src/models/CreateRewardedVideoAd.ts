@@ -30,8 +30,16 @@ export interface ksCreateRewardedVideoAd {
 }
 
 /// 快应用
-export interface qgCreateRewardedVideoAd {
+export interface hwCreateRewardedVideoAd {
     // 广告单元 id
+    adUnitId: string,
+    // 是否启用多例模式
+    multiton?: boolean,
+    onComplete?: () => void,
+}
+
+export interface qgCreateRewardedVideoAd {
+    // adSenseId: string
     adUnitId: string
 }
 
