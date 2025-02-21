@@ -73,6 +73,10 @@ export class CleverSdk {
         return false
     }
 
+    public async destroyRewardedVideoAd(): Promise<boolean> {
+        return true
+    }
+
     // 广告接口
     public async createBannerAd(adInfo: CreateBannerAd): Promise<object> {
         return {}

@@ -3,12 +3,13 @@ import {ksCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {ksCreateBannerAd} from "../models/CreateBannerAd.js";
 import {ksInitialize} from "../models/SdkInitialize.js";
 
-declare const ks: any;
+export declare const ks: any;
+
+export var videoAd: any = null;
+export var bannerAd: any = null;
 
 
 export class KuaiShouSdk extends CleverSdk {
-    private videoAd: any = null
-    private bannerAd: any = null
 
     async initialize(config: ksInitialize): Promise<boolean> {
         console.info("快手全局对象:", ks)
@@ -18,20 +19,25 @@ export class KuaiShouSdk extends CleverSdk {
     // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
     // 全局只能有一个视频广告实例，重复创建没有用
     createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<object> {
-        this.videoAd = ks.createRewardedVideoAd({
+        videoAd = ks.createRewardedVideoAd({
             type: adInfo.type,
             unitId: adInfo.adUnitId
         })
-        return Promise.resolve(this.videoAd)
+        return Promise.resolve(videoAd)
     }
 
     async loadRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.load()
+        videoAd?.load()
         return true
     }
 
     async showRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.show()
+        videoAd?.show()
+        return true
+    }
+
+    async destroyRewardedVideoAd(): Promise<boolean> {
+        videoAd?.destroy()
         return true
     }
 
@@ -44,12 +50,12 @@ export class KuaiShouSdk extends CleverSdk {
     }
 
     async hideBannerAd(): Promise<boolean> {
-        this.bannerAd?.hide()
+        bannerAd?.hide()
         return true
     }
 
     async destroyBannerAd(): Promise<boolean> {
-        this.bannerAd?.destroy()
+        bannerAd?.destroy()
         return true
     }
 

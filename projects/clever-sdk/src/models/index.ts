@@ -8,4 +8,3 @@ export type MyConfig = {
     sdk_key: string,
     game_id: number
 }
-
