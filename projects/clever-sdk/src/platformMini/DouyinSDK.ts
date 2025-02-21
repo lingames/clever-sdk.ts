@@ -2,15 +2,17 @@ import {CleverSdk} from "../CleverSdk.js";
 import {ttCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 import {ttInitialize} from "../models/SdkInitialize.js";
+import {ttAddShortcut} from "../models/AddShortcut.js";
 
 /// 抖音全局对象
 export declare const tt: any;
 
 
-
-interface CheckScene {
+interface CheckSceneResult {
     isExist: boolean
 }
+
+
 
 export class DouyinSDK extends CleverSdk {
     async initialize(config: ttInitialize): Promise<boolean> {
@@ -33,13 +35,32 @@ export class DouyinSDK extends CleverSdk {
     }
 
 
-    public override async checkScene(): Promise<CheckScene> {
+    public override async checkScene(): Promise<CheckSceneResult> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/sidebar-capacity/tt-check-scene
         return tt.checkScene({scene: "sidebar"})
     }
 
     async createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
         return super.createBannerAd(adInfo);
+    }
+
+    /// https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
+    async addShortcut(options: ttAddShortcut): Promise<object> {
+        return new Promise(
+            (resolve, reject) => {
+                tt.addShortcut({
+                    success() {
+                        resolve({})
+                    },
+                    fail(err: any) {
+                        reject(err.errMsg)
+                    },
+                    complete() {
+                        options?.complete?.()
+                    }
+                })
+            }
+        )
     }
 }
 

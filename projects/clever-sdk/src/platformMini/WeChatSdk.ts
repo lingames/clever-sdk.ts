@@ -1,9 +1,11 @@
 import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
-import {WeChatInitialize} from "../models/index.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {CreateBannerAd} from "../models/CreateBannerAd.js";
+import {wxInitialize} from "../models/SdkInitialize.js";
 
+/// 微信全局对象
+export declare const wx: any;
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
@@ -40,8 +42,8 @@ export class WeChatSdk extends CleverSdk {
         return sdkResp;
     }
 
-    async initialize(info: WeChatInitialize): Promise<boolean> {
-        this.inner = info.wx;
+    async initialize(info: wxInitialize): Promise<boolean> {
+        this.inner = wx;
         return true;
     }
 
@@ -156,21 +158,6 @@ export class WeChatSdk extends CleverSdk {
                 isCommonUse: false
             };
         }
-    }
-
-
-    public override async addShortcut() {
-        if (typeof (this.inner['addShortcut']) == 'undefined') {
-            console.error('不支持addShortcut');
-        }
-
-        // const needAdd = await this.checkShortcut()
-        // if (needAdd.exist || needAdd.needUpdate) {
-        //     console.log("已经设置为addShortcut，不再重复")
-        //     return;
-        // }
-
-        await promisify_wx('addShortcut')();
     }
 
     public async checkShortcut(): Promise<any> {

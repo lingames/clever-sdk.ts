@@ -44,21 +44,7 @@ export class BrowserSdk extends CleverSdk {
         throw new Error('浏览器不支持广告');
     }
 
-    // public override async addCommonUse() {
-    //     throw new Error("浏览器不支持 addCommonUse")
-    // }
 
 
-    // public async checkCommonUse(): Promise<boolean> {
-    //     return false
-    // }
-
-    public override async addShortcut() {
-        throw new Error('浏览器不支持 addShortcut');
-    }
-
-    // public async checkShortcut(): Promise<any> {
-    //     return { isSupport: false, exist: true, needUpdate: false };
-    // }
 }
 

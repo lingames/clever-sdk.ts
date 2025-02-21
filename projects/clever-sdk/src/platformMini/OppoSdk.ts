@@ -37,11 +37,21 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(this.videoAd)
     }
 
-    override async createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
+    createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/banner-ad?id=qgcreatebanneradobject
         const bannerAd = qg.createBannerAd({
             adUnitId: adInfo.adUnitId,
         });
         return Promise.resolve(bannerAd)
     }
+
+    // 不支持
+    // async addShortcut(options: AddShortcut): Promise<object> {
+    //     return super.addShortcut(options);
+    // }
+
+    // 不支持
+    // async addCommonUse(): Promise<void> {
+    //     super.addCommonUse();
+    // }
 }

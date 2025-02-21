@@ -1,6 +1,6 @@
 {
     "name": "@lingames/clever-sdk",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Clever SDK",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

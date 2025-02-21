@@ -7,11 +7,9 @@ import {CleverSdk} from "./CleverSdk.js";
 import {DynamicSdkConfig} from "./models/index.js";
 
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
-    console.log('my sdk create:', config.platform, config.game_id, typeof (config.wx));
+    console.log('my sdk create:', config.platform, config.game_id);
     if (config.platform == 'WECHAT_GAME') {
-        let sdk = new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
-        await sdk.initialize({wx: config.wx});
-        return sdk
+        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
     }
     if (config.platform == 'douyingame') {
         return new DouyinSDK(config.platform, config.sdk_url, config.sdk_key, config.game_id);
@@ -33,6 +31,5 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         await sdk.initialize({adSenseId: config.adSenseId});
         return sdk
     }
-
     return new BrowserSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
 }

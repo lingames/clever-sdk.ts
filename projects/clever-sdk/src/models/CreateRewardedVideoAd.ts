@@ -1,5 +1,8 @@
-export type CreateRewardedVideoAd = wxCreateRewardedVideoAd & ttCreateRewardedVideoAd & ksCreateRewardedVideoAd;
-
+export type CreateRewardedVideoAd = {}
+    & wxCreateRewardedVideoAd
+    & ttCreateRewardedVideoAd
+    & ksCreateRewardedVideoAd
+    & ggCreateRewardedVideoAd;
 
 export interface wxCreateRewardedVideoAd {
     // 广告单元 id
@@ -27,5 +30,10 @@ export interface ksCreateRewardedVideoAd {
 /// 快应用
 export interface qgCreateRewardedVideoAd {
     // 广告单元 id
+    adUnitId: string
+}
+
+export interface ggCreateRewardedVideoAd {
+    // adSenseId: string
     adUnitId: string
 }

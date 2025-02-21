@@ -1,6 +1,7 @@
 import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
 import {CreateBannerAd} from "./models/CreateBannerAd.js";
 import {SdkInitialize} from "./models/SdkInitialize.js";
+import {AddShortcut} from "./models/AddShortcut.js";
 
 
 export class CleverSdk {
@@ -73,6 +74,7 @@ export class CleverSdk {
 
     // 设为常用
     public async addCommonUse() {
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
     }
 
     public async checkCommonUse(): Promise<any> {
@@ -83,7 +85,8 @@ export class CleverSdk {
     }
 
     // 加桌
-    public async addShortcut() {
+    public async addShortcut(options: AddShortcut): Promise<object> {
+        throw new Error(`${this.platform} 平台不支持 'addCommonUse'`)
     }
 
     public async checkShortcut(): Promise<any> {
