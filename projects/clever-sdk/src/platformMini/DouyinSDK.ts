@@ -1,6 +1,6 @@
 import {CleverSdk} from "../CleverSdk.js";
 import {ttCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
-import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
+import {ttCreateBannerAd} from "../models/CreateBannerAd.js";
 import {ttInitialize} from "../models/SdkInitialize.js";
 import {ttAddShortcut} from "../models/AddShortcut.js";
 
@@ -13,8 +13,10 @@ interface CheckSceneResult {
 }
 
 
-
 export class DouyinSDK extends CleverSdk {
+
+    private bannerAd: any = null
+
     async initialize(config: ttInitialize): Promise<boolean> {
         console.info("抖音全局对象:", tt)
         return true
@@ -40,8 +42,42 @@ export class DouyinSDK extends CleverSdk {
         return tt.checkScene({scene: "sidebar"})
     }
 
-    async createBannerAd(adInfo: qgCreateBannerAd): Promise<object> {
-        return super.createBannerAd(adInfo);
+    // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-banner-ad
+    async createBannerAd(adInfo: ttCreateBannerAd): Promise<object> {
+        this.bannerAd = tt.createBannerAd({
+            adUnitId: adInfo.adUnitId,
+            adIntervals: adInfo.adIntervals,
+            style: adInfo.style
+        })
+        return super.createBannerAd(this.bannerAd);
+    }
+
+    // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-show
+    async showBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.show()
+            return true
+        } else {
+            console.warn("未调用 createBannerAd")
+            return false
+        }
+    }
+
+    // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-hide
+    async hideBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.hide()
+
+        }
+        return true
+    }
+
+    // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-destroy
+    async destroyBannerAd(): Promise<boolean> {
+        if (this.bannerAd != null) {
+            this.bannerAd.destroy()
+        }
+        return true
     }
 
     /// https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
