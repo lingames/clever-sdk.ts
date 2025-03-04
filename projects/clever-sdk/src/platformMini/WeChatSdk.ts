@@ -1,4 +1,4 @@
-import {build_sdk_head, promisify_wx} from "../helper.js";
+import {build_sdk_head} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {wxCreateBannerAd} from "../models/CreateBannerAd.js";
@@ -40,7 +40,8 @@ export class WeChatSdk extends CleverSdk {
                             dataType: 'json',
                             success: (fine: any) => {
                                 console.warn("微信登成功: ", fine)
-                                resolve(res.data)
+                                this.session_key = fine.data.session_key
+                                resolve(fine.data)
                             },
                             fail: (fail: any) => {
                                 console.warn("微信登录失败: ", fail)
@@ -79,7 +80,6 @@ export class WeChatSdk extends CleverSdk {
     // true表示session_key已经过期
     override async checkSession(): Promise<boolean> {
         try {
-            await promisify_wx('checkSession')();
             return true;
         } catch (e) {
             return false;
