@@ -50,6 +50,7 @@ export class DouyinSDK extends CleverSdk {
                     })
                 },
                 fail: (err: any) => {
+                    console.warn("侧边栏检测失败: ", err)
                     resolve({
                         isSupport: true,
                         isScene: false

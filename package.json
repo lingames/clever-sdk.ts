@@ -10,14 +10,15 @@
         "lint": "eslint 'projects/**/*.{js,ts,tsx}'"
     },
     "devDependencies": {
+        "@eslint/js": "^9.20.0",
         "@typescript-eslint/eslint-plugin": "^8.24.0",
         "@typescript-eslint/parser": "^8.24.0",
         "eslint": "^9.20.1",
         "eslint-define-config": "^2.1.0",
         "globals": "^15.15.0",
-        "typescript": "^5.7.3"
-    },
-    "dependencies": {
-        "@eslint/js": "^9.20.0"
+        "ts-loader": "^9.5.2",
+        "typescript": "^5.8.2",
+        "webpack": "^5.98.0",
+        "webpack-cli": "^6.0.1"
     }
 }
