@@ -1,8 +1,10 @@
-import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx, promisify_wx_a} from "../helper.js";
+import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {wxCreateBannerAd} from "../models/CreateBannerAd.js";
 import {wxInitialize} from "../models/SdkInitialize.js";
+import {wxGetUserInfo, wxUserInfoCallback} from "../models/UserProfile.js";
+import {wxShareAppMessage} from "../models/ShareAppMessage.js";
 
 /// 微信全局对象
 export declare const wx: any;
@@ -166,106 +168,48 @@ export class WeChatSdk extends CleverSdk {
     // }
 
     public async checkShortcut(): Promise<any> {
-        if (typeof (this.inner['checkShortcut']) == 'undefined') {
-            console.error('不支持checkShortcut');
-            return {
-                isSupport: false,
-                exist: true,
-                needUpdate: false
-            };
-        }
-
-        try {
-            const ret: any = await promisify_wx('checkShortcut')();
-            console.log('checkShortcut-ret:', ret);
-            return {
-                isSupport: true,
-                exist: ret.installed || ret.exist,
-                needUpdate: ret.needUpdate
-            };
-        } catch (e: any) {
-            if (e.msg === 'apk info is invalid') {
-                return {
-                    isSupport: true,
-                    exist: false,
-                    needUpdate: false
-                };
-            }
-            return {
-                isSupport: true,
-                exist: true,
-                needUpdate: false
-            };
-        }
+        console.error('不支持checkShortcut');
+        return {
+            isSupport: false,
+            exist: true,
+            needUpdate: false
+        };
     }
 
 
     // 抖音侧边栏访问功能
     public async checkScene(): Promise<any> {
-        if (typeof (this.inner['checkScene']) == 'undefined') {
-            console.error('不支持checkScene');
-            return {
-                isSupport: false,
-                isScene: false
-            };
-        }
-
-        try {
-            const ret: any = await promisify_wx_a('checkScene')({scene: 'sidebar'});
-            console.log('checkScene-ret:', ret);
-            return {
-                isSupport: false,
-                isScene: ret.isExist
-            };
-        } catch (e) {
-            return {
-                isSupport: true,
-                isScene: false
-            };
-        }
+        console.error('不支持checkScene');
+        return {
+            isSupport: false,
+            isScene: false
+        };
     }
 
     public async navigateToScene() {
-        if (typeof (this.inner['navigateToScene']) == 'undefined') {
-            console.error('不支持navigateToScene');
-            return;
-        }
-
-        try {
-            const ret: any = await promisify_wx_a('navigateToScene')({scene: 'sidebar'});
-            console.log('navigateToScene-ret:', ret);
-        } catch (e) {
-            console.error('navigateToScene', e);
-        }
+        console.error('不支持navigateToScene');
+        return;
     }
 
 
-    public async shareAppMessage(param: any): Promise<boolean> {
-        if (typeof (this.inner['shareAppMessage']) == 'undefined') {
-            console.error('不支持shareAppMessage');
-            return false;
-        }
-
-        try {
-            await promisify_wx_a('shareAppMessage')(param);
-            return true;
-        } catch (e: any) {
-            return false;
-        }
+    public async shareAppMessage(param: wxShareAppMessage): Promise<boolean> {
+        // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
+        wx.shareAppMessage(param)
+        return true;
     }
 
-    public async getUserInfo(): Promise<any> {
-        if (typeof (this.inner['getUserInfo']) == 'undefined') {
-            console.error('不支持getUserInfo');
-            return {};
-        }
-
-        try {
-            return await promisify_wx_a('getUserInfo')({});
-        } catch (e: any) {
-            return false;
-        }
+    public async getUserInfo(param: wxGetUserInfo): Promise<wxUserInfoCallback> {
+        // https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html
+        return new Promise((resolve, reject) => {
+            wx.getUserInfo({
+                ...param,
+                success: (fine: wxUserInfoCallback) => {
+                    resolve(fine)
+                },
+                fail: (err: any) => {
+                    reject(err)
+                }
+            })
+        });
     }
-
-
 }

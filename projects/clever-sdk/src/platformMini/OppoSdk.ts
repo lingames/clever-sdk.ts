@@ -1,9 +1,11 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {hwCreateRewardedVideoAd, qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
+import {OppoLoginData} from "../models/UserProfile.js";
 
 // 硬核联盟全局对象
 export declare const qg: any;
+
 
 export class OppoSdk extends CleverSdk {
     protected videoAd: any = null
@@ -14,19 +16,22 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(true);
     }
 
-    async login(): Promise<any> {
-        qg.login({
-            success: function (res: any) {
-                console.log("Oppo 登录")
-                const data = JSON.stringify(res.data);
-                console.log(data);
-            },
-            fail: function (res: any) {
-                console.log("Oppo 登录失败")
-                console.log(JSON.stringify(res));
-            },
-        });
-        return Promise.resolve(true)
+    async login(): Promise<OppoLoginData> {
+        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/feature/account?id=qgloginobject
+        return new Promise((resolve, reject) => {
+            qg.login({
+                success: function (fine: OppoLoginData) {
+                    console.log("Oppo 登录成功")
+                    resolve({
+                        ...fine,
+                        openid: fine.uid
+                    })
+                },
+                fail: function (fail: any) {
+                    console.log("Oppo 登录失败", fail)
+                },
+            });
+        })
     }
 
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
@@ -80,4 +85,10 @@ export class OppoSdk extends CleverSdk {
     // async addCommonUse(): Promise<void> {
     //     super.addCommonUse();
     // }
+
+
+    async shareAppMessage(param: any): Promise<boolean> {
+        return super.shareAppMessage(param);
+    }
+
 }

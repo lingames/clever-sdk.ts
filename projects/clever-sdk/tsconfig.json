@@ -7,7 +7,7 @@
         //        "module": "AMD",
         "allowJs": true,
         "checkJs": false,
-//        "moduleResolution": "node",
+        //        "moduleResolution": "node",
         "removeComments": true,
         "lib": ["es5", "es6", "dom"],
         "outDir": "dist",

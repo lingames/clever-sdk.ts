@@ -137,7 +137,7 @@ export class CleverSdk {
     }
 
     // 获取用户信息
-    public async getUserInfo(): Promise<any> {
+    public async getUserInfo(options: any): Promise<any> {
         return Promise.resolve({});
     }
 
