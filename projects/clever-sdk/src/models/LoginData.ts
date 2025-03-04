@@ -1,4 +1,4 @@
-export type UserProfile = {} | OppoLoginData;
+export type LoginData = {} | HuaweiLoginData | OppoLoginData;
 
 export interface OppoLoginData {
     /** 统一登录 id */
@@ -37,6 +37,46 @@ export interface OppoLoginData {
     time: number;
     /** code · 不建议使用 */
     code?: number;
+}
+
+
+// 响应数据接口
+export interface HuaweiLoginData {
+    /** 请求时同字段指定的任意值 */
+    state: string;
+
+    /** 授权码模式下可用，返回的授权码 */
+    code?: string;
+
+    /** 简化模式下可用，返回的访问令牌 */
+    accessToken?: string;
+
+    /** 简化模式下可用，访问令牌类型 */
+    tokenType?: string;
+
+    /** 简化模式下可用，访问令牌过期时间，单位为秒 */
+    expiresIn?: number;
+
+    /** 简化模式下可用，实际权限范围 */
+    scope?: string;
+
+    /** 用户的openid */
+    openid?: string; // 1020+
+
+    /** 用户在开放平台上的唯一标示符 */
+    unionid?: string; // 1020+
+
+    /** 用户的昵称，可能为空 */
+    nickname?: string; // 1020+
+
+    /** 用户的头像图片地址，可能为空 */
+    avatar?: {
+        default?: string; // 默认头像
+        [resolution: string]: string | undefined; // 其他分辨率的头像
+    }; // 1020+
+
+    /** 用户绑定的Email地址，如果未绑定Email，此处可能为空 */
+    email?: string; // 1060+
 }
 
 // 接口可选参数

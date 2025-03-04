@@ -9,27 +9,27 @@ import {DynamicSdkConfig} from "./models/index.js";
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     console.log('my sdk create:', config.platform, config.game_id);
     if (config.platform == 'WECHAT_GAME') {
-        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new WeChatSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'douyingame') {
-        return new DouyinSDK(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new DouyinSDK(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'kuaishou') {
-        return new KuaiShouSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new KuaiShouSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'bilibili') {
-        return new BilibiliSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new BilibiliSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'huawei') {
-        return new HuaweiSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new HuaweiSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'oppo') {
-        return new OppoSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        return new OppoSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (config.platform == 'google') {
-        let sdk = new AdSenseSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+        let sdk = new AdSenseSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
         await sdk.initialize({adSenseId: config.adSenseId});
         return sdk
     }
-    return new BrowserSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id);
+    return new BrowserSdk(config.platform, config.sdk_url, config.sdk_key, config.game_id.toString());
 }

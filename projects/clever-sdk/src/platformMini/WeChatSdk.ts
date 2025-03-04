@@ -1,49 +1,63 @@
-import {build_sdk_req, parse_sdk_resp, promisify_request, promisify_wx} from "../helper.js";
+import {build_sdk_head, promisify_wx} from "../helper.js";
 import {CleverSdk} from "../CleverSdk.js";
 import {wxCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {wxCreateBannerAd} from "../models/CreateBannerAd.js";
 import {wxInitialize} from "../models/SdkInitialize.js";
-import {wxGetUserInfo, wxUserInfoCallback} from "../models/UserProfile.js";
+import {wxGetUserInfo, wxUserInfoCallback} from "../models/LoginData.js";
 import {wxShareAppMessage} from "../models/ShareAppMessage.js";
 
 /// 微信全局对象
 export declare const wx: any;
+
+export interface wxLoginData {
+
+}
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
     private videoAd: any = null;
     private bannerAd: any = null;
 
-    override async login() {
-        const login_ret: any = await promisify_wx('login')();
-        console.log('third-sdk login ret:', login_ret);
-        if (!login_ret.code) {
-            console.error('third-sdk login error:', login_ret.errMsg);
-            return;
-        }
-        console.log('third-sdk login ok:', login_ret.code);
-
-        const [req_body, req_header] = build_sdk_req(this.game_id, this.sdk_key, login_ret.code);
-        const req = {
-            url: this.sdk_login_url,
-            data: req_body,
-            method: 'POST',
-            header: req_header
-        };
-        console.log('my-sdk ready to code2session:', this.sdk_login_url, JSON.stringify(req));
-
-        // const ret: any = await promisify_wx2(this.inner.request)(req);
-        // const sdkResp: any = await http_request("POST", this.sdk_login_url, req_header, req_body)();
-        const ret = await promisify_request()(req);
-        // if (!ret.data){
-        //     throw new Error("fail to login sdk")
-        // }
-        console.log('my-sdk login resp:', ret);
-
-        const sdkResp = parse_sdk_resp(ret);
-        this.session_key = sdkResp.session_key;
-
-        return sdkResp;
+    override async login(): Promise<wxLoginData> {
+        return new Promise((resolve, reject) => {
+            wx.login({
+                success: (res: any) => {
+                    if (res.code) {
+                        const body = {
+                            game_id: this.game_id,
+                            session_id: res.code,
+                            Fields: {
+                                grant_type: 'authorization_code'
+                            }
+                        };
+                        const head = build_sdk_head(this.sdk_key, JSON.stringify(body))
+                        // https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
+                        wx.request({
+                            url: this.sdk_login_url,
+                            method: 'POST',
+                            header: head,
+                            data: body,
+                            dataType: 'json',
+                            success: (fine: any) => {
+                                console.warn("微信登成功: ", fine)
+                                resolve(res.data)
+                            },
+                            fail: (fail: any) => {
+                                console.warn("微信登录失败: ", fail)
+                                reject(fail)
+                            }
+                        })
+                    } else {
+                        console.warn('微信登录失败！', res.errMsg)
+                        reject(res.errMsg)
+                    }
+                },
+                fail(err: any) {
+                    console.warn("微信登录凭证失败: ", err)
+                    reject(err)
+                }
+            })
+        });
     }
 
     async initialize(info: wxInitialize): Promise<boolean> {

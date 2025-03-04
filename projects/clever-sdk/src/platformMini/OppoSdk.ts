@@ -1,7 +1,7 @@
 import {CleverSdk} from "../CleverSdk.js";
 import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
-import {OppoLoginData} from "../models/UserProfile.js";
+import {OppoLoginData} from "../models/LoginData.js";
 
 // 硬核联盟全局对象
 export declare const qg: any;
@@ -68,7 +68,7 @@ export class OppoSdk extends CleverSdk {
         return true
     }
 
-    async destroyBannerAd(): Promise<boolean> {
+    async destroyBannerAd() {
         if (this.bannerAd != null) {
             this.bannerAd.destroy();
             this.bannerAd = null;
@@ -88,7 +88,7 @@ export class OppoSdk extends CleverSdk {
 
 
     async shareAppMessage(param: any): Promise<boolean> {
-        return super.shareAppMessage(param);
+        console.log("不支持")
+        return false
     }
-
 }

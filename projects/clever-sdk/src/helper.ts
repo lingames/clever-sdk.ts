@@ -20,23 +20,6 @@ export function promisify_wx(fn: any) {
     };
 }
 
-export function promisify_wx_a(fn: any) {
-    return async function (args: any) {
-        return new Promise((resolve, reject) => {
-            GameGlobal['inner'][fn]({
-                ...(args || {}),
-                success: (res: any) => {
-                    console.log('promisify_wx ok:', res);
-                    resolve(res);
-                },
-                fail: (err: any) => {
-                    console.error('promisify_wx fail:', err);
-                    reject(err);
-                }
-            });
-        });
-    };
-}
 
 // const promisify_wx2 = (fn) => {
 //     return async function (args) {
@@ -87,7 +70,7 @@ export function build_sdk_head(key: string, req_body: string): any {
     return headers;
 }
 
-export function build_sdk_req(game_id: number, key: string, code: string): [string, Map<string, string>] {
+export function build_sdk_req(game_id: string, key: string, code: string): [string, Map<string, string>] {
     const req_body = JSON.stringify({
         game_id: game_id,
         session_id: code,
@@ -104,40 +87,6 @@ const get_ts = () => {
     const unixTimestamp = Math.floor(date.getTime() / 1000);
     return unixTimestamp;
 };
-
-export function parse_sdk_resp(resp: any) {
-    if (resp.statusCode != 200) {
-        throw new Error('error status code:' + resp.statusCode);
-    }
-
-    const sdkResp = resp.data;
-    if (sdkResp.ErrorCode && sdkResp.ErrorCode != 0) {
-        throw new Error('sdk login error:' + JSON.stringify(resp.data));
-    }
-
-    console.log('sdk login ok:', sdkResp);
-    return sdkResp;
-}
-
-
-// Promise<any>
-export function promisify_request() {
-    return async function (args: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            args.fail = (err: any) => {
-                console.error('fail:', err);
-                reject(err);
-            };
-
-            args.success = (res: any) => {
-                console.log('success:', res.data);
-                resolve(res);
-            };
-            GameGlobal['inner'].request(args);
-        });
-    };
-}
-
 
 export function http_request(method: string, url: string, heads: Map<string, string>, body: string) {
     let xhr = new XMLHttpRequest();

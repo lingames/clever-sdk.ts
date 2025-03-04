@@ -2,20 +2,21 @@ import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
 import {CreateBannerAd} from "./models/CreateBannerAd.js";
 import {SdkInitialize} from "./models/SdkInitialize.js";
 import {AddShortcut} from "./models/AddShortcut.js";
+import {LoginData} from "./models/LoginData.js";
 
 
 export class CleverSdk {
     // 平台名称
     protected platform: string;
     // game_id 游戏编号，每个游戏 game_id 唯一
-    protected game_id: number;
+    protected game_id: string;
     protected sdk_url: string;
     protected sdk_key: string;
     // protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
 
-    constructor(platform: string, sdk_url: string, sdk_key: string, game_id: number) {
+    constructor(platform: string, sdk_url: string, sdk_key: string, game_id: string) {
         this.platform = platform;
         this.sdk_url = sdk_url;
         this.sdk_key = sdk_key;
@@ -52,8 +53,9 @@ export class CleverSdk {
     }
 
 
-    public async login(): Promise<any> {
+    public async login(): Promise<LoginData> {
         console.log('dummy-sdk login');
+        return {}
     }
 
     // async update(){"dummy-sdk update"}
