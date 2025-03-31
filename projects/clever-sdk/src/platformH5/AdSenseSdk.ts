@@ -79,4 +79,25 @@ export class AdSenseSdk extends BrowserSdk {
             });
         })
     }
+
+    async showRewardedVideoAd(): Promise<boolean> {
+        const adContainer = document.getElementById('adsense-container');
+        if (adContainer) {
+            adContainer.style.display = 'block';
+            // 确保⼴告重新加载（可选）
+            // @ts-ignore
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            return true
+        }
+        return false
+    }
+
+    async hideBannerAd(): Promise<boolean> {
+        const adContainer = document.getElementById('adsense-container');
+        if (adContainer) {
+            adContainer.style.display = 'none';
+            return true
+        }
+        return false
+    }
 }
