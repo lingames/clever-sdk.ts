@@ -2,6 +2,7 @@ import {CleverSdk} from "../CleverSdk.js";
 import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 import {OppoLoginData} from "../models/LoginData.js";
+import {qgCreateNativeAd} from "../models/CreateNativeAd.js";
 
 // 硬核联盟全局对象
 export declare const qg: any;
@@ -10,6 +11,7 @@ export declare const qg: any;
 export class OppoSdk extends CleverSdk {
     protected videoAd: any = null
     protected bannerAd: any = null
+    protected customAd: any = null
 
     async initialize(config: Record<string, any>): Promise<boolean> {
         console.info("OPPO 全局对象:", qg)
@@ -74,6 +76,30 @@ export class OppoSdk extends CleverSdk {
             this.bannerAd = null;
         }
         return true
+    }
+
+    // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=qgcreatecustomadobject-object
+    async createNativeAd(adInfo: qgCreateNativeAd): Promise<object> {
+        this.customAd = qg.createCustomAd(adInfo);
+        return this.customAd
+    }
+
+    // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=customadshow
+    async showNativeAd(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.customAd.show()
+            .then(() => {
+                resolve(true)
+            })
+            .catch((err: any) => {
+                reject(err)
+            })
+        })
+    }
+
+    // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=customadhide
+    async hideNativeAd(): Promise<boolean> {
+        return this.customAd.hide();
     }
 
     // 不支持

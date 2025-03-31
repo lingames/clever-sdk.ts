@@ -3,6 +3,7 @@ import {CreateBannerAd} from "./models/CreateBannerAd.js";
 import {SdkInitialize} from "./models/SdkInitialize.js";
 import {AddShortcut} from "./models/AddShortcut.js";
 import {LoginData} from "./models/LoginData.js";
+import {CreateNativeAd} from "./models/CreateNativeAd.js";
 
 
 export class CleverSdk {
@@ -95,6 +96,25 @@ export class CleverSdk {
     public async destroyBannerAd(): Promise<boolean> {
         return true
     }
+
+
+    // 原生广告接口
+    public async createNativeAd(adInfo: CreateNativeAd): Promise<object> {
+        return {}
+    }
+
+    public async showNativeAd(): Promise<boolean> {
+        return false
+    }
+
+    public async hideNativeAd(): Promise<boolean> {
+        return true
+    }
+
+    public async destroyNativeAd(): Promise<boolean> {
+        return true
+    }
+
 
     // 设为常用
     public async addCommonUse() {
