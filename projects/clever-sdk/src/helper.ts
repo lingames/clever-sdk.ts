@@ -1,26 +1,5 @@
 import sha256 from 'jssha/sha256';
 
-declare const GameGlobal: any;
-
-export function promisify_wx(fn: any) {
-    return async function (...args: any) {
-        return new Promise((resolve, reject) => {
-            GameGlobal['inner'][fn]({
-                ...(args || {}),
-                success: (res: any) => {
-                    console.log('promisify_wx ok:', res);
-                    resolve(res);
-                },
-                fail: (err: any) => {
-                    console.error('promisify_wx fail:', err);
-                    reject(err);
-                }
-            });
-        });
-    };
-}
-
-
 // const promisify_wx2 = (fn) => {
 //     return async function (args) {
 //         return new Promise((resolve, reject) => {
