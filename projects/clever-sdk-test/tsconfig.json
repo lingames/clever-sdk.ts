@@ -1,0 +1,22 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "module": "NodeNext",
+        "moduleResolution": "nodenext",
+        "target": "ESNext",
+        //        "module": "AMD",
+        "allowJs": true,
+        "checkJs": false,
+        //        "moduleResolution": "node",
+        "removeComments": true,
+        "lib": ["es5", "es6", "dom"],
+        "outDir": "dist",
+        //        "outFile": "dist/sdk.js",
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true
+    },
+    "include": [
+        "src/index.ts"
+    ]
+}

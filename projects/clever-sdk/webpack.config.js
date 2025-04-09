@@ -22,6 +22,7 @@ export default {
         filename: 'index.js',
         path: path.resolve('dist'),
         library: '@lingames/clever-sdk',
-        libraryTarget: 'commonjs2'
+        libraryTarget: 'umd',
+        globalObject: 'this',
     }
 };
