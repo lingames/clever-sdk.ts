@@ -40,7 +40,21 @@ export interface hwCreateRewardedVideoAd {
 
 export interface qgCreateRewardedVideoAd {
     // adSenseId: string
-    adUnitId: string
+    adUnitId: string,
+    onClose?: (e: qgOnClose) => void,
+    onClick?: (e: qgOnClick) => void,
+    onError?: (e: qgOnError) => void
+}
+
+export interface qgOnClose {
+    isEnded: boolean
+}
+export interface qgOnError {
+
+}
+export interface qgOnClick {
+    code: number,
+    msg: string
 }
 
 export interface ggCreateRewardedVideoAd {

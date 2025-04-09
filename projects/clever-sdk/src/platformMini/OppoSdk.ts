@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {qgCreateRewardedVideoAd, qgOnClick, qgOnClose, qgOnError} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 import {OppoLoginData} from "../models/LoginData.js";
 import {qgCreateNativeAd} from "../models/CreateNativeAd.js";
@@ -38,9 +38,31 @@ export class OppoSdk extends CleverSdk {
 
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
-        this.videoAd = qg.createRewardedVideoAd({
-            adUnitId: adInfo.adUnitId,
-        });
+        try {
+            console.log("创建OPPO激励视频广告");
+            this.videoAd = qg.createRewardedVideoAd({
+                adUnitId: adInfo.adUnitId
+            });
+            this.videoAd.onLoad(() => {
+                this.videoAd.show();
+            });
+            this.videoAd.load();
+            this.videoAd.onError((err: qgOnError) => {
+                console.log('暂时没有广告:', err);
+                adInfo.onError?.(err)
+            });
+            this.videoAd.onClose((evt?: qgOnClose) => {
+                console.log('用户关闭广告:', evt);
+                adInfo.onClose?.(evt || {isEnded: true})
+            });
+            this.videoAd.onClick((evt: qgOnClick) => {
+                console.log('用户点击广告:', evt);
+                adInfo.onClick?.(evt)
+            });
+        } catch (error) {
+            console.log('oppoRewardVideoAd error', error);
+        }
+
         return Promise.resolve(this.videoAd)
     }
 
