@@ -1,21 +1,4 @@
-import sha256 from 'jssha/sha256';
-
-// const promisify_wx2 = (fn) => {
-//     return async function (args) {
-//         return new Promise((resolve, reject) => {
-//             args.success = function (res) {
-//                 resolve(res)
-//             };
-
-//             args.fail = function (err) {
-//                 reject(err)
-//             };
-
-//             fn(args);
-//         });
-//     };
-// }
-
+import sha256 from 'jssha';
 
 export function generateRandomString(length: number): string {
     let result = '';
@@ -32,7 +15,6 @@ export function build_sdk_head(key: string, req_body: string): any {
 
     const sign_str = key + '&POST&' + now + '&' + req_body;
     console.log('--------------get hash 111', typeof (sha256));
-    // @ts-ignore
     const sha_str = new sha256('SHA-256', 'TEXT', {encoding: 'UTF8'});
     console.log('--------------get hash 222');
     sha_str.update(sign_str);

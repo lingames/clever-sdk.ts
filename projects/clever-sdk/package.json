@@ -1,27 +1,45 @@
 {
     "name": "@lingames/clever-sdk",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Clever SDK",
-    "main": "dist/index.js",
-    "type": "module",
+    "main": "./dist/CleverSDK.cjs",
+    "module": "./dist/CleverSDK.mjs",
+    "types": "./dist/CleverSDK.d.ts",
     "exports": {
         ".": {
-            "import": "./src/index.ts",
-            "require": "./dist/index.js",
-            "types": "./src/index.ts"
+            "require": "./dist/CleverSDK.cjs",
+            "import": "./dist/CleverSDK.mjs",
+            "types": "./dist/CleverSDK.d.ts",
+            "default": "./dist/CleverSDK.cjs"
+        },
+        "./min": {
+            "require": "./dist/CleverSDK.min.cjs",
+            "import": "./dist/CleverSDK.min.mjs"
         }
     },
     "scripts": {
-        "build": "tsc",
+        "clean": "rimraf dist",
         "lint": "eslint 'src/**/*.{js,ts,tsx}'",
-        "prepublish": "npm run build"
+        "prepublish": "npm run build",
+        "build": "npm run clean && rollup -c rollup.config.mjs"
     },
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
     },
     "dependencies": {
+    },
+    "devDependencies": {
         "axios": "^1.7.9",
-        "jssha": "^3.3.1"
+        "jssha": "^3.3.1",
+        "@rollup/plugin-node-resolve": "^16.0.1",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^12.1.2",
+        "rimraf": "^6.0.1",
+        "rollup": "^4.39.0",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-dts": "^6.2.1",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "typescript": "^5.8.3"
     }
 }

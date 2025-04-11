@@ -1,22 +1,22 @@
 {
-    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "module": "NodeNext",
-        "moduleResolution": "nodenext",
-        "target": "ESNext",
-        //        "module": "AMD",
-        "allowJs": true,
-        "checkJs": false,
-        //        "moduleResolution": "node",
-        "removeComments": true,
-        "lib": ["es5", "es6", "dom"],
-        "outDir": "dist",
-        //        "outFile": "dist/sdk.js",
-        "declaration": true,
-        "declarationMap": true,
-        "esModuleInterop": true
+        "target": "es6", // 
+        "module": "commonjs", // 
+        "experimentalDecorators": true, // 启用ES装饰器。
+        "strict": true,
+        "strictNullChecks": false,
+        "moduleResolution": "Node",
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "stripInternal": true,
     },
     "include": [
-        "src/index.ts"
+        "./src/**/*"
+        // "libs"
+    ],
+    // 排除
+    "exclude": [
+        "dist",
+        "build"
     ]
 }
