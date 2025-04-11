@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {qgCreateRewardedVideoAd, qgOnClick, qgOnClose, qgOnError} from "../models/CreateRewardedVideoAd.js";
+import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 import {OppoLoginData} from "../models/LoginData.js";
 import {qgCreateNativeAd} from "../models/CreateNativeAd.js";
@@ -38,32 +38,49 @@ export class OppoSdk extends CleverSdk {
 
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
-        try {
-            console.log("创建OPPO激励视频广告");
-            this.videoAd = qg.createRewardedVideoAd({
-                adUnitId: adInfo.adUnitId
-            });
-            this.videoAd.onLoad(() => {
-                this.videoAd.show();
-            });
-            this.videoAd.load();
-            this.videoAd.onError((err: qgOnError) => {
-                console.log('暂时没有广告:', err);
+        console.log("创建OPPO激励视频广告");
+        this.videoAd = qg.createRewardedVideoAd({
+            adUnitId: adInfo.adUnitId
+        });
+        return new Promise((resolve, reject) => {
+            let fn = '';
+            if (typeof (this.videoAd.show) !== 'undefined') {
+                fn = 'show';
+            } else if (typeof (this.videoAd.load) !== 'undefined') {
+                fn = 'load';
+            } else {
+                console.error('unsupported createRewardedVideoAd');
+                return;
+            }
+
+            this.videoAd.onError((err: any) => {
+                console.error('广告异常', JSON.stringify(err));
                 adInfo.onError?.(err)
             });
-            this.videoAd.onClose((evt?: qgOnClose) => {
-                console.log('用户关闭广告:', evt);
-                adInfo.onClose?.(evt || {isEnded: true})
-            });
-            this.videoAd.onClick((evt: qgOnClick) => {
-                console.log('用户点击广告:', evt);
-                adInfo.onClick?.(evt)
-            });
-        } catch (error) {
-            console.log('oppoRewardVideoAd error', error);
-        }
 
-        return Promise.resolve(this.videoAd)
+            // 视频关闭
+            this.videoAd.onClose((res: any) => {
+                console.log(JSON.stringify(res));
+                if ((res && res.isEnded) || res === undefined) {
+                    res = res || {
+                        isEnded: true,
+                        count: 1
+                    };
+                    res.count = res.count || 1;
+                    console.info('广告观看结束，此处添加奖励代码', JSON.stringify(res));
+                    resolve(res);
+                } else {
+                    console.error('广告没看完，不能获奖', JSON.stringify(res));
+                    resolve(res);
+                }
+            });
+
+            try {
+                this.videoAd[fn](adInfo);
+            } catch (e: any) {
+                console.error('show videoAd err:', JSON.stringify(e));
+            }
+        })
     }
 
     async createBannerAd(adInfo: qgCreateBannerAd) {

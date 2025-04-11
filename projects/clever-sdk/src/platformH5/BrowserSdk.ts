@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {build_sdk_req, generateRandomString, http_request} from "../helper.js";
+import {build_sdk_req, generateRandomString} from "../helper.js";
 import {CreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
 
 declare namespace cc {
@@ -21,25 +21,11 @@ export class BrowserSdk extends CleverSdk {
         const [req_body, req_header] = build_sdk_req(this.game_id, this.sdk_key, old_guid);
         console.log('my-sdk login url:', old_guid, this.sdk_login_url, req_body);
 
-        try {
-            const req = {
-                url: this.sdk_login_url,
-                data: req_body,
-                method: 'POST',
-                header: req_header
-            };
-
-            const ret: any = await http_request('POST', this.sdk_login_url, req_header, req_body)();
-            // const ret = await promisify_request()(req);
-            console.log('my-sdk login resp:', ret);
-
-            this.session_key = ret.session_key;
-
-            return ret;
-        } catch (e: any) {
-            console.error('browser sdk login fail:', e);
-            throw new Error(e);
-        }
+        return {
+            error_code: 0,
+            openid: old_guid,
+            login_time: new Date().getTime(),
+        };
     }
 
     createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
