@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {qgCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {qgCreateRewardedVideoAd, RewardedVideo} from "../models/CreateRewardedVideoAd.js";
 import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
 import {OppoLoginData} from "../models/LoginData.js";
 import {qgCreateNativeAd} from "../models/CreateNativeAd.js";
@@ -36,7 +36,7 @@ export class OppoSdk extends CleverSdk {
         })
     }
 
-    createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<object> {
+    createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<RewardedVideo> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
         console.log("创建OPPO激励视频广告");
         this.videoAd = qg.createRewardedVideoAd({

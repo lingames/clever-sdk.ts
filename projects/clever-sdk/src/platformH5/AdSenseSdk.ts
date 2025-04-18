@@ -1,6 +1,6 @@
 //* 谷歌平台 */
 import {BrowserSdk} from "./BrowserSdk.js";
-import {ggCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {ggCreateRewardedVideoAd, RewardedVideo} from "../models/CreateRewardedVideoAd.js";
 import {ggInitialize} from "../models/SdkInitialize.js";
 
 // @ts-ignore
@@ -46,7 +46,7 @@ export class AdSenseSdk extends BrowserSdk {
         })
     }
 
-    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<object> {
+    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<RewardedVideo> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
             window["adBreak"] && window["adBreak"]({
@@ -60,6 +60,10 @@ export class AdSenseSdk extends BrowserSdk {
                 afterAd: () => {
                     //关闭，观看完成都会走这里
                     console.log("激励视频播放结束");
+                    resolve({
+                        isEnded: true,
+                        count: 1
+                    })
                 },
                 // resume the game flow.
                 // @ts-ignore
@@ -68,10 +72,18 @@ export class AdSenseSdk extends BrowserSdk {
                 },
                 adDismissed: () => {
                     console.log("中途关闭广告");
+                    resolve({
+                        isEnded: false,
+                        count: 1
+                    })
                 },
                 adViewed: () => {
                     //google建议设置状态码，在afterAd中处理奖励逻辑
                     console.log("玩家完整看完广告");
+                    resolve({
+                        isEnded: true,
+                        count: 1
+                    })
                 },
                 adBreakDone: () => {
                     //Always called (if provided) even if an ad didn't show（始终调用，即使广告展示失败了）

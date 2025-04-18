@@ -1,4 +1,4 @@
-import {CreateRewardedVideoAd} from "./models/CreateRewardedVideoAd.js";
+import {CreateRewardedVideoAd, RewardedVideo} from "./models/CreateRewardedVideoAd.js";
 import {CreateBannerAd} from "./models/CreateBannerAd.js";
 import {SdkInitialize} from "./models/SdkInitialize.js";
 import {AddShortcut} from "./models/AddShortcut.js";
@@ -64,8 +64,11 @@ export class CleverSdk {
         return false;
     }
 
-    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<object> {
-        return Promise.resolve({});
+    public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<RewardedVideo> {
+        return Promise.resolve({
+            isEnded: false,
+            count: 0
+        });
     }
 
     public async loadRewardedVideoAd(): Promise<boolean> {

@@ -1,5 +1,5 @@
 import {CleverSdk} from "../CleverSdk.js";
-import {hwCreateRewardedVideoAd} from "../models/CreateRewardedVideoAd.js";
+import {hwCreateRewardedVideoAd, RewardedVideo} from "../models/CreateRewardedVideoAd.js";
 import {HuaweiLoginData} from "../models/LoginData.js";
 
 declare const qg: any;
@@ -27,7 +27,7 @@ export class HuaweiSdk extends CleverSdk {
     }
 
     // https://developer.huawei.com/consumer/cn/doc/quickApp-References/quickgame-api-ad-0000001130711971#section9772146486
-    async createRewardedVideoAd(adInfo: hwCreateRewardedVideoAd): Promise<object> {
+    async createRewardedVideoAd(adInfo: hwCreateRewardedVideoAd): Promise<RewardedVideo> {
         await new Promise((resolve, reject) => {
             this.videoAd = qg.createRewardedVideoAd({
                 adUnitId: adInfo.adUnitId,
