@@ -1,4 +1,4 @@
-import {SdkInitialize} from "./SdkInitialize.js";
+import {SdkInitialize} from './SdkInitialize.js';
 
 export type DynamicSdkConfig = MyConfig & SdkInitialize;
 

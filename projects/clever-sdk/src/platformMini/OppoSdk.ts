@@ -1,20 +1,20 @@
-import {CleverSdk} from "../CleverSdk.js";
-import {qgCreateRewardedVideoAd, RewardedVideo} from "../models/CreateRewardedVideoAd.js";
-import {qgCreateBannerAd} from "../models/CreateBannerAd.js";
-import {OppoLoginData} from "../models/LoginData.js";
-import {qgCreateNativeAd} from "../models/CreateNativeAd.js";
+import {CleverSdk} from '../CleverSdk.js';
+import {qgCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {qgCreateBannerAd} from '../models/CreateBannerAd.js';
+import {OppoLoginData} from '../models/LoginData.js';
+import {qgCreateNativeAd} from '../models/CreateNativeAd.js';
 
 // 硬核联盟全局对象
 export declare const qg: any;
 
 
 export class OppoSdk extends CleverSdk {
-    protected videoAd: any = null
-    protected bannerAd: any = null
-    protected customAd: any = null
+    protected videoAd: any = null;
+    protected bannerAd: any = null;
+    protected customAd: any = null;
 
     async initialize(config: Record<string, any>): Promise<boolean> {
-        console.info("OPPO 全局对象:", qg)
+        console.info('OPPO 全局对象:', qg);
         return Promise.resolve(true);
     }
 
@@ -23,51 +23,49 @@ export class OppoSdk extends CleverSdk {
         return new Promise((resolve, reject) => {
             qg.login({
                 success: function (fine: OppoLoginData) {
-                    console.log("Oppo 登录成功")
+                    console.log('Oppo 登录成功');
                     resolve({
                         ...fine,
                         openid: fine.uid
-                    })
+                    });
                 },
                 fail: function (fail: any) {
-                    console.log("Oppo 登录失败", fail)
+                    console.log('Oppo 登录失败', fail);
+                    reject(fail);
                 },
             });
-        })
+        });
     }
 
     createRewardedVideoAd(adInfo: qgCreateRewardedVideoAd): Promise<RewardedVideo> {
         // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/video-ad
-        console.log("创建OPPO激励视频广告");
-        this.videoAd = qg.createRewardedVideoAd({
-            adUnitId: adInfo.adUnitId
-        });
-        return new Promise((resolve, reject) => {
-            let fn = '';
-            if (typeof (this.videoAd.show) !== 'undefined') {
-                fn = 'show';
-            } else if (typeof (this.videoAd.load) !== 'undefined') {
-                fn = 'load';
-            } else {
-                console.error('unsupported createRewardedVideoAd');
-                return;
-            }
+        if (this.videoAd == null) {
+            console.log('创建OPPO激励视频广告');
+            this.videoAd = qg.createRewardedVideoAd({
+                adUnitId: adInfo.adUnitId
+            });
+            this.videoAd.onLoad(() => {
+                this.videoAd.show();
+            });
+        }
 
+        return new Promise((resolve, reject) => {
             this.videoAd.onError((err: any) => {
                 console.error('广告异常', JSON.stringify(err));
-                adInfo.onError?.(err)
+                adInfo.onError?.(err);
+                reject(err);
             });
 
             // 视频关闭
             this.videoAd.onClose((res: any) => {
-                console.log(JSON.stringify(res));
+                console.log('广告结束', JSON.stringify(res));
                 if ((res && res.isEnded) || res === undefined) {
                     res = res || {
                         isEnded: true,
                         count: 1
                     };
                     res.count = res.count || 1;
-                    console.info('广告观看结束，此处添加奖励代码', JSON.stringify(res));
+                    console.info('广告观看结束，触发奖励代码', JSON.stringify(res));
                     resolve(res);
                 } else {
                     console.error('广告没看完，不能获奖', JSON.stringify(res));
@@ -76,11 +74,12 @@ export class OppoSdk extends CleverSdk {
             });
 
             try {
-                this.videoAd[fn](adInfo);
+                this.videoAd.load();
             } catch (e: any) {
-                console.error('show videoAd err:', JSON.stringify(e));
+                console.error('广告异常, 不能获奖:', JSON.stringify(e));
+                reject(e);
             }
-        })
+        });
     }
 
     async createBannerAd(adInfo: qgCreateBannerAd) {
@@ -89,16 +88,16 @@ export class OppoSdk extends CleverSdk {
             adUnitId: adInfo.adUnitId,
             style: adInfo.style
         });
-        return this.bannerAd
+        return this.bannerAd;
     }
 
     async showBannerAd() {
         if (this.bannerAd != null) {
             this.bannerAd.show();
-            return true
+            return true;
         } else {
-            console.warn("未调用 createBannerAd")
-            return false
+            console.warn('未调用 createBannerAd');
+            return false;
         }
     }
 
@@ -106,7 +105,7 @@ export class OppoSdk extends CleverSdk {
         if (this.bannerAd != null) {
             this.bannerAd.hide();
         }
-        return true
+        return true;
     }
 
     async destroyBannerAd() {
@@ -114,26 +113,26 @@ export class OppoSdk extends CleverSdk {
             this.bannerAd.destroy();
             this.bannerAd = null;
         }
-        return true
+        return true;
     }
 
     // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=qgcreatecustomadobject-object
     async createNativeAd(adInfo: qgCreateNativeAd): Promise<object> {
         this.customAd = qg.createCustomAd(adInfo);
-        return this.customAd
+        return this.customAd;
     }
 
     // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=customadshow
     async showNativeAd(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.customAd.show()
-            .then(() => {
-                resolve(true)
-            })
-            .catch((err: any) => {
-                reject(err)
-            })
-        })
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err: any) => {
+                    reject(err);
+                });
+        });
     }
 
     // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/ad/native-template-ad?id=customadhide
@@ -153,7 +152,7 @@ export class OppoSdk extends CleverSdk {
 
 
     async shareAppMessage(param: any): Promise<boolean> {
-        console.log("不支持")
-        return false
+        console.log('不支持');
+        return false;
     }
 }

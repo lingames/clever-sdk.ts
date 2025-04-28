@@ -1,11 +1,11 @@
-import {CleverSdk} from "../CleverSdk.js";
-import {build_sdk_req, generateRandomString} from "../helper.js";
-import {CreateRewardedVideoAd, RewardedVideo} from "../models/CreateRewardedVideoAd.js";
+import {CleverSdk} from '../CleverSdk.js';
+import {build_sdk_req, generateRandomString} from '../helper.js';
+import {CreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
 
 declare namespace cc {
     const sys: {
         localStorage: any;
-    }
+    };
 }
 
 export class BrowserSdk extends CleverSdk {
