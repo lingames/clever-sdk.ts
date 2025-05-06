@@ -15,11 +15,13 @@ export class HuaweiSdk extends CleverSdk {
                 appid: this.game_id,
                 success: function (data: any) {
                     // 登录成功后，可以存储账号信息。
-                    console.log(' game login with real success:' + JSON.stringify(data));
+                    console.log('华为登录成功' + JSON.stringify(data));
+                    data.openid = data.playerId;
+                    data.code = 0;
                     resolve(data);
                 },
                 fail: function (data: any, code: number) {
-                    console.log('game login with real fail:' + data + ', code:' + code);
+                    console.log('华为登录失败:' + data + ', code:' + code);
                     //根据状态码处理游戏的逻辑。
                     //状态码为7004或者2012，表示玩家取消登录。
                     //此时，建议返回游戏界面，可以让玩家重新进行登录操作。
@@ -39,28 +41,39 @@ export class HuaweiSdk extends CleverSdk {
 
     // https://developer.huawei.com/consumer/cn/doc/quickApp-References/quickgame-api-ad-0000001130711971#section9772146486
     async createRewardedVideoAd(adInfo: hwCreateRewardedVideoAd): Promise<RewardedVideo> {
-        return new Promise((resolve, reject) => {
+        if (this.videoAd == null) {
             this.videoAd = qg.createRewardedVideoAd({
                 adUnitId: adInfo.adUnitId,
                 multiton: adInfo.multiton || false,
-                success: (_: any) => {
-                    resolve({
-                        isEnded: true,
-                        count: 1
-                    });
+                success: (data: any) => {
+                    console.log(`广告创建成功: ${JSON.stringify(data)}`);
                 },
                 fail: (data: any, code: any) => {
-                    console.error(`错误代码: ${code}`);
-                    reject(data);
+                    console.error(`广告创建失败 ${code}: ${JSON.stringify(data)}`);
                 },
-                complete: () => {
-                    adInfo.onComplete?.();
-                }
+            });
+            this.videoAd.onLoad(() => {
+                console.log('广告已加载');
+                this.videoAd.show();
+            });
+        }
+        return new Promise((resolve, reject) => {
+            this.videoAd.onClose((res: any) => {
+                console.log('激励结束: ' + JSON.stringify(res));
+                resolve({
+                    isEnded: res.isEnded,
+                    count: res.isEnded ? 1 : 0
+                });
+            });
+            this.videoAd.onError((e: any) => {
+                console.error('激励错误:' + JSON.stringify(e));
+                reject(e);
             });
             try {
-                this.videoAd.show(adInfo);
+                this.videoAd.load();
             } catch (e: any) {
                 console.error('show videoAd err:', e);
+                reject(e);
             }
         });
     }

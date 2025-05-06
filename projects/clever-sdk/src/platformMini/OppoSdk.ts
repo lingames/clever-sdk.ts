@@ -18,8 +18,8 @@ export class OppoSdk extends CleverSdk {
         return Promise.resolve(true);
     }
 
+    // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/feature/account?id=qgloginobject
     async login(): Promise<OppoLoginData> {
-        // https://ie-activity-cn.heytapimage.com/static/minigame/CN/docs/index.html#/develop/feature/account?id=qgloginobject
         return new Promise((resolve, reject) => {
             qg.login({
                 success: function (fine: OppoLoginData) {
@@ -55,7 +55,9 @@ export class OppoSdk extends CleverSdk {
                 adInfo.onError?.(err);
                 reject(err);
             });
-
+            this.videoAd.onClick((obj: any) => {
+                console.log(`广告点击: code: ${obj.code},msg: '${obj.msg}'`);
+            });
             // 视频关闭
             this.videoAd.onClose((res: any) => {
                 console.log('广告结束', JSON.stringify(res));
