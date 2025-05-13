@@ -62,7 +62,11 @@ export class WeChatSdk extends CleverSdk {
     }
 
     async initialize(info: wxInitialize): Promise<boolean> {
-        this.inner = wx;
+        if (info.enableShare !== false) {
+            wx.showShareMenu({
+                menus: ['shareAppMessage', 'shareTimeline']
+            })
+        }
         return true;
     }
 
@@ -202,9 +206,8 @@ export class WeChatSdk extends CleverSdk {
         return;
     }
 
-
+    // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
     public async shareAppMessage(param: wxShareAppMessage): Promise<boolean> {
-        // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html
         wx.shareAppMessage(param);
         return true;
     }
