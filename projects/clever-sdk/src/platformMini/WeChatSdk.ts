@@ -1,6 +1,6 @@
 import {build_sdk_head} from '../helper.js';
 import {CleverSdk} from '../CleverSdk.js';
-import {RewardedVideo, wxCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
+import {VideoReward, wxCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
 import {wxCreateBannerAd} from '../models/CreateBannerAd.js';
 import {wxInitialize} from '../models/SdkInitialize.js';
 import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
@@ -88,7 +88,7 @@ export class WeChatSdk extends CleverSdk {
 
     // adInfo{adUnitId:广告单元id} 广告单元id需要在小程序后台 流量主界面创建
     // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
-    public override createRewardedVideoAd(adInfo: wxCreateRewardedVideoAd): Promise<RewardedVideo> {
+    public override createRewardedVideoAd(adInfo: wxCreateRewardedVideoAd): Promise<VideoReward> {
         let videoAd = this.videoAd['adUnitId'];
         console.log('createRewardedVideoAd', adInfo, videoAd);
         if (!videoAd) {

@@ -1,5 +1,5 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {ksCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {ksCreateRewardedVideoAd, VideoReward} from '../models/CreateRewardedVideoAd.js';
 import {ksCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
@@ -63,7 +63,7 @@ export class KuaiShouSdk extends CleverSdk {
 
     // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
     // 全局只能有一个视频广告实例，重复创建没有用
-    createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<RewardedVideo> {
+    createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<VideoReward> {
         console.log('创建快手激励视频广告');
         this.videoAd = ks.createRewardedVideoAd({
             type: adInfo.type,
@@ -125,11 +125,11 @@ export class KuaiShouSdk extends CleverSdk {
         return true;
     }
 
-    createBannerAd(adInfo: ksCreateBannerAd): Promise<object> {
+    createBannerAd(adInfo: ksCreateBannerAd): Promise<VideoReward> {
         return super.createBannerAd(adInfo);
     }
 
-    async showBannerAd(): Promise<boolean> {
+    async showBannerAd(): Promise<VideoReward> {
         return super.showBannerAd();
     }
 

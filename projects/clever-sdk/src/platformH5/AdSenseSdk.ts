@@ -1,6 +1,6 @@
 //* 谷歌平台 */
 import {BrowserSdk} from './BrowserSdk.js';
-import {ggCreateRewardedVideoAd, RewardedVideo} from '../models/CreateRewardedVideoAd.js';
+import {ggCreateRewardedVideoAd, VideoReward} from '../models/CreateRewardedVideoAd.js';
 import {ggInitialize} from '../models/SdkInitialize.js';
 
 // @ts-ignore
@@ -46,7 +46,7 @@ export class AdSenseSdk extends BrowserSdk {
         });
     }
 
-    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<RewardedVideo> {
+    createRewardedVideoAd(adInfo: ggCreateRewardedVideoAd): Promise<VideoReward> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
             window['adBreak'] && window['adBreak']({

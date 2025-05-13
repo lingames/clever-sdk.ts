@@ -4,7 +4,7 @@ export type CreateRewardedVideoAd = {}
     & ksCreateRewardedVideoAd
     & ggCreateRewardedVideoAd;
 
-export interface RewardedVideo {
+export interface VideoReward {
     isEnded: Boolean,
     count: number
 }
