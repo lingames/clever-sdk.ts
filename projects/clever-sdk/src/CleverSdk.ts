@@ -64,19 +64,20 @@ export class CleverSdk {
         return false;
     }
 
+    // eslint-disable-next-line no-unused-vars
     public createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<VideoReward> {
-        return Promise.resolve({
-            isEnded: false,
-            count: 0
-        });
+        return this.showRewardedVideoAd();
     }
 
     public async loadRewardedVideoAd(): Promise<boolean> {
         return false;
     }
 
-    public async showRewardedVideoAd(): Promise<boolean> {
-        return false;
+    public async showRewardedVideoAd(): Promise<VideoReward> {
+        return {
+            isEnded: false,
+            count: 0
+        };
     }
 
     public async destroyRewardedVideoAd(): Promise<boolean> {
@@ -89,7 +90,10 @@ export class CleverSdk {
     }
 
     public async showBannerAd(): Promise<VideoReward> {
-        return {isEnded: false, count: 0};
+        return {
+            isEnded: false,
+            count: 0
+        };
     }
 
     public async hideBannerAd(): Promise<boolean> {

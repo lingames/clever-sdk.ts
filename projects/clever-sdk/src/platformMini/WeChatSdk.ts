@@ -1,7 +1,7 @@
 import {build_sdk_head} from '../helper.js';
 import {CleverSdk} from '../CleverSdk.js';
 import {VideoReward, wxCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
-import {wxCreateBannerAd} from '../models/CreateBannerAd.js';
+import {CreateBannerAd, wxCreateBannerAd} from '../models/CreateBannerAd.js';
 import {wxInitialize} from '../models/SdkInitialize.js';
 import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
 import {wxShareAppMessage} from '../models/ShareAppMessage.js';
@@ -138,21 +138,18 @@ export class WeChatSdk extends CleverSdk {
     }
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createBannerAd.html
-    async createBannerAd(adInfo: wxCreateBannerAd): Promise<object> {
-        this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId});
-        return this.bannerAd;
+    async createBannerAd(adInfo: CreateBannerAd): Promise<VideoReward> {
+        if (this.bannerAd == null) {
+            this.bannerAd = wx.createBannerAd({adUnitId: adInfo.adUnitId});
+        }
+        return this.showBannerAd();
     }
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.show.html
-    async showBannerAd(): Promise<boolean> {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+    async showBannerAd(): Promise<VideoReward> {
+        return super.showBannerAd();
     }
+
 
     /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.hide.html
     async hideBannerAd(): Promise<boolean> {

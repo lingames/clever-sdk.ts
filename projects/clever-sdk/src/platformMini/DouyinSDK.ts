@@ -72,13 +72,7 @@ export class DouyinSDK extends CleverSdk {
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-show
     async showBannerAd(): Promise<VideoReward> {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+        return super.showBannerAd();
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/banner-ad/banner-ad-hide

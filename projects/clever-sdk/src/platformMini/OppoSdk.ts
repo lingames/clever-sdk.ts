@@ -48,11 +48,13 @@ export class OppoSdk extends CleverSdk {
                 this.videoAd.show();
             });
         }
+        return this.showRewardedVideoAd();
+    }
 
+    async showRewardedVideoAd(): Promise<VideoReward> {
         return new Promise((resolve, reject) => {
             this.videoAd.onError((err: any) => {
                 console.error('广告异常', JSON.stringify(err));
-                adInfo.onError?.(err);
                 reject(err);
             });
             this.videoAd.onClick((obj: any) => {
@@ -93,14 +95,8 @@ export class OppoSdk extends CleverSdk {
         return this.bannerAd;
     }
 
-    async showBannerAd() {
-        if (this.bannerAd != null) {
-            this.bannerAd.show();
-            return true;
-        } else {
-            console.warn('未调用 createBannerAd');
-            return false;
-        }
+    async showBannerAd(): Promise<VideoReward> {
+        return super.showBannerAd();
     }
 
     async hideBannerAd() {
@@ -128,12 +124,12 @@ export class OppoSdk extends CleverSdk {
     async showNativeAd(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.customAd.show()
-                .then(() => {
-                    resolve(true);
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
+            .then(() => {
+                resolve(true);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
         });
     }
 

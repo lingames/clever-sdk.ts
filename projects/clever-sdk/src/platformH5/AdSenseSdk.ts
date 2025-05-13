@@ -92,16 +92,16 @@ export class AdSenseSdk extends BrowserSdk {
         });
     }
 
-    async showRewardedVideoAd(): Promise<boolean> {
+    async showRewardedVideoAd(): Promise<VideoReward> {
         const adContainer = document.getElementById('adsense-container');
         if (adContainer) {
             adContainer.style.display = 'block';
             // 确保⼴告重新加载（可选）
             // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            return true;
+            return { isEnded: true, count: 1 };
         }
-        return false;
+        return { isEnded: false, count: 0 };
     }
 
     async hideBannerAd(): Promise<boolean> {

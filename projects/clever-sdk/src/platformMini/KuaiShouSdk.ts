@@ -64,11 +64,13 @@ export class KuaiShouSdk extends CleverSdk {
     // https://open.kuaishou.com/docs/develop/api-next/ad/ks.createRewardedVideoAd.html
     // 全局只能有一个视频广告实例，重复创建没有用
     createRewardedVideoAd(adInfo: ksCreateRewardedVideoAd): Promise<VideoReward> {
-        console.log('创建快手激励视频广告');
-        this.videoAd = ks.createRewardedVideoAd({
-            type: adInfo.type,
-            unitId: adInfo.adUnitId
-        });
+        if (this.videoAd == null) {
+            console.log('创建快手激励视频广告');
+            this.videoAd = ks.createRewardedVideoAd({
+                type: adInfo.type,
+                unitId: adInfo.adUnitId
+            });
+        }
         return new Promise((resolve, reject) => {
             let fn = '';
             if (typeof (this.videoAd.show) !== 'undefined') {
@@ -115,9 +117,8 @@ export class KuaiShouSdk extends CleverSdk {
         return true;
     }
 
-    async showRewardedVideoAd(): Promise<boolean> {
-        this.videoAd?.show();
-        return true;
+    async showRewardedVideoAd(): Promise<VideoReward> {
+        return super.showRewardedVideoAd();
     }
 
     async destroyRewardedVideoAd(): Promise<boolean> {
