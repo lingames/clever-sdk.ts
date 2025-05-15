@@ -2,18 +2,18 @@
     "name": "@lingames/clever-sdk",
     "version": "0.1.9",
     "description": "Clever SDK",
-    "main": "./dist/CleverSDK.cjs",
+    "main": "./dist/CleverSDK.js",
     "module": "./dist/CleverSDK.mjs",
     "types": "./dist/CleverSDK.d.ts",
     "exports": {
         ".": {
-            "require": "./dist/CleverSDK.cjs",
+            "require": "./dist/CleverSDK.js",
             "import": "./dist/CleverSDK.mjs",
             "types": "./dist/CleverSDK.d.ts",
-            "default": "./dist/CleverSDK.cjs"
+            "default": "./dist/CleverSDK.js"
         },
         "./min": {
-            "require": "./dist/CleverSDK.min.cjs",
+            "require": "./dist/CleverSDK.min.js",
             "import": "./dist/CleverSDK.min.mjs"
         }
     },
