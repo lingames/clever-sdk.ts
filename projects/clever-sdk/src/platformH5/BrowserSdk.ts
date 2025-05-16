@@ -1,6 +1,6 @@
 import {CleverSdk} from '../CleverSdk.js';
 import {build_sdk_req, generateRandomString} from '../helper.js';
-import {CreateRewardedVideoAd, VideoReward} from '../models/CreateRewardedVideoAd.js';
+import {PlayRewardedVideo, VideoReward} from '../models/PlayRewardedVideo';
 
 declare namespace cc {
     const sys: {
@@ -28,7 +28,7 @@ export class BrowserSdk extends CleverSdk {
         };
     }
 
-    createRewardedVideoAd(adInfo: CreateRewardedVideoAd): Promise<VideoReward> {
+    playRewardedVideo(adInfo: PlayRewardedVideo): Promise<VideoReward> {
         throw new Error('浏览器不支持广告');
     }
 }

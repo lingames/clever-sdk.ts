@@ -1,5 +1,5 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {VideoReward, ttCreateRewardedVideoAd} from '../models/CreateRewardedVideoAd.js';
+import {VideoReward, ttCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
 import {ttCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ttInitialize} from '../models/SdkInitialize.js';
 import {ttAddShortcut} from '../models/AddShortcut.js';
@@ -25,7 +25,7 @@ export class DouyinSDK extends CleverSdk {
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
     // 全局只能有一个视频广告实例，重复创建没有用
-    createRewardedVideoAd(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
+    playRewardedVideo(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
         const videoAd = tt.createRewardedVideoAd({
             adUnitId: config.adUnitId,
             progressTip: config.progressTip || false
