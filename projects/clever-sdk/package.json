@@ -23,7 +23,6 @@
     },
     "scripts": {
         "clean": "rimraf dist",
-        "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
         "prepublish": "pnpm run build",
         "build": "pnpm run clean && rollup -c rollup.config.mjs"
     },
