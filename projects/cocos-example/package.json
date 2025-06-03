@@ -1,0 +1,10 @@
+{
+    "name": "clever-sdk",
+    "uuid": "a165ca36-ce87-4adb-a078-00ae9eb2cceb",
+    "creator": {
+        "version": "3.8.7"
+    },
+    "dependencies": {
+        "@lingames/clever-sdk": "workspace:*"
+    }
+}
