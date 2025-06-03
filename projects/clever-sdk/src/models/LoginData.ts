@@ -1,14 +1,14 @@
-export type LoginData = {} | wxLoginData | HuaweiLoginData | OppoLoginData;
+export type LoginData = wxLoginData | HuaweiLoginData | OppoLoginData;
 
 export interface wxLoginData {
-    open_id: string,
-    union_id: string,
-    session_key: string,
+    open_id: string;
+    union_id: string;
+    session_key: string;
 }
 
 export interface OppoLoginData {
     /** 统一登录 id */
-    openid: string,
+    openid: string;
     /** 大厅 uid */
     uid: string;
     /** 大厅头像 */
@@ -44,7 +44,6 @@ export interface OppoLoginData {
     /** code · 不建议使用 */
     code?: number;
 }
-
 
 // 响应数据接口
 export interface HuaweiLoginData {
@@ -91,7 +90,7 @@ export interface wxGetUserInfo {
     withCredentials?: boolean;
 
     /** 显示用户信息的语言 */
-    lang?: 'en' | 'zh_CN' | 'zh_TW'; // 合法值：en（英文）、zh_CN（简体中文）、zh_TW（繁体中文）
+    lang?: "en" | "zh_CN" | "zh_TW"; // 合法值：en（英文）、zh_CN（简体中文）、zh_TW（繁体中文）
 
     /** 接口调用结束的回调函数（调用成功、失败都会执行） */
     complete?: () => void;

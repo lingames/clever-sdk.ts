@@ -1,15 +1,14 @@
 /* eslint-disable no-unused-vars */
-import {PlayRewardedVideo, VideoReward} from './models/PlayRewardedVideo';
-import {CreateBannerAd} from './models/CreateBannerAd';
-import {SdkInitialize} from './models/SdkInitialize';
-import {AddShortcut} from './models/AddShortcut';
-import {LoginData} from './models/LoginData';
-import {CreateNativeAd} from './models/CreateNativeAd';
-import {ShareAppMessage} from './models/ShareAppMessage';
-import {NavigateToScene} from './models/NavigateToScene';
-import {AdvertiseStage} from './models/AdvertiseStage';
-import {ReportContext} from './models/ReportContext';
-
+import { PlayRewardedVideo, VideoReward } from "./models/PlayRewardedVideo";
+import { CreateBannerAd } from "./models/CreateBannerAd";
+import { SdkInitialize } from "./models/SdkInitialize";
+import { AddShortcut } from "./models/AddShortcut";
+import { LoginData } from "./models/LoginData";
+import { CreateNativeAd } from "./models/CreateNativeAd";
+import { ShareAppMessage } from "./models/ShareAppMessage";
+import { NavigateToScene } from "./models/NavigateToScene";
+import { AdvertiseStage } from "./models/AdvertiseStage";
+import { ReportContext } from "./models/ReportContext";
 
 export class CleverSdk {
     // 平台名称
@@ -25,14 +24,14 @@ export class CleverSdk {
     protected sdk_key: string;
 
     // protected adUnitId: string = '';
-    protected sdk_login_url: string = '';
-    protected session_key: string = '';
+    protected sdk_login_url: string = "";
+    protected session_key: string = "";
 
     constructor(platform: string, project_id: string, game_id: string) {
         this.platform = platform;
         this.project_id = project_id;
         this.game_id = game_id;
-        this.session_key = '';
+        this.session_key = "";
     }
 
     /** 初始化平台参数
@@ -43,9 +42,12 @@ export class CleverSdk {
         return true;
     }
 
-
     public async login(): Promise<LoginData> {
-        return {};
+        return {
+            open_id: "",
+            union_id: "",
+            session_key: ""
+        };
     }
 
     // async update(){"dummy-sdk update"}
@@ -56,11 +58,13 @@ export class CleverSdk {
     /**
      * 播放激励广告, 如果未创建的话, 创建一个
      */
-    public async playRewardedVideo(adInfo: PlayRewardedVideo): Promise<VideoReward> {
-        return {
+    public async playRewardedVideo(
+        adInfo: PlayRewardedVideo,
+    ): Promise<VideoReward> {
+        return Promise.resolve({
             isEnded: false,
-            count: 0
-        };
+            count: 0,
+        });
     }
 
     // 广告接口
@@ -71,7 +75,7 @@ export class CleverSdk {
     public async showBannerAd(): Promise<VideoReward> {
         return {
             isEnded: false,
-            count: 0
+            count: 0,
         };
     }
 
@@ -82,7 +86,6 @@ export class CleverSdk {
     public async destroyBannerAd(): Promise<boolean> {
         return true;
     }
-
 
     // 原生广告接口
     public async createNativeAd(adInfo: CreateNativeAd): Promise<object> {
@@ -111,7 +114,7 @@ export class CleverSdk {
     public async checkCommonUse(): Promise<any> {
         return Promise.resolve({
             isSupport: false,
-            isCommonUse: false
+            isCommonUse: false,
         });
     }
 
@@ -129,7 +132,7 @@ export class CleverSdk {
         return Promise.resolve({
             isSupport: false,
             exist: true,
-            needUpdate: false
+            needUpdate: false,
         });
     }
 
@@ -138,15 +141,13 @@ export class CleverSdk {
     public async checkScene(): Promise<any> {
         return Promise.resolve({
             isSupport: false,
-            isScene: false
+            isScene: false,
         });
     }
-
 
     public async checkSliderBarIsAvailable(): Promise<boolean> {
         return false;
     }
-
 
     public async navigateToScene(scene: NavigateToScene): Promise<boolean> {
         return false;
@@ -177,7 +178,11 @@ export class CleverSdk {
         }
     }
 
-    public async reportAdvertise(id: string, stage: AdvertiseStage, data: Record<string, any>): Promise<boolean> {
+    public async reportAdvertise(
+        id: string,
+        stage: AdvertiseStage,
+        data: Record<string, any>,
+    ): Promise<boolean> {
         if (stage == AdvertiseStage.Expose) {
             data.status = 0;
         } else if (stage == AdvertiseStage.Click) {
@@ -192,7 +197,10 @@ export class CleverSdk {
         return await this.reportEvent(id, data);
     }
 
-    public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
+    public async reportEvent(
+        id: string,
+        data: Record<string, any>,
+    ): Promise<boolean> {
         return Promise.resolve(false);
     }
 }
