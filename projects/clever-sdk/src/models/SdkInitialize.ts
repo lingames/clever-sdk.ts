@@ -5,7 +5,8 @@ export type SdkInitialize =
     | ksInitialize
     | ggInitialize
     | m4399Initialize
-    | mockInitialize;
+    | mockInitialize
+    | minigameInitialize;
 
 export interface m4399Initialize {
     sdk_login_url?: string;
@@ -28,6 +29,12 @@ export type wxInitialize = {
 
 export interface ggInitialize {
     adSenseId: string;
+}
+
+export interface minigameInitialize {
+    sdk_login_url?: string;
+    /** SDK脚本地址，PREVIEW模式下动态加载 */
+    sdk_script_url?: string;
 }
 
 export interface mockInitialize {

@@ -46,7 +46,7 @@ export class CleverSdk {
         return {
             open_id: "",
             union_id: "",
-            session_key: ""
+            session_key: "",
         };
     }
 

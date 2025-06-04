@@ -41,12 +41,13 @@ export class SdkManager {
                 wx_game_id: "wxaca03d90e8b6d2af",
                 ks_game_id: "ks689050744914449252",
                 tt_game_id: "tta451d2ec3b5c55fb02",
+                minigame_game_id: "",
                 // 用于单平台，已明确不同游戏平台 id 时，此项可省略
                 game_id: "",
             });
-            console.log('Clever SDK 初始化成功');
+            console.log("Clever SDK 初始化成功");
         } catch (error) {
-            console.error('Clever SDK 初始化失败:', error);
+            console.error("Clever SDK 初始化失败:", error);
         }
     }
 
@@ -97,7 +98,7 @@ export class SdkManager {
             // 初始化后报告上下文
             if (this._sdk) {
                 this._sdk.reportContext({
-                    player_anonymous: player?.open_id || ""
+                    player_anonymous: player?.open_id || "",
                 });
             }
         }
