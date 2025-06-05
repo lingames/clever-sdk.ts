@@ -1,16 +1,6 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "module": "NodeNext",
-        "moduleResolution": "nodenext",
-        "declaration": true,
-        "declarationMap": true,
-        "strict": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true
-    },
-    "include": [
-        "projects/**/*"
-    ],
-    "exclude": []
+  "extends": "./temp/tsconfig.cocos.json",
+  "compilerOptions": {
+    "strict": false
+  }
 }

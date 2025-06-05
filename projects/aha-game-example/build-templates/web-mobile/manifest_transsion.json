@@ -1,0 +1,6 @@
+{
+  "name": "Game",
+  "short_name": "Game",
+  "start_url": "./",
+  "display": "browser"
+}
