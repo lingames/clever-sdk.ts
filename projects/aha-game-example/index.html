@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Idle BBQ Journey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta name="keywords" content="BBQ" />
+    <meta name="description" content="测试广告接入" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+      }
+      .game {
+        width: 100vw;
+        height: calc(100% - 50px);
+      }
+      .game iframe {
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+      }
+      .foot {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        text-align: center;
+        display: block;
+      }
+      .foot ins {
+        width: 320px;
+        height: 50px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game">
+      <iframe
+        id="iframe"
+        frameborder="0"
+        oncontextmenu="event.preventDefault()"
+      ></iframe>
+    </div>
+    <div class="foot">
+      <ins
+        class="adsbygoogle"
+        style="display: inline-block; width: 100%; height: 50px"
+        data-ad-client="ca-pub-3665476663852390"
+        data-ad-slot="1833459051"
+      >
+      </ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </body>
+  <script>
+    if (!window.a_bridge) {
+      document.getElementById("iframe").src = "./game/index.html";
+    }
+  </script>
+  <script src="https://www.hippoobox.com/static/sdk/adsdk_1.8.0.0.js"></script>
+  <script>
+    window.onload = function () {
+      window.h5sdk.gameLoadingCompleted();
+    };
+  </script>
+  <script>
+     function gameInit() {
+      const foot = document.getElementsByClassName('foot')[0];
+      console.log(true);
+       window.h5sdk.init(5024356, "", "", "", "", {
+         ga: {
+           id: "G-LKJ6NGTQBF",
+         },
+         adsence: {
+           client: "ca-pub-3665476663852390",
+           "data-ad-frequency-hint": "45s",
+           // "data-adbreak-test": "on",
+           "data-ad-channel": "4020426666",
+           callback: () => {
+             window.h5sdk.athenaSend("game_start");
+             window.h5sdk.adConfig({
+               preloadAdBreaks: "on",
+               // preloadAdBreaks: "auto",
+               onReady: () => {
+                 // window.adBreak({type:'next',name:'pull'});
+                 console.log("😋 ", "adconfig success");
+                 window.h5sdk.adBreak({
+                   type: "preroll",
+                   name: "mypreroll",
+                   adBreakDone: () => {
+                     console.log("😋 adBreakDone outside");
+                   },
+                 });
+               },
+             });
+           },
+         },
+       });
+       window.addEventListener("message", (evt) => {
+         console.log("🚀 ~ message", evt);
+         if (evt && evt.data === "next") {
+           window.h5sdk.adBreak({
+             type: "next",
+             name: "mynext",
+             adDismissed: () => {
+               console.log("adDismissed");
+             },
+             adViewed: () => {
+               console.log("adViewed");
+             },
+             beforeReward: (showAdFn) => {
+               showAdFn();
+             },
+             adBreakDone: (info) => {
+               const iframe = document.getElementById("iframe").contentWindow;
+               if (info.breakStatus === "viewed") {
+                 window.MIAD_NEXT && window.MIAD_NEXT._callback();
+               } else if (info.breakStatus === "dismissed") {
+                 window.MIAD_NEXT && window.MIAD_NEXT._failback();
+               } else {
+                 window.MIAD_NEXT && window.MIAD_NEXT._failback();
+               }
+             },
+           });
+         } else if (evt && evt.data === "gameLoadingCompleted") {
+           window.h5sdk.gameLoadingCompleted();
+         } else if (evt && evt.data === "reward") {
+           window.h5sdk.adBreak({
+             type: "reward",
+             name: "myreward",
+             adDismissed: () => {
+               console.log("adDismissed");
+             },
+             adViewed: () => {
+               console.log("adViewed");
+             },
+             beforeReward: (showAdFn) => {
+               showAdFn();
+             },
+             adBreakDone: (info) => {
+               const iframe = document.getElementById("iframe").contentWindow;
+               if (info.breakStatus === "viewed") {
+                 window.MIAD._callback();
+               } else if (info.breakStatus === "dismissed") {
+                 window.MIAD._failback();
+               } else {
+                 window.MIAD._failback();
+               }
+             },
+           });
+         }
+       });
+     }
+
+     if (window.a_bridge) {
+       window.addEventListener("load", () => {
+         document.getElementById("iframe").src = "./game/index.html";
+         gameInit();
+       });
+     } else {
+       gameInit();
+     }
+  </script>
+</html>

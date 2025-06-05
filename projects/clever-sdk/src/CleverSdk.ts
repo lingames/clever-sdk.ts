@@ -20,8 +20,8 @@ export class CleverSdk {
     protected platform: string;
     // game_id 游戏编号，每个游戏 game_id 唯一
     protected game_id: string;
-    protected sdk_url: string;
-    protected sdk_key: string;
+    protected sdk_url: string = "";
+    protected sdk_key: string = "";
 
     // protected adUnitId: string = '';
     protected sdk_login_url: string = "";
