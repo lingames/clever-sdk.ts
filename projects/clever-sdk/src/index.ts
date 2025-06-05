@@ -11,7 +11,7 @@ import {
 } from "./platformMini";
 import { M4399Sdk } from "./platformNative";
 import { CleverSdk } from "./CleverSdk.js";
-import { AdSenseSdk, MiniGameSDK, MockSdk } from "./platformH5";
+import { AdSenseSdk, MiniGameSDK, MockSdk, AhagameSdk } from "./platformH5";
 import { DynamicSdkConfig } from "./models";
 
 export { CleverSdk };
@@ -72,6 +72,21 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
             config.project_id.toString(),
         );
         await sdk.initialize({ adSenseId: "" });
+        return sdk;
+    }
+    if (config.platform == 'ahagame') {
+        let sdk = new AhagameSdk(config.platform, config.project_id, config.game_id || '');
+        const ahagameInit = config as any;
+        await sdk.initialize({
+            adSenseId: ahagameInit.adSenseId || '',
+            appKey: ahagameInit.appKey || '',
+            gaId: ahagameInit.gaId || '',
+            adFrequencyHint: ahagameInit.adFrequencyHint || '45s',
+            adChannel: ahagameInit.adChannel || '',
+            adBreakTest: ahagameInit.adBreakTest,
+            pauseCallback: ahagameInit.pauseCallback,
+            resumeCallback: ahagameInit.resumeCallback
+        });
         return sdk;
     }
     if (platform == "m4399") {

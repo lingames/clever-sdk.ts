@@ -1,6 +1,9 @@
 灵镜游戏 SDK
 ==========
 
+### 传音 / Dlightek H5 广告（Ahagame）
+
+实现位于 `src/platformH5/transsion/`，完整说明见 **[docs/transsion-ads.md](./docs/transsion-ads.md)**。对外仍通过 `createSdk({ platform: "ahagame", ... })` 或 `import { AhagameSdk, TRANSSION_ADSDK_SCRIPT_URL } from "@lingames/clever-sdk"` 引用。
 
 ## Cocos
 
