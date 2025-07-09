@@ -15,6 +15,7 @@ export class KuaiShouSdk extends CleverSdk {
     videoAd: any = null;
 
     async initialize(config: ksInitialize): Promise<boolean> {
+        this.sdk_login_url = config.sdk_login_url ?? 'https://api.salesagent.cc/game-analyzer/player/login';
         console.info('快手全局对象:', ks);
         return true;
     }
@@ -25,18 +26,17 @@ export class KuaiShouSdk extends CleverSdk {
                 success: (res: any) => {
                     if (res.code) {
                         const body = {
-                            game_id: this.game_id,
-                            session_id: res.code,
+                            project_id: this.project_id,
+                            platform: 'kuai-shou',
+                            login_code: res.code,
                             Fields: {
                                 grant_type: 'authorization_code'
                             }
                         };
-                        const head = build_sdk_head(this.sdk_key, JSON.stringify(body));
                         // https://open.kuaishou.com/docs/develop/api/network/request/request.html#ks-request
                         ks.request({
                             url: this.sdk_login_url,
                             method: 'POST',
-                            header: head,
                             data: body,
                             dataType: 'json',
                             success: (fine: any) => {
@@ -55,7 +55,7 @@ export class KuaiShouSdk extends CleverSdk {
                     }
                 },
                 fail(err: any) {
-                    console.warn('微信登录凭证失败: ', err);
+                    console.warn('快手登录凭证失败: ', err);
                     reject(err);
                 }
             });
@@ -122,20 +122,14 @@ export class KuaiShouSdk extends CleverSdk {
         console.error('快手不支持该能力');
     }
 
-    async reportEvent(data: EventData): Promise<boolean> {
-        return new Promise((resolve) => {
-            ks.request({
-                url: EventEndPoint,
-                method: 'POST',
-                header: JSON.stringify(data),
-                success(res: any) {
-                    console.log('快手埋点上报成功', JSON.stringify(res));
-                    resolve(res);
-                },
-                fail(err: any) {
-                    console.warn('快手埋点上报失败', JSON.stringify(err));
-                }
-            });
+    async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {
+        return ks.request({
+            url: 'https://api.salesagent.cc/game-logger/event',
+            method: 'POST',
+            data: {
+                event_id: id,
+                custom: custom
+            },
         });
     }
 }

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import {PlayRewardedVideo, VideoReward} from './models';
+import {CreateRewardedVideoAd, VideoReward} from './models/CreateRewardedVideoAd.js';
 import {CreateBannerAd} from './models/CreateBannerAd.js';
 import {SdkInitialize} from './models/SdkInitialize.js';
 import {AddShortcut} from './models/AddShortcut.js';
@@ -10,41 +9,21 @@ import {EventData} from './models';
 
 export class CleverSdk {
     // 平台名称
+    protected project_id: string;
     protected platform: string;
     // game_id 游戏编号，每个游戏 game_id 唯一
     protected game_id: string;
     protected sdk_url: string;
     protected sdk_key: string;
+
     // protected adUnitId: string = '';
     protected sdk_login_url: string = '';
     protected session_key: string = '';
 
-    constructor(platform: string, sdk_url: string, sdk_key: string, game_id: string) {
+    constructor(platform: string, project_id: string, game_id: string) {
         this.platform = platform;
-        this.sdk_url = sdk_url;
-        this.sdk_key = sdk_key;
+        this.project_id = project_id;
         this.game_id = game_id;
-
-        let t_sdk_url = this.sdk_url;
-        if (t_sdk_url) {
-            if (t_sdk_url[t_sdk_url.length - 1] == '/') {
-                t_sdk_url = t_sdk_url.substring(0, t_sdk_url.length - 1);
-            }
-            console.log('登录链接:', t_sdk_url);
-            if (platform == 'WECHAT_GAME') {
-                this.sdk_login_url = t_sdk_url + '/weChatLogin';
-            } else if (platform == 'douyingame') {
-                this.sdk_login_url = t_sdk_url + '/byteDanceLogin';
-            } else if (platform == 'kuaishou') {
-                this.sdk_login_url = t_sdk_url + '/kuaishouLogin';
-            } else if (platform == 'bilibili') {
-                this.sdk_login_url = t_sdk_url + '/bilibiliLogin';
-            } else if (platform == 'oppo') {
-                this.sdk_login_url = t_sdk_url + '/oppoLogin';
-            } else {
-                this.sdk_login_url = t_sdk_url + '/devLogin';
-            }
-        }
     }
 
     /** 初始化平台参数
@@ -114,6 +93,7 @@ export class CleverSdk {
         return true;
     }
 
+
     // 设为常用
     public async addCommonUse() {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
@@ -162,7 +142,7 @@ export class CleverSdk {
     }
 
 
-    public async reportEvent(data: EventData): Promise<boolean> {
+    public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
         return Promise.resolve(false);
     }
 

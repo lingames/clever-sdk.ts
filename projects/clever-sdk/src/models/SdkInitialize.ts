@@ -4,10 +4,12 @@ export interface ttInitialize {
 }
 
 export interface ksInitialize {
+    sdk_login_url?: string;
 }
 
 
 export type wxInitialize = {
+    sdk_login_url: string;
     wx: any,
     // 启用分享功能, 默认启用
     // https://developers.weixin.qq.com/minigame/dev/guide/open-ability/share/share.html
