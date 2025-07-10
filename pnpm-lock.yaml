@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@lingames/clever-sdk':
+        specifier: 0.1.10
+        version: 0.1.10
     devDependencies:
       '@eslint/js':
         specifier: ^9.20.0
@@ -586,6 +590,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@lingames/clever-sdk@0.1.10':
+    resolution: {integrity: sha512-egfvf9Kk8pJh32BPKv7M5dXHFOeOdJE2ArCzjMm19JUG5zInE7G26E3vLqwqPM+QsRUwnxv/RtswvK8rTBz14g==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2608,6 +2615,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@lingames/clever-sdk@0.1.10': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
