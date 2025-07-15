@@ -144,16 +144,6 @@ export class CleverSdk {
     public async reportEvent(id: string, data: Record<string, any>): Promise<boolean> {
         return Promise.resolve(false);
     }
-
-    // cb 玩家看广告结束的回调， isEnd: 广告是否看完, true:看完，false:中途退出
-    // get_game_url(): string {
-    //     // const useLocalNet = GGameData.GlobalData.get(GlobalDataType.UseLocalNet, false);
-    //     const useLocalNet = true;
-    //     if (useLocalNet)
-    //         return "ws://localhost:8089/ws";
-    //     return "wss://lingame.cn/ws/";
-    //     // return "ws://124.222.91.167/ws/";
-    // }
 }
 
 
