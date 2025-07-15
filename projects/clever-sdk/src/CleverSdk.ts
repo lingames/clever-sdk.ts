@@ -5,7 +5,7 @@ import {SdkInitialize} from './models/SdkInitialize.js';
 import {AddShortcut} from './models/AddShortcut.js';
 import {LoginData} from './models/LoginData.js';
 import {CreateNativeAd} from './models/CreateNativeAd.js';
-import {EventData} from './models';
+import {ShareAppMessage} from "./models/ShareAppMessage";
 
 
 export class CleverSdk {
@@ -132,7 +132,7 @@ export class CleverSdk {
     }
 
     // 分享
-    public async shareAppMessage(param: any): Promise<boolean> {
+    public async shareAppMessage(share: ShareAppMessage): Promise<boolean> {
         return Promise.resolve(false);
     }
 

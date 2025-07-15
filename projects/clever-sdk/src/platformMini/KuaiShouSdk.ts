@@ -5,6 +5,7 @@ import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
 import {build_sdk_head} from '../helper.js';
 import {EventData, EventEndPoint} from "../models";
+import {ksShareAppMessage} from "../models/ShareAppMessage";
 
 export declare const ks: any;
 
@@ -120,6 +121,23 @@ export class KuaiShouSdk extends CleverSdk {
 
     public async checkScene(): Promise<any> {
         console.error('快手不支持该能力');
+    }
+
+    // https://ks-game-docs.kuaishou.com/minigame/api/open/repost/ks.shareAppMessage.html
+    async shareAppMessage(share: ksShareAppMessage): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            ks.shareAppMessage({
+                ...share,
+                success: (res: any) => {
+                    console.log('快手分享成功', res);
+                    resolve(true);
+                },
+                fail: (res: any) => {
+                    console.log('快手分享失败', res);
+                    resolve(false);
+                }
+            });
+        });
     }
 
     async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {

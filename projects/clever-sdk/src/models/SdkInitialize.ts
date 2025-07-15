@@ -1,4 +1,4 @@
-export type SdkInitialize = {} & wxInitialize & ttInitialize & ksInitialize & ggInitialize;
+export type SdkInitialize = {} | wxInitialize | ttInitialize | ksInitialize | ggInitialize;
 
 export interface ttInitialize {
 }
