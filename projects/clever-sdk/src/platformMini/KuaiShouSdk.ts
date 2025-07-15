@@ -4,6 +4,7 @@ import {ksCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
 import {build_sdk_head} from '../helper.js';
+import {EventData, EventEndPoint} from "../models";
 
 export declare const ks: any;
 
@@ -77,9 +78,8 @@ export class KuaiShouSdk extends CleverSdk {
             });
         }
         return new Promise((resolve, reject) => {
-            this.videoAd.show().then(function (result: any) {
-                console.log(`快手播放成功 ${JSON.stringify(result)}`);
-                if (result && result.isEnded) {
+            this.videoAd.onClose((res: any) => {
+                if (res && res.isEnded) {
                     // 正常播放结束，可以下发游戏奖励
                     resolve({
                         isEnded: true,
@@ -92,7 +92,8 @@ export class KuaiShouSdk extends CleverSdk {
                         count: 0
                     });
                 }
-            }).catch(function (error: any) {
+            });
+            this.videoAd.show().catch((error: any) => {
                 console.log(`快手播放异常 ${JSON.stringify(error)}`);
                 reject(error);
             });
@@ -119,5 +120,22 @@ export class KuaiShouSdk extends CleverSdk {
 
     public async checkScene(): Promise<any> {
         console.error('快手不支持该能力');
+    }
+
+    async reportEvent(data: EventData): Promise<boolean> {
+        return new Promise((resolve) => {
+            ks.request({
+                url: EventEndPoint,
+                method: 'POST',
+                header: JSON.stringify(data),
+                success(res: any) {
+                    console.log('快手埋点上报成功', JSON.stringify(res));
+                    resolve(res);
+                },
+                fail(err: any) {
+                    console.warn('快手埋点上报失败', JSON.stringify(err));
+                }
+            });
+        });
     }
 }

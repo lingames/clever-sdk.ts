@@ -33,7 +33,7 @@ export interface ttCreateRewardedVideoAd {
  */
 export interface ksCreateRewardedVideoAd {
     /**
-     * 通用广告单元 id, ksUnitId 为 undefined 时必填
+     * 通用广告单元 id, ksUnitId 为 `undefined` 时必填
      */
     adUnitId?: string
     /**
@@ -45,12 +45,12 @@ export interface ksCreateRewardedVideoAd {
      */
     multiton?: boolean,
     /**
-     * multiton为true时必填
+     * multiton 为 true 时必填
      * 再得广告的奖励文案，玩家每看完一个广告会展示，如【再看1个获得xx】；xx就multitonRewardMsg中的文案，按顺序依次展示，单个文案最大长度为 7
      */
     multitonMessage?: string[],
     /**
-     * multiton为true时必填
+     * multiton 为 true 时必填
      * 额外观看广告的次数，合法的数据范围为 1-4
      */
     multitonTimes?: 1 | 2 | 3 | 4,
@@ -58,9 +58,17 @@ export interface ksCreateRewardedVideoAd {
 
 /// 快应用
 export interface hwCreateRewardedVideoAd {
-    // 广告单元 id
-    adUnitId: string,
-    // 是否启用多例模式
+    /**
+     * 通用广告单元 id
+     */
+    adUnitId?: string,
+    /**
+     * 华为专用广告 id
+     */
+    hwUnitId?: string,
+    /**
+     * 是否启用多例模式
+     */
     multiton?: boolean,
     onComplete?: () => void,
 }

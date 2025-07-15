@@ -12,9 +12,8 @@
             "types": "./dist/CleverSDK.d.ts",
             "default": "./dist/CleverSDK.js"
         },
-        "./min": {
-            "require": "./dist/CleverSDK.min.js",
-            "import": "./dist/CleverSDK.min.mjs"
+        "./models": {
+            "types": "./src/models/index.ts"
         }
     },
     "scripts": {

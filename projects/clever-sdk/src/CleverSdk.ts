@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import {PlayRewardedVideo, VideoReward} from './models/PlayRewardedVideo';
+import {PlayRewardedVideo, VideoReward} from './models';
 import {CreateBannerAd} from './models/CreateBannerAd.js';
 import {SdkInitialize} from './models/SdkInitialize.js';
 import {AddShortcut} from './models/AddShortcut.js';
 import {LoginData} from './models/LoginData.js';
 import {CreateNativeAd} from './models/CreateNativeAd.js';
+import {EventData} from './models';
 
 
 export class CleverSdk {
@@ -158,6 +159,11 @@ export class CleverSdk {
     // 获取用户信息
     public async getUserInfo(options: any): Promise<any> {
         return Promise.resolve({});
+    }
+
+
+    public async reportEvent(data: EventData): Promise<boolean> {
+        return Promise.resolve(false);
     }
 
 
