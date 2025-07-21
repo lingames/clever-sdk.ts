@@ -95,7 +95,7 @@ export class CleverSdk {
     }
 
     // 设为常用
-    public async addCommonUse() {
+    public async addCommonUse(): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
@@ -107,7 +107,7 @@ export class CleverSdk {
     }
 
     // 加桌
-    public async addShortcut(options: AddShortcut): Promise<object> {
+    public async addShortcut(options: AddShortcut): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 

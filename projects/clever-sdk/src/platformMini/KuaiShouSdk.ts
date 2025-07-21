@@ -3,9 +3,8 @@ import {ksCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo'
 import {ksCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
-import {build_sdk_head} from '../helper.js';
-import {EventData, EventEndPoint} from "../models";
 import {ksShareAppMessage} from "../models/ShareAppMessage";
+import {AddShortcut} from "../models/AddShortcut";
 
 export declare const ks: any;
 
@@ -134,6 +133,39 @@ export class KuaiShouSdk extends CleverSdk {
                 },
                 fail: (res: any) => {
                     console.log('快手分享失败', res);
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    // https://ks-game-docs.kuaishou.com/minigame/api/open/shortcut/ks.addShortcut.html
+    async addShortcut(options: AddShortcut): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            ks.addShortcut({
+                success: (res: any) => {
+                    console.log('快手加桌成功', res);
+                    resolve(true);
+                },
+                fail: (res: any) => {
+                    console.log('快手加桌失败', res);
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    // https://open.kuaishou.com/miniGameDocs/gameDev/open-function/siderBarRevisit.html
+    // 不支持
+    async addCommonUse(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            ks.addCommonUse({
+                success: (res: any) => {
+                    console.log('快手设为常用成功', res);
+                    resolve(true);
+                },
+                fail: (res: any) => {
+                    console.log('快手设为常用失败', res);
                     resolve(false);
                 }
             });
