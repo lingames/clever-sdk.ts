@@ -3,8 +3,9 @@ import {ksCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo'
 import {ksCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
-import {ksShareAppMessage} from "../models/ShareAppMessage";
-import {AddShortcut} from "../models/AddShortcut";
+import {ksShareAppMessage} from '../models/ShareAppMessage';
+import {AddShortcut} from '../models/AddShortcut';
+import {ksNavigateToScene} from "../models/NavigateToScene";
 
 export declare const ks: any;
 
@@ -170,6 +171,26 @@ export class KuaiShouSdk extends CleverSdk {
                 }
             });
         });
+    }
+
+    async navigateToScene(scene: ksNavigateToScene): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            ks.navigateToScene({
+                ...scene,
+                success: (res: any) => {
+                    console.log('快手跳转成功', res);
+                    resolve(true);
+                },
+                fail: (res: any) => {
+                    console.log('快手跳转失败', res);
+                    resolve(false);
+                },
+            });
+        });
+    }
+
+    async checkSliderBarIsAvailable(): Promise<boolean> {
+        return super.checkSliderBarIsAvailable();
     }
 
     async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {

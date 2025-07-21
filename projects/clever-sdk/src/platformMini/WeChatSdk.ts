@@ -5,6 +5,7 @@ import {CreateBannerAd, wxCreateBannerAd} from '../models/CreateBannerAd.js';
 import {wxInitialize} from '../models/SdkInitialize.js';
 import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
 import {wxShareAppMessage} from '../models/ShareAppMessage.js';
+import {ksNavigateToScene, wxNavigateToScene} from "../models/NavigateToScene";
 
 /// 微信全局对象
 export declare const wx: any;
@@ -201,9 +202,9 @@ export class WeChatSdk extends CleverSdk {
         };
     }
 
-    public async navigateToScene() {
-        console.error('不支持navigateToScene');
-        return;
+    public async navigateToScene(scene: wxNavigateToScene) {
+        console.error('微信不支持 navigateToScene');
+        return false;
     }
 
     // https://developers.weixin.qq.com/minigame/dev/api/share/wx.shareAppMessage.html

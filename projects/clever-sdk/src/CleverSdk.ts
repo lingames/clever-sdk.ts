@@ -6,6 +6,7 @@ import {AddShortcut} from './models/AddShortcut.js';
 import {LoginData} from './models/LoginData.js';
 import {CreateNativeAd} from './models/CreateNativeAd.js';
 import {ShareAppMessage} from "./models/ShareAppMessage";
+import {NavigateToScene} from "./models/NavigateToScene";
 
 
 export class CleverSdk {
@@ -128,7 +129,14 @@ export class CleverSdk {
         });
     }
 
-    public async navigateToScene() {
+
+    public async checkSliderBarIsAvailable(): Promise<boolean> {
+        return false;
+    }
+
+
+    public async navigateToScene(scene: NavigateToScene): Promise<boolean> {
+        return false;
     }
 
     // 分享
