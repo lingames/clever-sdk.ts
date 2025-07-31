@@ -3,6 +3,8 @@ import {VideoReward, ttCreateRewardedVideoAd} from '../models/PlayRewardedVideo'
 import {ttCreateBannerAd} from '../models/CreateBannerAd.js';
 import {ttInitialize} from '../models/SdkInitialize.js';
 import {ttAddShortcut} from '../models/AddShortcut.js';
+import {LoginData} from "../models/LoginData";
+import {ks} from "./KuaiShouSdk";
 
 /// 抖音全局对象
 export declare const tt: any;
@@ -21,6 +23,47 @@ export class DouyinSDK extends CleverSdk {
     async initialize(config: ttInitialize): Promise<boolean> {
         console.info('抖音全局对象:', tt);
         return true;
+    }
+
+
+    async login(): Promise<LoginData> {
+        return new Promise((resolve, reject) => {
+            tt.login({
+                force: false,
+                success: (res: any) => {
+                    if (res.code) {
+                        const body = {
+                            project_id: this.project_id,
+                            platform: 'dou-yin',
+                            login_code: res.code,
+                        };
+                        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request
+                        tt.request({
+                            url: this.sdk_login_url,
+                            method: 'POST',
+                            data: body,
+                            dataType: 'json',
+                            success: (fine: any) => {
+                                console.warn('抖音登录成功: ', fine);
+                                this.session_key = fine.data.session_key;
+                                resolve(fine.data);
+                            },
+                            fail: (fail: any) => {
+                                console.warn('抖音登录失败: ', fail);
+                                reject(fail);
+                            }
+                        });
+                    } else {
+                        console.warn('抖音获取登录凭证失败:', res.errMsg);
+                        reject(res.errMsg);
+                    }
+                },
+                fail(err: any) {
+                    console.warn('抖音登录凭证失败: ', err);
+                    reject(err);
+                }
+            });
+        });
     }
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad

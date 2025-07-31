@@ -44,7 +44,6 @@ export class CleverSdk {
 
 
     public async login(): Promise<LoginData> {
-        console.log('dummy-sdk login');
         return {};
     }
 
