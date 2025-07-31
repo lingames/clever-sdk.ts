@@ -1,10 +1,9 @@
 import {CleverSdk} from '../CleverSdk.js';
-import {VideoReward, ttCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
-import {ttCreateBannerAd} from '../models/CreateBannerAd.js';
-import {ttInitialize} from '../models/SdkInitialize.js';
-import {ttAddShortcut} from '../models/AddShortcut.js';
+import {ttCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
+import {ttCreateBannerAd} from '../models/CreateBannerAd';
+import {ttInitialize} from '../models/SdkInitialize';
+import {ttAddShortcut} from '../models/AddShortcut';
 import {LoginData} from "../models/LoginData";
-import {ks} from "./KuaiShouSdk";
 
 /// 抖音全局对象
 export declare const tt: any;
@@ -37,6 +36,7 @@ export class DouyinSDK extends CleverSdk {
                             platform: 'dou-yin',
                             login_code: res.code,
                         };
+                        console.trace('抖音登录请求鉴权', this.sdk_login_url);
                         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request
                         tt.request({
                             url: this.sdk_login_url,
@@ -79,7 +79,6 @@ export class DouyinSDK extends CleverSdk {
         // this.videoAd.show()
         return Promise.resolve(videoAd);
     }
-
 
     public override async checkScene(): Promise<CheckSceneResult> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/sidebar-capacity/tt-check-scene
@@ -150,6 +149,21 @@ export class DouyinSDK extends CleverSdk {
                 });
             }
         );
+    }
+
+    async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {
+        return tt.request({
+            url: 'https://api.salesagent.cc/game-logger/event',
+            method: 'POST',
+            data: {
+                player_anonymous: this.player_anonymous,
+                player_id: this.player_id,
+                channel_id: this.channel_id,
+                version_id: this.version_id,
+                event_id: id,
+                custom: custom
+            },
+        });
     }
 }
 
