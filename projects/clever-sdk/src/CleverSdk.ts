@@ -53,7 +53,7 @@ export class CleverSdk {
     }
 
     /**
-     * 播放激励广告
+     * 播放激励广告, 如果未创建的话, 创建一个
      */
     public async playRewardedVideo(adInfo: PlayRewardedVideo): Promise<VideoReward> {
         return {
@@ -100,7 +100,9 @@ export class CleverSdk {
         return true;
     }
 
-    // 设为常用
+    /**
+     * 设为常用
+     */
     public async addCommonUse(): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
@@ -112,11 +114,16 @@ export class CleverSdk {
         });
     }
 
-    // 加桌
+    /**
+     * 添加到桌面
+     */
     public async addShortcut(options: AddShortcut): Promise<boolean> {
         throw new Error(`${this.platform} 平台不支持 'addCommonUse'`);
     }
 
+    /**
+     * 检查是否已经添加到了桌面
+     */
     public async checkShortcut(): Promise<any> {
         return Promise.resolve({
             isSupport: false,
