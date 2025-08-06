@@ -1,12 +1,12 @@
 export type SdkInitialize = {} | wxInitialize | ttInitialize | ksInitialize | ggInitialize;
 
 export interface ttInitialize {
+    sdk_login_url?: string;
 }
 
 export interface ksInitialize {
     sdk_login_url?: string;
 }
-
 
 export type wxInitialize = {
     sdk_login_url: string;
