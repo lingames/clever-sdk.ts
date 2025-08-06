@@ -4,6 +4,7 @@ import {ttCreateBannerAd} from '../models/CreateBannerAd';
 import {ttInitialize} from '../models/SdkInitialize';
 import {ttAddShortcut} from '../models/AddShortcut';
 import {LoginData} from '../models/LoginData';
+import {ShareAppMessage, ttShareAppMessage} from "../models/ShareAppMessage";
 
 /// 抖音全局对象
 export declare const tt: any;
@@ -153,6 +154,24 @@ export class DouyinSDK extends CleverSdk {
             this.bannerAd.destroy();
         }
         return true;
+    }
+
+    async shareAppMessage(share: ttShareAppMessage): Promise<boolean> {
+        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/retweet/tt-share-app-message
+        return new Promise((resolve, reject) => {
+            tt.shareAppMessage({
+                desc: share.description,
+                ...share,
+                success: (res: any) => {
+                    console.log('抖音分享成功', res);
+                    resolve(true);
+                },
+                fail: (res: any) => {
+                    console.log('抖音分享失败', res);
+                    resolve(false);
+                }
+            });
+        });
     }
 
     async addCommonUse(): Promise<boolean> {
