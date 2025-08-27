@@ -1,18 +1,14 @@
-import {build_sdk_head} from '../helper.js';
-import {CleverSdk} from '../CleverSdk.js';
+import {build_sdk_head} from '../helper';
+import {CleverSdk} from '../CleverSdk';
 import {VideoReward, wxCreateRewardedVideoAd} from '../models/PlayRewardedVideo';
-import {CreateBannerAd, wxCreateBannerAd} from '../models/CreateBannerAd.js';
-import {wxInitialize} from '../models/SdkInitialize.js';
-import {wxGetUserInfo, wxUserInfoCallback} from '../models/LoginData.js';
-import {wxShareAppMessage} from '../models/ShareAppMessage.js';
-import {ksNavigateToScene, wxNavigateToScene} from "../models/NavigateToScene";
+import {CreateBannerAd} from '../models/CreateBannerAd';
+import {wxInitialize} from '../models/SdkInitialize';
+import {wxGetUserInfo, wxLoginData, wxUserInfoCallback} from '../models/LoginData';
+import {wxShareAppMessage} from '../models/ShareAppMessage';
+import {wxNavigateToScene} from "../models/NavigateToScene";
 
 /// 微信全局对象
 export declare const wx: any;
-
-export interface wxLoginData {
-
-}
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;

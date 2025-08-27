@@ -1,4 +1,10 @@
-export type LoginData = {} | HuaweiLoginData | OppoLoginData;
+export type LoginData = {} | wxLoginData | HuaweiLoginData | OppoLoginData;
+
+export interface wxLoginData {
+    open_id: string,
+    union_id: string,
+    session_key: string,
+}
 
 export interface OppoLoginData {
     /** 统一登录 id */

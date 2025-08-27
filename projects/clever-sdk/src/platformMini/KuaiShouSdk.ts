@@ -5,7 +5,7 @@ import {ksInitialize} from '../models/SdkInitialize.js';
 import {LoginData} from '../models/LoginData.js';
 import {ksShareAppMessage} from '../models/ShareAppMessage';
 import {AddShortcut} from '../models/AddShortcut';
-import {ksNavigateToScene} from "../models/NavigateToScene";
+import {ksNavigateToScene} from '../models/NavigateToScene';
 
 export declare const ks: any;
 
