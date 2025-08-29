@@ -58,12 +58,14 @@ export class WeChatSdk extends CleverSdk {
         });
     }
 
-    async initialize(info: wxInitialize): Promise<boolean> {
-        if (info.enableShare !== false) {
+    async initialize(config: wxInitialize): Promise<boolean> {
+        this.sdk_login_url = config.sdk_login_url ?? 'https://api.salesagent.cc/game-analyzer/player/login';
+        if (config.enableShare !== false) {
             wx.showShareMenu({
                 menus: ['shareAppMessage', 'shareTimeline']
-            })
+            });
         }
+        console.info('微信全局对象:', wx);
         return true;
     }
 
