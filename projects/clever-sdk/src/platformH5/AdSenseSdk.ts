@@ -1,12 +1,12 @@
 //* 谷歌平台 */
-import {BrowserSdk} from './BrowserSdk.js';
 import {ggCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
 import {ggInitialize} from '../models/SdkInitialize.js';
+import {CleverSdk} from '../CleverSdk';
 
 // @ts-ignore
 
 
-export class AdSenseSdk extends BrowserSdk {
+export class AdSenseSdk extends CleverSdk {
     initialize(config: ggInitialize): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             const script = document.createElement('script');
@@ -99,9 +99,9 @@ export class AdSenseSdk extends BrowserSdk {
             // 确保⼴告重新加载（可选）
             // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            return { isEnded: true, count: 1 };
+            return {isEnded: true, count: 1};
         }
-        return { isEnded: false, count: 0 };
+        return {isEnded: false, count: 0};
     }
 
     async hideBannerAd(): Promise<boolean> {
