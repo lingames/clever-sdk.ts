@@ -1,2 +1,2 @@
-export {BrowserSdk} from './BrowserSdk.js';
+export {MockSdk} from './MockSdk';
 export {AdSenseSdk} from './AdSenseSdk.js';

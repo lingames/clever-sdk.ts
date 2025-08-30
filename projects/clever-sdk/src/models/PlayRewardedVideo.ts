@@ -14,12 +14,19 @@ export interface wxCreateRewardedVideoAd {
     adUnitId?: string,
     // 微信专用广告 id
     wxUnitId?: string,
-    onError?: (e: any) => void,
-    onClose?: (e: any) => void,
+    // 是否启用多例模式，默认为false
+    multiton?: boolean,
+    // 是否禁用分享页，默认为 false
+    disableFallbackSharePage?: boolean,
 }
 
 // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
 export interface ttCreateRewardedVideoAd {
+    // 通用广告单元 id
+    adUnitId?: string,
+    // 抖音专用广告 id
+    ttUnitId?: string,
+
     /**
      * 是否开启再得广告模式
      */
@@ -34,14 +41,6 @@ export interface ttCreateRewardedVideoAd {
      * 额外观看广告的次数，合法的数据范围为 1-4
      */
     multitonTimes?: 1 | 2 | 3 | 4,
-
-
-    // 通用广告单元 id
-    adUnitId?: string,
-    // 抖音专用广告 id
-    ttUnitId?: string,
-
-
 
     // 是否开启进度提醒，开启时广告文案为【再看N个获得xx】，关闭时为【 再看1个获得xx】。
     //
@@ -96,7 +95,7 @@ export interface hwCreateRewardedVideoAd {
 
 export interface qgCreateRewardedVideoAd {
     // adSenseId: string
-    adUnitId: string,
+    adUnitId?: string,
     onClose?: (e: qgOnClose) => void,
     onClick?: (e: qgOnClick) => void,
     onError?: (e: qgOnError) => void

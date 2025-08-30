@@ -28,7 +28,7 @@ export class KuaiShouSdk extends CleverSdk {
                     if (res.code) {
                         const body = {
                             project_id: this.project_id,
-                            platform: 'kuai-shou',
+                            platform: this.platform,
                             login_code: res.code,
                             Fields: {
                                 grant_type: 'authorization_code'

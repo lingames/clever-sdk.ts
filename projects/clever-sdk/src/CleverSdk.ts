@@ -32,6 +32,7 @@ export class CleverSdk {
         this.platform = platform;
         this.project_id = project_id;
         this.game_id = game_id;
+        this.session_key = '';
     }
 
     /** 初始化平台参数
