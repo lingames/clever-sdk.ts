@@ -13,7 +13,7 @@ export default defineConfig({
         'zh-hans': {
             label: '简体中文',
             lang: 'zh-Hans',
-            link: '/zh-hans',
+            link: '/zh-hans/engine/',
             themeConfig: zhHans,
         },
         'zh-hant': {
