@@ -8,6 +8,8 @@
 1. 登录[灵镜引擎](https://data.lingame.cn/login)后，在主导航栏中找到"项目管理"或"创建项目"选项
 2. 点击进入[项目创建页面](https://data.lingame.cn/create-project)
 
+
+
 ### 方法二：通过仪表板
 1. 在[主仪表板页面](https://data.lingame.cn/dashboard)，寻找"新建项目"或"+"按钮
 2. 点击按钮进入项目创建界面
