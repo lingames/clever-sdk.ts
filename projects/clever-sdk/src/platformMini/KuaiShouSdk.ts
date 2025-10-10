@@ -121,6 +121,10 @@ export class KuaiShouSdk extends CleverSdk {
 
     public async checkScene(): Promise<any> {
         console.error('快手不支持该能力');
+        return Promise.resolve({
+            isSupport: false,
+            isScene: false
+        });
     }
 
     // https://ks-game-docs.kuaishou.com/minigame/api/open/repost/ks.shareAppMessage.html
