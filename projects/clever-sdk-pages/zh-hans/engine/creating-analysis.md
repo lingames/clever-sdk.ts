@@ -6,13 +6,13 @@
 
 灵镜引擎提供以下几种主要的分析类型：
 
-- **基础看板**：展示项目的核心数据指标
-- **实时看板**：显示实时数据变化和趋势
-- **新增看板**：分析新用户的获取和构成
-- **活跃看板**：监控用户活跃度和参与情况
-- **留存看板**：分析用户留存率和流失情况
-- **漏斗看板**：分析用户转化路径和转化率
-- **分享看板**：跟踪内容分享和传播效果
+- **[基础看板](https://data.lingame.cn/project/{项目链接}/baseData/baseBoard)**：展示项目的核心数据指标
+- **[实时看板](https://data.lingame.cn/project/{项目链接}/baseData/realTimeBoard)**：显示实时数据变化和趋势
+- **[新增看板](https://data.lingame.cn/project/{项目链接}/baseData/newBoard)**：分析新用户的获取和构成
+- **[活跃看板](https://data.lingame.cn/project/{项目链接}/baseData/activeBoard)**：监控用户活跃度和参与情况
+- **[留存看板](https://data.lingame.cn/project/{项目链接}/baseData/retentionBoard)**：分析用户留存率和流失情况
+- **[漏斗看板](https://data.lingame.cn/project/{项目链接}/baseData/funnelBoard)**：分析用户转化路径和转化率
+- **[分享看板](https://data.lingame.cn/project/{项目链接}/baseData/shareBoard)**：跟踪内容分享和传播效果
 
 ### 访问分析功能
 
@@ -21,6 +21,7 @@
    - 点击"基础数据" → 选择具体的分析类型
    - 点击"业务数据" → 选择业务相关分析
    - 点击"产品数据" → 选择产品相关分析
+   - 或直接访问：`https://data.lingame.cn/project/{项目链接}/baseData`
 
 ### 创建基础看板
 
