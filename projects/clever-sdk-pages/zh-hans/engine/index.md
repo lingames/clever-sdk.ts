@@ -22,18 +22,18 @@
 ## 完整目录结构
 
 ### 🚀 快速开始
-- **[用户注册](registration.md)** - 详细的注册流程和邮箱验证指南
-- **[用户登录](login.md)** - 账户登录和邮箱登录的完整操作说明
+- **[用户注册](registration.md)** - 详细的注册流程和邮箱验证指南 | [立即注册](https://data.lingame.cn/register)
+- **[用户登录](login.md)** - 账户登录和邮箱登录的完整操作说明 | [立即登录](https://data.lingame.cn/login)
 
 ### 📊 项目管理
-- **[创建项目](creating-projects.md)** - 项目创建、配置和管理的详细指南
+- **[创建项目](creating-projects.md)** - 项目创建、配置和管理的详细指南 | [创建项目](https://data.lingame.cn/create-project)
 
 ### 🔧 数据配置
 - **[菜单管理](managing-menus.md)** - 菜单的添加、编辑、删除和层级管理
 - **[事件管理](adding-events.md)** - 事件创建、参数配置和管理操作
 
 ### 📈 数据分析
-- **[创建分析](creating-analysis.md)** - 各种分析工具的使用方法和最佳实践
+- **[创建分析](creating-analysis.md)** - 各种分析工具的使用方法和最佳实践 | [进入仪表板](https://data.lingame.cn/dashboard)
 
 ### ❓ 帮助支持
 - **[常见问题](faq.md)** - 常见问题解答、故障排除和技术支持
@@ -45,38 +45,44 @@
 ### 第一次使用？请按此顺序操作：
 
 #### 第一阶段：账户设置
-1. **[开始注册](registration.md)** 
+1. **[开始注册](registration.md)** | [立即注册](https://data.lingame.cn/register)
    - 使用邮箱和验证码完成注册
    - 了解自动注册机制
-   - 完成账户初始化设置
 
-2. **[学习登录](login.md)**
-   - 掌握账户登录和邮箱登录两种方式
-   - 了解安全设置和最佳实践
-   - 解决常见登录问题
+2. **[完成登录](login.md)** | [立即登录](https://data.lingame.cn/login)
+   - 掌握账号登录和邮箱登录方式
+   - 熟悉登录界面操作
 
-#### 第二阶段：项目配置
-3. **[创建首个项目](creating-projects.md)**
-   - 填写项目基本信息
-   - 理解项目权限和设置
-   - 学习项目管理操作
+#### 第二阶段：项目初始化
+3. **[创建首个项目](creating-projects.md)** | [创建项目](https://data.lingame.cn/create-project)
+   - 设置项目基本信息
+   - 配置项目参数
 
-4. **[设置菜单结构](managing-menus.md)**
-   - 创建应用程序的导航菜单
-   - 配置菜单层级和属性
-   - 管理菜单的编辑和删除
+4. **[配置项目菜单](managing-menus.md)**
+   - 创建应用导航结构
+   - 设置菜单层级关系
 
-#### 第三阶段：数据收集
-5. **[配置事件追踪](adding-events.md)**
-   - 创建关键业务事件
-   - 设置事件参数和属性
-   - 理解事件数据收集机制
+#### 第三阶段：数据配置
+5. **[添加关键事件](adding-events.md)**
+   - 定义用户行为追踪点
+   - 配置事件参数
 
 #### 第四阶段：数据分析
-6. **[开始数据分析](creating-analysis.md)**
-   - 使用各种分析工具
-   - 创建自定义仪表板
-   - 解读分析结果和制定策略
+6. **[开始数据分析](creating-analysis.md)** | [进入仪表板](https://data.lingame.cn/dashboard)
+   - 创建各类分析看板
+   - 获取数据洞察
+
+---
+
+## 快速访问链接
+
+### 🔗 常用功能直达
+- [登录系统](https://data.lingame.cn/login) - 快速登录灵镜引擎
+- [注册账户](https://data.lingame.cn/register) - 创建新用户账户  
+- [创建项目](https://data.lingame.cn/create-project) - 开始新的数据分析项目
+- [数据仪表板](https://data.lingame.cn/dashboard) - 查看项目数据概览
+- [个人信息](https://data.lingame.cn/mine/info) - 管理账户信息
+- [用量查询](https://data.lingame.cn/mine/bill) - 查看使用情况和账单
 
 ### 遇到问题？
 如果在任何步骤中遇到困难，请查看：
