@@ -1,48 +1,77 @@
-export * from './platformH5/index.js';
-export * from './platformMini/index.js';
-export * from './platformNative/index.js';
-import {BilibiliSdk, DouyinSDK, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from './platformMini';
-import {M4399Sdk} from './platformNative';
-import {CleverSdk} from './CleverSdk.js';
-import {AdSenseSdk, MockSdk, AhagameSdk} from './platformH5';
-import {DynamicSdkConfig} from './models';
+export * from "./platformH5/index.js";
+export * from "./platformMini/index.js";
+export * from "./platformNative/index.js";
+import {
+    BilibiliSdk,
+    DouyinSDK,
+    HuaweiSdk,
+    KuaiShouSdk,
+    OppoSdk,
+    WeChatSdk,
+} from "./platformMini";
+import { M4399Sdk } from "./platformNative";
+import { CleverSdk } from "./CleverSdk.js";
+import { AdSenseSdk, MockSdk , AhagameSdk} from "./platformH5";
+import { DynamicSdkConfig } from "./models";
 
-export {CleverSdk};
+export { CleverSdk };
 
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
-    if (config.platform == 'wechat') {
-        let sdk = new WeChatSdk(config.platform, config.project_id, '');
+    // Auto-detect platform if not provided
+    let platform = config.platform || detectPlatform();
+    
+    // Get platform-specific game ID
+    let gameId = getPlatformGameId(config, platform);
+    
+    if (platform == "wechat") {
+        let sdk = new WeChatSdk(platform, config.project_id, gameId);
         await sdk.initialize({
-            sdk_login_url: config.sdk_login_url
+            sdk_login_url: config.sdk_login_url,
         });
         return sdk;
     }
-    if (config.platform == 'dou-yin') {
-        let sdk = new DouyinSDK(config.platform, config.project_id, '');
+    if (platform == "dou-yin") {
+        let sdk = new DouyinSDK(platform, config.project_id, gameId);
         await sdk.initialize({
-            sdk_login_url: config.sdk_login_url
+            sdk_login_url: config.sdk_login_url,
         });
         return sdk;
     }
-    if (config.platform == 'kuai-shou') {
-        let sdk = new KuaiShouSdk(config.platform, config.project_id, '');
+    if (platform == "kuai-shou") {
+        let sdk = new KuaiShouSdk(platform, config.project_id, gameId);
         await sdk.initialize({
-            sdk_login_url: config.sdk_login_url
+            sdk_login_url: config.sdk_login_url,
         });
         return sdk;
     }
-    if (config.platform == 'bilibili') {
-        return new BilibiliSdk(config.platform, config.sdk_login_url, config.project_id.toString());
+    if (platform == "bilibili") {
+        return new BilibiliSdk(
+            platform,
+            config.sdk_login_url,
+            config.project_id.toString(),
+        );
     }
-    if (config.platform == 'hua-wei') {
-        return new HuaweiSdk(config.platform, config.sdk_login_url, config.project_id.toString());
+    if (platform == "hua-wei") {
+        return new HuaweiSdk(
+            platform,
+            config.sdk_login_url,
+            config.project_id.toString(),
+        );
     }
-    if (config.platform == 'oppo') {
-        return new OppoSdk(config.platform, config.sdk_login_url, config.project_id.toString());
+    if (platform == "oppo") {
+        return new OppoSdk(
+            platform,
+            config.sdk_login_url,
+            config.project_id.toString(),
+        );
     }
-    if (config.platform == 'google') {
-        let sdk = new AdSenseSdk(config.platform, config.sdk_login_url, config.project_id.toString());
-        await sdk.initialize({adSenseId: ''});
+    if (platform == "google") {
+        let sdk = new AdSenseSdk(
+            platform,
+            config.sdk_login_url,
+            config.project_id.toString(),
+        );
+        await sdk.initialize({ adSenseId: "" });
         return sdk;
     }
     if (config.platform == 'ahagame') {
@@ -59,18 +88,85 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         });
         return sdk;
     }
-    if (config.platform == 'm4399') {
-        let sdk = new M4399Sdk(config.platform, config.project_id, config.game_id || '');
+    if (platform == "m4399") {
+        let sdk = new M4399Sdk(
+            platform,
+            config.project_id,
+            gameId,
+        );
         await sdk.initialize({
-            sdk_login_url: config.sdk_login_url
+            sdk_login_url: config.sdk_login_url,
         });
         return sdk;
     }
-    if (config.platform == 'mock') {
-        let sdk = new MockSdk(config.platform, config.project_id, config.game_id || 'mock_game_id');
+    if (platform == "mock") {
+        let sdk = new MockSdk(
+            platform,
+            config.project_id,
+            gameId || "mock_game_id",
+        );
         const mockInit = config as any;
         await sdk.initialize(mockInit.mockConfig || {});
         return sdk;
     }
-    return new MockSdk(config.platform, config.sdk_login_url, config.project_id.toString());
+    return new MockSdk(
+        platform,
+        config.sdk_login_url,
+        config.project_id.toString(),
+    );
+}
+
+/**
+ * Get platform-specific game ID
+ */
+function getPlatformGameId(config: DynamicSdkConfig, platform: string): string {
+    switch (platform) {
+        case "wechat":
+            return config.wx_game_id || config.game_id || "";
+        case "dou-yin":
+            return config.tt_game_id || config.game_id || "";
+        case "kuai-shou":
+            return config.ks_game_id || config.game_id || "";
+        case "bilibili":
+            return config.bb_game_id || config.game_id || "";
+        case "hua-wei":
+            return config.hw_game_id || config.game_id || "";
+        case "oppo":
+            return config.oppo_game_id || config.game_id || "";
+        case "google":
+            return config.google_game_id || config.game_id || "";
+        default:
+            return config.game_id || "";
+    }
+}
+
+/**
+ * Auto-detect platform based on environment
+ */
+function detectPlatform(): string {
+    if (typeof wx !== 'undefined' && wx.getSystemInfo) {
+        return "wechat";
+    }
+    if (typeof tt !== 'undefined' && tt.getSystemInfo) {
+        return "dou-yin";
+    }
+    if (typeof ks !== 'undefined' && ks.getSystemInfo) {
+        return "kuai-shou";
+    }
+    if (typeof navigator !== 'undefined') {
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('bilibili')) {
+            return "bilibili";
+        }
+        if (userAgent.includes('huawei') || userAgent.includes('honor')) {
+            return "hua-wei";
+        }
+        if (userAgent.includes('oppo')) {
+            return "oppo";
+        }
+        if (userAgent.includes('google') || userAgent.includes('android')) {
+            return "google";
+        }
+    }
+    return "mock";
 }
