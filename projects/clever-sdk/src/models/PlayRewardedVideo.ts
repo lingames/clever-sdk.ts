@@ -116,5 +116,9 @@ export interface qgOnClick {
 
 export interface ggCreateRewardedVideoAd {
     // adSenseId: string
-    adUnitId: string
+    adUnitId: string;
+    // Ahagame SDK 广告参数
+    name?: string;
+    beforeAd?: () => void;
+    afterAd?: () => void;
 }

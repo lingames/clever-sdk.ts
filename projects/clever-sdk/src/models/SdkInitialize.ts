@@ -20,7 +20,14 @@ export type wxInitialize = {
 }
 
 export interface ggInitialize {
-    adSenseId: string
+    adSenseId: string;
+    // Ahagame SDK 配置参数
+    appKey?: string;
+    gaId?: string;
+    adFrequencyHint?: string;
+    adChannel?: string;
+    pauseCallback?: () => void;
+    resumeCallback?: () => void;
 }
 
 export interface mockInitialize {

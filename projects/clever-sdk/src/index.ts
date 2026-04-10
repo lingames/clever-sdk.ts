@@ -4,7 +4,7 @@ export * from './platformNative/index.js';
 import {BilibiliSdk, DouyinSDK, HuaweiSdk, KuaiShouSdk, OppoSdk, WeChatSdk} from './platformMini';
 import {M4399Sdk} from './platformNative';
 import {CleverSdk} from './CleverSdk.js';
-import {AdSenseSdk, MockSdk} from './platformH5';
+import {AdSenseSdk, MockSdk, AhagameSdk} from './platformH5';
 import {DynamicSdkConfig} from './models';
 
 export {CleverSdk};
@@ -43,6 +43,20 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     if (config.platform == 'google') {
         let sdk = new AdSenseSdk(config.platform, config.sdk_login_url, config.project_id.toString());
         await sdk.initialize({adSenseId: ''});
+        return sdk;
+    }
+    if (config.platform == 'ahagame') {
+        let sdk = new AhagameSdk(config.platform, config.project_id, config.game_id || '');
+        const ahagameInit = config as any;
+        await sdk.initialize({
+            adSenseId: ahagameInit.adSenseId || '',
+            appKey: ahagameInit.appKey || '',
+            gaId: ahagameInit.gaId || '',
+            adFrequencyHint: ahagameInit.adFrequencyHint || '45s',
+            adChannel: ahagameInit.adChannel || '',
+            pauseCallback: ahagameInit.pauseCallback,
+            resumeCallback: ahagameInit.resumeCallback
+        });
         return sdk;
     }
     if (config.platform == 'm4399') {
