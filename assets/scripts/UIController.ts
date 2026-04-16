@@ -140,6 +140,14 @@ export class UIController extends Component {
         })();
     }
 
+    public onTranssionAd() {
+        console.log("[CleverDemo] transsionAd 传音广告");
+    }
+
+    public onTranssionLogin() {
+        console.log("[CleverDemo] transsionLogin 传音登录");
+    }
+
     private setupDemoButtons() {
         if (this.node.getChildByName("CleverSdkDemoButtons")) {
             return;
@@ -194,7 +202,7 @@ export class UIController extends Component {
         root.setSiblingIndex(this.node.children.length - 1);
 
         const rootTf = root.addComponent(UITransform);
-        rootTf.setContentSize(720, 420);
+        rootTf.setContentSize(960, 460);
         root.setPosition(new Vec3(0, 0, 0));
         root.addComponent(UIOpacity).opacity = 255;
         const rootWidget = root.addComponent(Widget);
@@ -205,8 +213,8 @@ export class UIController extends Component {
         title.layer = uiLayer;
         title.setParent(root);
         const ttf = title.addComponent(UITransform);
-        ttf.setContentSize(700, 80);
-        title.setPosition(new Vec3(0, 170, 0));
+        ttf.setContentSize(900, 80);
+        title.setPosition(new Vec3(0, 188, 0));
         const tlab = title.addComponent(Label);
         tlab.string = "Clever SDK 演示\n（未注入 SDK 时按钮仅打日志）";
         tlab.fontSize = 22;
@@ -219,19 +227,43 @@ export class UIController extends Component {
             tlf.useSystemFont = true;
         }
 
-        const specs: { name: string; label: string; onClick: () => void }[] = [
+        const leftSpecs: { name: string; label: string; onClick: () => void }[] = [
             { name: "PlayRewardedVideoButton", label: "激励视频", onClick: () => this.onPlayRewardedVideo() },
             { name: "CreateBannerAdButton", label: "横幅广告", onClick: () => this.onCreateBannerAd() },
             { name: "CreateNativeAdButton", label: "原生广告", onClick: () => this.onCreateNativeAd() },
             { name: "TestLoginButton", label: "测试登录", onClick: () => this.onTestLogin() },
         ];
 
-        let y = 100;
-        for (const s of specs) {
+        const rightSpecs: { name: string; label: string; onClick: () => void }[] = [
+            { name: "TranssionAdButton", label: "传音广告", onClick: () => this.onTranssionAd() },
+            { name: "TranssionLoginButton", label: "传音登录", onClick: () => this.onTranssionLogin() },
+        ];
+
+        const leftX = -248;
+        let yL = 96;
+        for (const s of leftSpecs) {
             const btn = this.makeGraphicsButton(s.name, s.label, uiLayer, () => s.onClick());
             btn.setParent(root);
-            btn.setPosition(new Vec3(0, y, 0));
-            y -= 76;
+            btn.setPosition(new Vec3(leftX, yL, 0));
+            yL -= 76;
+            const tf = btn.getComponent(UITransform);
+            if (tf) {
+                this._demoButtonHits.push({
+                    tf,
+                    nodeName: s.name,
+                    text: s.label,
+                    onClick: () => s.onClick(),
+                });
+            }
+        }
+
+        const rightX = 248;
+        let yR = 58;
+        for (const s of rightSpecs) {
+            const btn = this.makeGraphicsButton(s.name, s.label, uiLayer, () => s.onClick());
+            btn.setParent(root);
+            btn.setPosition(new Vec3(rightX, yR, 0));
+            yR -= 76;
             const tf = btn.getComponent(UITransform);
             if (tf) {
                 this._demoButtonHits.push({
