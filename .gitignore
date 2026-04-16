@@ -20,3 +20,13 @@ dist/
 cache/
 tsconfig.tsbuildinfo
 *.zip
+
+# Cocos Creator（若把 monorepo 根当作工程打开会生成）
+library/
+temp/
+profiles/*
+!profiles/v2/
+!profiles/v2/packages/
+!profiles/v2/packages/scene.json
+local/
+build/
