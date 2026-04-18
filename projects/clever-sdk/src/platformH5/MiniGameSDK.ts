@@ -115,7 +115,6 @@ export class MiniGameSDK extends CleverSdk {
             console.log("===> minigame未初始化");
             return false;
         }
-
         this.pauseSoundCb?.();
 
         try {
