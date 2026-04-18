@@ -19,10 +19,10 @@ export { CleverSdk };
 export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     // Auto-detect platform if not provided
     let platform = config.platform || detectPlatform();
-    
+
     // Get platform-specific game ID
     let gameId = getPlatformGameId(config, platform);
-    
+
     if (platform == "wechat") {
         let sdk = new WeChatSdk(platform, config.project_id, gameId);
         await sdk.initialize({
@@ -75,11 +75,7 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         return sdk;
     }
     if (platform == "m4399") {
-        let sdk = new M4399Sdk(
-            platform,
-            config.project_id,
-            gameId,
-        );
+        let sdk = new M4399Sdk(platform, config.project_id, gameId);
         await sdk.initialize({
             sdk_login_url: config.sdk_login_url,
         });
@@ -139,30 +135,30 @@ function getPlatformGameId(config: DynamicSdkConfig, platform: string): string {
  * Auto-detect platform based on environment
  */
 function detectPlatform(): string {
-    if (typeof wx !== 'undefined' && wx.getSystemInfo) {
+    if (typeof wx !== "undefined" && wx.getSystemInfo) {
         return "wechat";
     }
-    if (typeof tt !== 'undefined' && tt.getSystemInfo) {
+    if (typeof tt !== "undefined" && tt.getSystemInfo) {
         return "dou-yin";
     }
-    if (typeof ks !== 'undefined' && ks.getSystemInfo) {
+    if (typeof ks !== "undefined" && ks.getSystemInfo) {
         return "kuai-shou";
     }
-    if (typeof navigator !== 'undefined') {
+    if (typeof navigator !== "undefined") {
         const userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes('bilibili')) {
+        if (userAgent.includes("bilibili")) {
             return "bilibili";
         }
-        if (userAgent.includes('huawei') || userAgent.includes('honor')) {
+        if (userAgent.includes("huawei") || userAgent.includes("honor")) {
             return "hua-wei";
         }
-        if (userAgent.includes('oppo')) {
+        if (userAgent.includes("oppo")) {
             return "oppo";
         }
-        if (userAgent.includes('google') || userAgent.includes('android')) {
+        if (userAgent.includes("google") || userAgent.includes("android")) {
             return "google";
         }
-        if (userAgent.includes('minigame') || userAgent.includes('minigame')) {
+        if (userAgent.includes("minigame") || userAgent.includes("minigame")) {
             return "minigame";
         }
     }

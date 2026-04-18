@@ -28,16 +28,18 @@ export class MiniGameSDK extends CleverSdk {
     }
 
     /**
-     * 
+     *
      * @param config 初始化
-     * @returns 
+     * @returns
      */
     async initialize(config: minigameInitialize): Promise<boolean> {
         this.sdk_login_url =
             config.sdk_login_url ??
             "https://api.salesagent.cc/game-analyzer/player/login";
 
-        const sdkUrl = config.sdk_script_url ?? "https://sdk.minigame.vip/js/1.1.1/minigame.js";
+        const sdkUrl =
+            config.sdk_script_url ??
+            "https://sdk.minigame.vip/js/1.1.1/minigame.js";
 
         // H5/浏览器环境下需要动态加载SDK脚本
         if (typeof minigame === "undefined") {
@@ -83,7 +85,9 @@ export class MiniGameSDK extends CleverSdk {
      * 播放激励视频广告
      */
     // https://business.minigame.com/developers/zh/docs/cocos-creatorchajiansdkjieruzhinan#%E5%B9%BF%E5%91%8A
-    public override async playRewardedVideo(_adInfo: any,): Promise<VideoReward> {
+    public override async playRewardedVideo(
+        _adInfo: any,
+    ): Promise<VideoReward> {
         return new Promise((resolve) => {
             if (!this.isInited) {
                 console.log("===> minigame未初始化");
@@ -293,7 +297,8 @@ export class MiniGameSDK extends CleverSdk {
             script.async = async;
             script.src = src;
             script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+            script.onerror = () =>
+                reject(new Error(`Failed to load script: ${src}`));
             document.head.appendChild(script);
         });
     }
