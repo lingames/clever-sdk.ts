@@ -11,7 +11,7 @@ import {
 } from "./platformMini";
 import { M4399Sdk } from "./platformNative";
 import { CleverSdk } from "./CleverSdk.js";
-import { AdSenseSdk, MockSdk } from "./platformH5";
+import { AdSenseSdk, MiniGameSDK, MockSdk } from "./platformH5";
 import { DynamicSdkConfig } from "./models";
 
 export { CleverSdk };
@@ -85,6 +85,13 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         });
         return sdk;
     }
+    if (platform == "minigame") {
+        let sdk = new MiniGameSDK(platform, config.project_id, gameId);
+        await sdk.initialize({
+            sdk_login_url: config.sdk_login_url,
+        });
+        return sdk;
+    }
     if (platform == "mock") {
         let sdk = new MockSdk(
             platform,
@@ -121,6 +128,8 @@ function getPlatformGameId(config: DynamicSdkConfig, platform: string): string {
             return config.oppo_game_id || config.game_id || "";
         case "google":
             return config.google_game_id || config.game_id || "";
+        case "minigame":
+            return config.minigame_game_id || config.game_id || "";
         default:
             return config.game_id || "";
     }
@@ -152,6 +161,9 @@ function detectPlatform(): string {
         }
         if (userAgent.includes('google') || userAgent.includes('android')) {
             return "google";
+        }
+        if (userAgent.includes('minigame') || userAgent.includes('minigame')) {
+            return "minigame";
         }
     }
     return "mock";

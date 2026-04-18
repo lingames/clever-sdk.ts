@@ -41,6 +41,7 @@ export class SdkManager {
                 wx_game_id: "wxaca03d90e8b6d2af",
                 ks_game_id: "ks689050744914449252",
                 tt_game_id: "tta451d2ec3b5c55fb02",
+                minigame_game_id: "",
                 // 用于单平台，已明确不同游戏平台 id 时，此项可省略
                 game_id: "",
             });
