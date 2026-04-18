@@ -2,7 +2,8 @@ export type ShareAppMessage =
     | {}
     | wxShareAppMessage
     | ttShareAppMessage
-    | ksShareAppMessage;
+    | ksShareAppMessage
+    | minigameShareAppMessage;
 
 export interface wxShareAppMessage {
     /** 转发标题，不传则默认使用当前小游戏的昵称。 */
@@ -45,6 +46,18 @@ export interface ttShareAppMessage {
 
     /** 独立分包路径。详见 小游戏独立分包指南 */
     path?: string;
+}
+
+/** 微游Minigame分享参数 */
+export interface minigameShareAppMessage {
+    /** 要分享的图像，使用 base64 编码 */
+    image: string;
+    /** 要分享的文字 */
+    text: string;
+    /** 附加到分享上的数据 */
+    data?: Object;
+    /** gif 或者 video 媒体内容 */
+    media?: { gif?: { url: string }; video?: { url: string } };
 }
 
 // https://ks-game-docs.kuaishou.com/minigame/api/open/repost/ks.shareAppMessage.html#%E5%8F%82%E6%95%B0

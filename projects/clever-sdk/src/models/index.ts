@@ -17,6 +17,7 @@ export type MyConfig = {
     hw_game_id?: string;
     oppo_game_id?: string;
     google_game_id?: string;
+    minigame_game_id?: string;
 };
 
 export const EventEndPoint = "https://api.salesagent.cc/game-logger/event";
