@@ -88,7 +88,6 @@ bannerAd.onError((err: any) => {
 });
 ```
 
-
 ### 展示 Banner 广告
 
 ```ts
