@@ -11,6 +11,7 @@ declare global {
             adConfig: (config: any) => void;
             adBreak: (config: any) => void;
             athenaSend: (event: string, ...params: any[]) => void;
+            gameLoadingCompleted?: () => void;
         };
     }
 }
@@ -20,42 +21,49 @@ declare global {
 export class AhagameSdk extends CleverSdk {
     initialize(config: ggInitialize): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            const script = document.createElement('script');
+            const script = document.createElement("script");
             script.async = true;
-            script.src = 'https://www.hippoobox.com/static/sdk/adsdk_1.5.0.0.js';
-            script.crossOrigin = 'anonymous';
-            script.referrerPolicy = 'no-referrer';
+            script.src = "https://www.hippoobox.com/static/sdk/adsdk_1.8.0.0.js";
+            // 不要设置 crossOrigin：设为 anonymous 时浏览器按 CORS 拉取脚本，hippoobox 未对 localhost 返回 ACAO，Creator 预览 (localhost:7456) 会整包失败。
+            script.referrerPolicy = "no-referrer";
             // 将 script 元素插入到文档中
             document.body.appendChild(script);
             script.onload = function () {
                 // @ts-ignore
                 if (window.h5sdk) {
-                    const options = {
-                        "ga": {
-                            "id": config.gaId || ""
+                    const adsense: Record<string, unknown> = {
+                        client: config.adSenseId || "",
+                        "data-ad-frequency-hint": config.adFrequencyHint || "45s",
+                        "data-ad-channel": config.adChannel || "",
+                        pauseCallback: config.pauseCallback || (() => {}),
+                        resumeCallback: config.resumeCallback || (() => {}),
+                        callback: () => {
+                            console.log("Ahagame SDK initialized");
+                            window.h5sdk.adConfig({
+                                preloadAdBreaks: "on",
+                                sound: "on",
+                                onReady: () => {
+                                    console.log("Ahagame Ad onReady");
+                                },
+                            });
                         },
-                        "adsense": {
-                            "client": config.adSenseId || "",
-                            "data-ad-frequency-hint": config.adFrequencyHint || "45s",
-                            "data-ad-channel": config.adChannel || "",
-                            "pauseCallback": config.pauseCallback || (() => {}),
-                            "resumeCallback": config.resumeCallback || (() => {}),
-                            "callback": () => {
-                                console.log('Ahagame SDK initialized');
-                                // 初始化广告配置
-                                window.h5sdk.adConfig({
-                                    preloadAdBreaks: "on",
-                                    sound: "on",
-                                    onReady: () => {
-                                        console.log('Ahagame Ad onReady');
-                                    },
-                                });
-                            },
-                        }
                     };
-                    
-                    // 初始化SDK
+                    if (config.adBreakTest === true) {
+                        adsense["data-adbreak-test"] = "on";
+                    }
+                    const options = {
+                        ga: {
+                            id: config.gaId || "",
+                        },
+                        adsense,
+                    };
+
                     window.h5sdk.init(config.appKey || "", "", "", "", "", options);
+                    try {
+                        window.h5sdk.gameLoadingCompleted?.();
+                    } catch {
+                        /* ignore */
+                    }
                     resolve(true);
                 } else {
                     resolve(false);

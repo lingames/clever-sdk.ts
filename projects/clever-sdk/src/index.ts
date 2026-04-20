@@ -83,6 +83,7 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
             gaId: ahagameInit.gaId || '',
             adFrequencyHint: ahagameInit.adFrequencyHint || '45s',
             adChannel: ahagameInit.adChannel || '',
+            adBreakTest: ahagameInit.adBreakTest,
             pauseCallback: ahagameInit.pauseCallback,
             resumeCallback: ahagameInit.resumeCallback
         });

@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@lingames/clever-sdk':
+        specifier: workspace:*
+        version: link:projects/clever-sdk
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.11

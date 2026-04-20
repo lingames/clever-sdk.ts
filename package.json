@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Monorepo for Clever SDK and Clever Test projects",
   "private": true,
+  "dependencies": {
+    "@lingames/clever-sdk": "workspace:*"
+  },
   "workspaces": [
     "projects/*"
   ],
