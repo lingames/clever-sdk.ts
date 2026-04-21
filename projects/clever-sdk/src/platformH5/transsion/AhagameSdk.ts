@@ -1,7 +1,8 @@
-//* 传音平台 */
-import {ggCreateRewardedVideoAd, VideoReward} from '../models/PlayRewardedVideo';
-import {ggInitialize} from '../models/SdkInitialize.js';
-import {CleverSdk} from '../CleverSdk';
+//* 传音 / Dlightek H5（Ahagame h5sdk）— 见 docs/transsion-ads.md */
+import { ggCreateRewardedVideoAd, VideoReward } from "../../models/PlayRewardedVideo";
+import { ggInitialize } from "../../models/SdkInitialize.js";
+import { CleverSdk } from "../../CleverSdk";
+import { TRANSSION_ADSDK_SCRIPT_URL } from "./constants.js";
 
 // 扩展Window接口以支持h5sdk
 declare global {
@@ -23,7 +24,7 @@ export class AhagameSdk extends CleverSdk {
         return new Promise<boolean>((resolve, reject) => {
             const script = document.createElement("script");
             script.async = true;
-            script.src = "https://www.hippoobox.com/static/sdk/adsdk_1.8.0.0.js";
+            script.src = TRANSSION_ADSDK_SCRIPT_URL;
             // 不要设置 crossOrigin：设为 anonymous 时浏览器按 CORS 拉取脚本，hippoobox 未对 localhost 返回 ACAO，Creator 预览 (localhost:7456) 会整包失败。
             script.referrerPolicy = "no-referrer";
             // 将 script 元素插入到文档中
