@@ -69,9 +69,62 @@ export const zhHans: DefaultTheme.Config = {
                     },
                     {
                         text: "小游戏 ID 申请",
-                        link: "/zh-hans/cocos/game-id-application/index",
+                        link: "/zh-hans/cocos/game-config/index",
                     },
-                    { text: "常见问题", link: "/zh-hans/cocos/faq/index" },
+                    {
+                        text: "各平台渠道",
+                        link: "/zh-hans/cocos/game-config/adapter",
+                        items: [
+                            {
+                                text: "微信小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/wechat",
+                            },
+                            {
+                                text: "抖音小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/douyin",
+                            },
+                            {
+                                text: "Tiktok小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/tiktok",
+                            },
+                            {
+                                text: "快手小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/kuaishou",
+                            },
+                            {
+                                text: "Bilibili小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/bilibili",
+                            },
+                            {
+                                text: "Oppo小游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/oppo",
+                            },
+                            {
+                                text: "华为快游戏",
+                                link: "/zh-hans/cocos/game-config/platformMini/huawei",
+                            },
+                            {
+                                text: "谷歌H5",
+                                link: "/zh-hans/cocos/game-config/platformH5/adsense",
+                            },
+                            {
+                                text: "传音H5",
+                                link: "/zh-hans/cocos/game-config/platformH5/ahagame",
+                            },
+                            {
+                                text: "微游H5",
+                                link: "/zh-hans/cocos/game-config/platformH5/minigame",
+                            },
+                            {
+                                text: "4399",
+                                link: "/zh-hans/cocos/game-config/platformNative/m4399",
+                            },
+                        ],
+                    },
+                    {
+                        text: "常见问题",
+                        link: "/zh-hans/cocos/faq/index"
+                    },
                 ],
             },
         ],

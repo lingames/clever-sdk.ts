@@ -1,4 +1,5 @@
-export type CreateBannerAd = wxCreateBannerAd &
+export type CreateBannerAd =
+    wxCreateBannerAd &
     ksCreateBannerAd &
     qgCreateBannerAd;
 
@@ -21,6 +22,14 @@ export interface ksCreateBannerAd {
 export interface qgCreateBannerAd {
     // 广告单元 id
     adUnitId: string;
+    style?: BannerStyle;
+}
+
+export interface dyCreateBannerAd {
+    // 广告单元 id
+    adUnitId: string;
+    // 广告自动刷新的间隔时间，单位为秒，参数值必须大于等于 30（该参数不传入时 Banner 广告不会自动刷新）
+    adIntervals?: number;
     style?: BannerStyle;
 }
 

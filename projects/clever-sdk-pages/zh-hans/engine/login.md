@@ -9,7 +9,7 @@
 2. 点击页面右上角的"登录"按钮
 3. 或者直接访问[登录页面](https://data.lingame.cn/login)
 
-![img.png](/img.png)
+![login-page.png](./login-page.png)
 
 ### 登录页面界面说明
 - **选项卡切换**：页面顶部有"账号登录"和"邮箱登录"两个选项卡

@@ -28,7 +28,6 @@ declare global {
 }
 
 // @ts-ignore
-
 export class AhagameSdk extends CleverSdk {
     initialize(config: ggInitialize): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
