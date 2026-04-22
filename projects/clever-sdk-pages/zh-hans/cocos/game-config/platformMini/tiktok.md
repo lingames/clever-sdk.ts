@@ -1,22 +1,22 @@
-# 抖音小游戏适配器
+# Tiktok 小游戏适配器
 
-抖音小游戏适配器通过 `dy` 全局对象调用抖音平台 API，提供登录、广告、分享、侧边栏、桌面快捷方式等功能。
+Tiktok 小游戏适配器通过 `tt` 全局对象调用 Tiktok 平台 API，提供登录、广告、分享、侧边栏、桌面快捷方式等功能。
 
 ## 类定义
 
 ```ts
-import { DouyinSDK } from "@lingames/clever-sdk/src/platformMini/DouyinSDK.js";
+import { TiktokSDK } from "@lingames/clever-sdk/src/platformMini/TiktokSDK.js";
 
-const sdk = new DouyinSDK(platform, project_id, game_id);
+const sdk = new TiktokSDK(platform, project_id, game_id);
 ```
 
-- **全局对象**: `dy`
+- **全局对象**: `tt`
 - **继承**: `CleverSdk`
 
 ## 初始化
 
 ```ts
-interface dyInitialize {
+interface ttInitialize {
     sdk_login_url?: string;
 }
 
@@ -33,22 +33,21 @@ const data = await sdk.login();
 
 **登录流程**:
 
-1. 调用 `dy.login({ force: false })` 获取临时登录凭证 `code`
-2. 将 `code` 连同 `platform: "dou-yin"`、`project_id` 发送到 SDK 登录服务器
+1. 调用 `tt.login({ force: false })` 获取临时登录凭证 `code`
+2. 将 `code` 连同 `platform: "tik-tok"`、`project_id` 发送到 SDK 登录服务器
 3. 服务器返回 `session_key`，SDK 自动保存
 
-> 参考: [dy.request](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request)
+> 参考: [tt.login](https://developers.tiktok.com/doc/mini-games-sdk-login)
 
 ## 激励视频广告
 
 ```ts
 interface ttCreateRewardedVideoAd {
     adUnitId?: string;           // 通用广告单元 ID
-    ttUnitId?: string;           // 抖音专用广告 ID
+    ttUnitId?: string;           // Tiktok 专用广告 ID
     multiton?: boolean;          // 是否开启再得广告模式
     multitonMessage?: string[];  // 再得广告奖励文案，单个最长 7 字符
     multitonTimes?: 1|2|3|4;     // 额外观看次数（1-4）
-    // progressTip?: boolean;       // 是否开启进度提醒
 }
 
 const reward = await sdk.playRewardedVideo({
@@ -62,12 +61,12 @@ const reward = await sdk.playRewardedVideo({
 
 **再得广告模式**: 开启后，用户看完广告可继续观看获取额外奖励，`multitonMessage` 按顺序展示文案。
 
-> 参考: [dy.createRewardedVideoAd](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad)
+> 参考: [tt.createRewardedVideoAd](https://developers.tiktok.com/doc/mini-games-sdk-ad-create-rewarded-video-ad)
 
 ## Banner 广告
 
 ```ts
-interface dyCreateBannerAd {
+interface ttCreateBannerAd {
     adUnitId: string;      // 广告单元 ID
     adIntervals?: number;  // 自动刷新间隔（秒），>= 30
     style?: BannerStyle;   // 广告样式
@@ -80,12 +79,12 @@ await sdk.createBannerAd({
 });
 ```
 
-> 参考: [dy.createBannerAd](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-banner-ad)
+> 参考: [tt.createBannerAd](https://developers.tiktok.com/doc/mini-games-sdk-ad-create-banner-ad)
 
 ## 分享
 
 ```ts
-interface dyShareAppMessage {
+interface ttShareAppMessage {
     title?: string;         // 转发标题
     description?: string;   // 分享文案
     imageUrl?: string;      // 转发图片链接
@@ -102,7 +101,7 @@ const success = await sdk.shareAppMessage({
 });
 ```
 
-> 参考: [dy.shareAppMessage](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/retweet/tt-share-app-message)
+> 参考: [tt.shareAppMessage](https://developers.tiktok.com/doc/mini-games-sdk-share-app-message)
 
 ## 侧边栏检测
 
@@ -116,7 +115,7 @@ const result = await sdk.checkScene();
 // result.isSupport === true && result.isScene === true 表示从侧边栏进入
 ```
 
-> 参考: [dy.checkScene](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/sidebar-capacity/tt-check-scene)
+> 参考: [tt.checkScene](https://developers.tiktok.com/doc/mini-games-sdk-check-scene)
 
 ## 桌面快捷方式
 
@@ -129,7 +128,7 @@ const status = await sdk.checkShortcut();
 // status.needUpdate — 是否需要更新
 ```
 
-> 参考: [dy.checkShortcut](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/check-shortcut)
+> 参考: [tt.checkShortcut](https://developers.tiktok.com/doc/mini-games-sdk-check-shortcut)
 
 ### 添加到桌面
 
@@ -139,7 +138,7 @@ await sdk.addShortcut({
 });
 ```
 
-> 参考: [dy.addShortcut](https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut)
+> 参考: [tt.addShortcut](https://developers.tiktok.com/doc/mini-games-sdk-add-shortcut)
 
 ## 设为常用
 
@@ -149,7 +148,7 @@ await sdk.addCommonUse();
 
 ## 事件上报
 
-抖音适配器重写了 `reportEvent`，直接通过 `dy.request` 发送事件到上报服务器：
+Tiktok 适配器重写了 `reportEvent`，直接通过 `tt.request` 发送事件到上报服务器：
 
 ```ts
 await sdk.reportEvent("event_id", { key: "value" });

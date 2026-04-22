@@ -9,6 +9,7 @@ CleverSdk (基类)
 ├── platformMini/
 │   ├── WeChatSdk      微信小游戏
 │   ├── DouyinSDK      抖音小游戏
+│   ├── TiktokSDK      Tiktok小游戏
 │   ├── KuaiShouSdk    快手小游戏
 │   ├── HuaweiSdk      华为快游戏
 │   ├── OppoSdk        OPPO 小游戏
@@ -27,21 +28,22 @@ CleverSdk (基类)
 ## 完整目录
 
 ### 小游戏平台
-- **[微信小游戏](platformMini/wechat.md)** — wx 全局对象，支持登录、激励视频、Banner 广告、分享、用户信息
-- **[抖音小游戏](platformMini/douyin.md)** — tt 全局对象，支持登录、激励视频、Banner 广告、分享、侧边栏、桌面快捷方式
-- **[快手小游戏](platformMini/kuaishou.md)** — ks 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
-- **[华为快游戏](platformMini/huawei.md)** — qg 全局对象，支持登录、激励视频、Banner 广告
-- **[OPPO 小游戏](platformMini/oppo.md)** — qg 全局对象，支持登录、激励视频、Banner 广告、原生广告
-- **[B 站小游戏](platformMini/bilibili.md)** — 继承基类默认实现
+- **[微信小游戏](./platformMini/wechat.md)** — wx 全局对象，支持登录、激励视频、Banner 广告、分享、用户信息
+- **[抖音小游戏](./platformMini/douyin.md)** — dy 全局对象，支持登录、激励视频、Banner 广告、分享、侧边栏、桌面快捷方式
+- **[Tiktok小游戏](./platformMini/tiktok.md)** — tt 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
+- **[快手小游戏](./platformMini/kuaishou.md)** — ks 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
+- **[华为快游戏](./platformMini/huawei.md)** — qg 全局对象，支持登录、激励视频、Banner 广告
+- **[OPPO 小游戏](./platformMini/oppo.md)** — qg 全局对象，支持登录、激励视频、Banner 广告、原生广告
+- **[B 站小游戏](./platformMini/bilibili.md)** — 继承基类默认实现
 
 ### H5 平台
-- **[Google AdSense](platformH5/adsense.md)** — 动态加载 AdSense 脚本，支持激励视频、显示/隐藏 Banner
-- **[传音 Ahagame](platformH5/ahagame.md)** — h5sdk 全局对象，支持激励视频、插屏广告、Banner 广告、Athena 埋点上报
-- **[微游 Minigame](platformH5/minigame.md)** — minigame 全局对象，支持登录、激励视频、插屏广告、Banner 广告、分享、桌面快捷方式、事件上报
-- **[Mock 测试](platformH5/mock.md)** — 开发调试用，模拟登录和广告返回
+- **[Google AdSense](./platformH5/adsense.md)** — 动态加载 AdSense 脚本，支持激励视频、显示/隐藏 Banner
+- **[传音 Ahagame](./platformH5/ahagame.md)** — h5sdk 全局对象，支持激励视频、插屏广告、Banner 广告、Athena 埋点上报
+- **[微游 Minigame](./platformH5/minigame.md)** — minigame 全局对象，支持登录、激励视频、插屏广告、Banner 广告、分享、桌面快捷方式、事件上报
+- **[Mock 测试](./platformH5/mock.md)** — 开发调试用，模拟登录和广告返回
 
 ### 原生平台
-- **[4399 APK](platformNative/m4399.md)** — jsb.reflection 桥接 Java 层，支持初始化和登录
+- **[4399 APK](./platformNative/m4399.md)** — jsb.reflection 桥接 Java 层，支持初始化和登录
 
 ---
 

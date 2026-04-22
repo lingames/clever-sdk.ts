@@ -1,6 +1,7 @@
 export type SdkInitialize =
     | {}
     | wxInitialize
+    | dyInitialize
     | ttInitialize
     | ksInitialize
     | ggInitialize
@@ -9,6 +10,10 @@ export type SdkInitialize =
     | minigameInitialize;
 
 export interface m4399Initialize {
+    sdk_login_url?: string;
+}
+
+export interface dyInitialize {
     sdk_login_url?: string;
 }
 
