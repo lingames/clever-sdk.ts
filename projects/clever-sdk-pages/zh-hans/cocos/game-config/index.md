@@ -6,25 +6,37 @@
 
 首先，你需要确定你的游戏将发布到哪些小游戏平台。常见的小游戏平台包括：
 
-* **微信小游戏**
-* **抖音小游戏**
-* **快手小游戏**
-* **Bilibili 小游戏**
-* **OPPO 小游戏**
-* **华为快游戏**
-* **Google Play Instant (H5)**
+### 原生平台
+* [4399 (APP)](./platformNative/m4399.md)
+
+### 小游戏平台
+* [微信小游戏](./platformMini/wechat.md)
+* [抖音小游戏](./platformMini/douyin.md)
+* [快手小游戏](./platformMini/kuaishou.md)
+* [Bilibili 小游戏](./platformMini/bilibili.md)
+* [OPPO 小游戏](./platformMini/oppo.md)
+* [华为快游戏](./platformMini/huawei.md)
+
+### H5 平台
+* [Google AdSense (H5)](./platformH5/adsense.md)
+* [传音 Ahagame (H5)](./platformH5/ahagame.md)
+* [微游 Minigame (H5)](./platformH5/minigame.md)
+* [Mock 测试 (H5)](./platformH5/mock.md)
 
 ## 2. 注册开发者账号
 
 在选择的每个小游戏平台注册开发者账号。这通常需要提供企业或个人身份信息进行实名认证。
 
-* **微信公众平台**: <mcurl name="https://mp.weixin.qq.com/" url="https://mp.weixin.qq.com/"></mcurl>
-* **抖音开放平台**: <mcurl name="https://developer.open-douyin.com/" url="https://developer.open-douyin.com/"></mcurl>
-* **快手开放平台**: <mcurl name="https://open.kuaishou.com/" url="https://open.kuaishou.com/"></mcurl>
-* **Bilibili 开放平台**: <mcurl name="https://open.bilibili.com/" url="https://open.bilibili.com/"></mcurl>
-* **OPPO 开放平台**: <mcurl name="https://open.oppomobile.com/" url="https://open.oppomobile.com/"></mcurl>
-* **华为开发者联盟**: <mcurl name="https://developer.huawei.com/" url="https://developer.huawei.com/"></mcurl>
-* **Google AdSense**: <mcurl name="https://www.google.com/adsense/" url="https://www.google.com/adsense/"></mcurl>
+* **微信公众平台**: [https://mp.weixin.qq.com/](https://mp.weixin.qq.com/)
+* **抖音开放平台**: [https://developer.open-douyin.com/](https://developer.open-douyin.com/)
+* **快手开放平台**: [https://open.kuaishou.com/](https://open.kuaishou.com/)
+* **Bilibili 开放平台**: [https://open.bilibili.com/](https://open.bilibili.com/)
+* **OPPO 开放平台**: [https://open.oppomobile.com/](https://open.oppomobile.com/)
+* **华为开发者联盟**: [https://developer.huawei.com/](https://developer.huawei.com/)
+* **Google AdSense**: [https://www.google.com/adsense/](https://www.google.com/adsense/)
+* **4399 开放平台**: [https://open.4399.cn/](https://open.4399.cn/)
+* **传音 Dlightek**: [https://dev.dlightek.com/](https://dev.dlightek.com/)
+* **微游 Minigame**: [https://developers.minigame.com/zh](https://developers.minigame.com/zh)
 
 ## 3. 创建游戏应用
 
@@ -47,7 +59,12 @@
 * **微信小游戏**: `AppID` (以 `wx` 开头)
 * **抖音小游戏**: `Client Key` 或 `AppID`
 * **快手小游戏**: `App ID`
+* **华为快游戏**: `App ID`
+* **OPPO 小游戏**: `App ID`
+* **4399 APP**: `Game ID` + `SDK Key`
 * **Google AdSense**: `Publisher ID` (以 `ca-pub-` 开头)
+* **传音 Ahagame**: `App Key`
+* **微游 Minigame**: 通过平台后台自动分配
 
 ## 5. 配置 Clever SDK
 

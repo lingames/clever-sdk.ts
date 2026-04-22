@@ -69,7 +69,13 @@ export const zhHans: DefaultTheme.Config = {
                     },
                     {
                         text: "小游戏 ID 申请",
-                        link: "/zh-hans/cocos/game-id-application/index",
+                        link: "/zh-hans/cocos/game-config/index",
+                        items: [
+                            {
+                                text: "平台SDK适配",
+                                link: "/zh-hans/cocos/game-config/adapter",
+                            },
+                        ],
                     },
                     { text: "常见问题", link: "/zh-hans/cocos/faq/index" },
                 ],
