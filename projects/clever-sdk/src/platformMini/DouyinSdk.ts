@@ -1,16 +1,12 @@
 import { CleverSdk } from "../CleverSdk.js";
-import {
-    dyCreateRewardedVideoAd,
-    VideoReward,
-} from "../models/PlayRewardedVideo";
+import { dyCreateRewardedVideoAd, VideoReward } from "../models/PlayRewardedVideo";
 import { dyCreateBannerAd } from "../models/CreateBannerAd";
 import { dyInitialize } from "../models/SdkInitialize";
 import { dyAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ShareAppMessage, dyShareAppMessage } from "../models/ShareAppMessage";
 
-// @ts-ignore
-const tt = typeof globalThis.tt !== "undefined" ? globalThis.tt : undefined;
+const tt = (globalThis as any).tt;
 
 interface CheckSceneResult {
     isSupport: boolean;
@@ -22,9 +18,7 @@ export class DouyinSdk extends CleverSdk {
     private bannerAd: any = null;
 
     async initialize(config: dyInitialize): Promise<boolean> {
-        this.sdk_login_url =
-            config.sdk_login_url ??
-            "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
         console.info("抖音全局对象:", tt);
         return true;
     }
@@ -208,10 +202,7 @@ export class DouyinSdk extends CleverSdk {
         });
     }
 
-    async reportEvent(
-        id: string,
-        custom: Record<string, any>,
-    ): Promise<boolean> {
+    async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {
         return tt.request({
             url: "https://api.salesagent.cc/game-logger/event",
             method: "POST",

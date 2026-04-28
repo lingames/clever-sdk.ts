@@ -1,8 +1,5 @@
 import { CleverSdk } from "../CleverSdk.js";
-import {
-    ttCreateRewardedVideoAd,
-    VideoReward,
-} from "../models/PlayRewardedVideo";
+import { ttCreateRewardedVideoAd, VideoReward } from "../models/PlayRewardedVideo";
 import { ttCreateBannerAd } from "../models/CreateBannerAd";
 import { ttCreateInterstitialAd } from "../models/CreateInterstitialAd";
 import { ttInitialize } from "../models/SdkInitialize";
@@ -13,7 +10,7 @@ import { EventEndPoint } from "../models";
 import { CreateNativeAd } from "../models/CreateNativeAd";
 
 // @ts-ignore
-const TTMinis = typeof globalThis.TTMinis !== "undefined" ? globalThis.TTMinis : undefined;
+const TTMinis = (globalThis as any).TTMinis;
 
 interface CheckSceneResult {
     isSupport: boolean;
@@ -26,9 +23,7 @@ export class TiktokSdk extends CleverSdk {
     private interstitialAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
-        this.sdk_login_url =
-            config.sdk_login_url ??
-            "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
         console.info("TikTok 全局对象:", TTMinis);
         return true;
     }
@@ -233,10 +228,7 @@ export class TiktokSdk extends CleverSdk {
         });
     }
 
-    async reportEvent(
-        id: string,
-        custom: Record<string, any>,
-    ): Promise<boolean> {
+    async reportEvent(id: string, custom: Record<string, any>): Promise<boolean> {
         return TTMinis.request({
             url: EventEndPoint,
             method: "POST",
