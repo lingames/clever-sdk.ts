@@ -241,25 +241,9 @@ const sdk = await createSdk(mockConfig);
 - **控制台日志**: 详细的操作日志，方便调试
 - **可配置行为**: 可以调整成功率、延迟时间等参数
 
-### 7.3 动态配置 Mock 行为
 
-```ts
-// 获取 Mock SDK 实例
-const mockSdk = (window as any).mySdk;
 
-// 动态调整 Mock 配置
-mockSdk.configureMock({
-    mockAdSuccessRate: 0.5,        // 调整广告成功率为 50%
-    mockAdDelay: 1000,             // 调整延迟为 1 秒
-    enableConsoleLog: false        // 关闭控制台日志
-});
-
-// 获取当前 Mock 配置
-const currentConfig = mockSdk.getMockConfig();
-console.log('当前 Mock 配置:', currentConfig);
-```
-
-### 7.4 Mock 平台优势
+### 7.3 Mock 平台优势
 
 1. **快速开发**: 无需依赖真实平台环境，可以快速进行功能开发
 2. **功能测试**: 可以模拟各种成功/失败场景，全面测试应用逻辑

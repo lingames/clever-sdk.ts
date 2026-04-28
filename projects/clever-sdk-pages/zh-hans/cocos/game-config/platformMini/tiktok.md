@@ -1,16 +1,16 @@
-# Tiktok 小游戏适配器
+# TikTok 小游戏适配器
 
-Tiktok 小游戏适配器通过 `tt` 全局对象调用 Tiktok 平台 API，提供登录、广告、分享、侧边栏、桌面快捷方式等功能。
+TikTok 小游戏适配器通过 `tt` 全局对象调用 TikTok 平台 API，提供登录、广告、分享、侧边栏、桌面快捷方式等功能。
 
 ## 类定义
 
 ```ts
-import { TiktokSDK } from "@lingames/clever-sdk/src/platformMini/TiktokSDK.js";
+import { TiktokSdk } from "@lingames/clever-sdk/src/platformMini/TiktokSdk.js";
 
-const sdk = new TiktokSDK(platform, project_id, game_id);
+const sdk = new TiktokSdk(platform, project_id, game_id);
 ```
 
-- **全局对象**: `tt`
+- **全局对象**: `TTMinis`
 - **继承**: `CleverSdk`
 
 ## 初始化
@@ -33,18 +33,18 @@ const data = await sdk.login();
 
 **登录流程**:
 
-1. 调用 `tt.login({ force: false })` 获取临时登录凭证 `code`
+1. 调用 `TTMinis.login({ force: false })` 获取临时登录凭证 `code`
 2. 将 `code` 连同 `platform: "tik-tok"`、`project_id` 发送到 SDK 登录服务器
 3. 服务器返回 `session_key`，SDK 自动保存
 
-> 参考: [tt.login](https://developers.tiktok.com/doc/mini-games-sdk-login)
+> 参考: [TTMinis.login](https://developers.tiktok.com/doc/mini-games-sdk-login)
 
 ## 激励视频广告
 
 ```ts
 interface ttCreateRewardedVideoAd {
     adUnitId?: string;           // 通用广告单元 ID
-    ttUnitId?: string;           // Tiktok 专用广告 ID
+    ttUnitId?: string;           // TikTok 专用广告 ID
     multiton?: boolean;          // 是否开启再得广告模式
     multitonMessage?: string[];  // 再得广告奖励文案，单个最长 7 字符
     multitonTimes?: 1|2|3|4;     // 额外观看次数（1-4）
@@ -61,7 +61,7 @@ const reward = await sdk.playRewardedVideo({
 
 **再得广告模式**: 开启后，用户看完广告可继续观看获取额外奖励，`multitonMessage` 按顺序展示文案。
 
-> 参考: [tt.createRewardedVideoAd](https://developers.tiktok.com/doc/mini-games-sdk-ad-create-rewarded-video-ad)
+> 参考: [TTMinis.game.createRewardedVideoAd](https://developers.tiktok.com/doc/mini-games-sdk-iaa)
 
 ## Banner 广告
 
@@ -79,7 +79,23 @@ await sdk.createBannerAd({
 });
 ```
 
-> 参考: [tt.createBannerAd](https://developers.tiktok.com/doc/mini-games-sdk-ad-create-banner-ad)
+> 参考: [TTMinis.game.createBannerAd](https://developers.tiktok.com/doc/mini-games-sdk-iaa)
+
+## 插屏广告
+
+```ts
+interface ttCreateInterstitialAd {
+    adUnitId?: string;  // 通用广告单元 ID
+    ttUnitId?: string;  // Tiktok 专用广告 ID（优先）
+}
+
+const result = await sdk.showInterstitialAd({
+    ttUnitId: "your_tt_interstitial_id"
+});
+// result.isEnded === true 表示展示成功
+```
+
+> 参考: `TTMinis.game.createInterstitialAd` / `InterstitialAd.show`
 
 ## 分享
 
@@ -101,7 +117,7 @@ const success = await sdk.shareAppMessage({
 });
 ```
 
-> 参考: [tt.shareAppMessage](https://developers.tiktok.com/doc/mini-games-sdk-share-app-message)
+> 参考: [TTMinis.shareAppMessage](https://developers.tiktok.com/doc/mini-games-sdk-share-app-message)
 
 ## 侧边栏检测
 
@@ -115,7 +131,7 @@ const result = await sdk.checkScene();
 // result.isSupport === true && result.isScene === true 表示从侧边栏进入
 ```
 
-> 参考: [tt.checkScene](https://developers.tiktok.com/doc/mini-games-sdk-check-scene)
+> 参考: [TTMinis.checkScene](https://developers.tiktok.com/doc/mini-games-sdk-check-scene)
 
 ## 桌面快捷方式
 
@@ -128,7 +144,7 @@ const status = await sdk.checkShortcut();
 // status.needUpdate — 是否需要更新
 ```
 
-> 参考: [tt.checkShortcut](https://developers.tiktok.com/doc/mini-games-sdk-check-shortcut)
+> 参考: [TTMinis.checkShortcut](https://developers.tiktok.com/doc/mini-games-sdk-check-shortcut)
 
 ### 添加到桌面
 
@@ -138,7 +154,7 @@ await sdk.addShortcut({
 });
 ```
 
-> 参考: [tt.addShortcut](https://developers.tiktok.com/doc/mini-games-sdk-add-shortcut)
+> 参考: [TTMinis.addShortcut](https://developers.tiktok.com/doc/mini-games-sdk-add-shortcut)
 
 ## 设为常用
 
@@ -148,7 +164,7 @@ await sdk.addCommonUse();
 
 ## 事件上报
 
-Tiktok 适配器重写了 `reportEvent`，直接通过 `tt.request` 发送事件到上报服务器：
+TikTok 适配器重写了 `reportEvent`，直接通过 `TTMinis.request` 发送事件到上报服务器：
 
 ```ts
 await sdk.reportEvent("event_id", { key: "value" });

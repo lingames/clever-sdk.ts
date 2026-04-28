@@ -51,8 +51,9 @@ export class AdSenseSdk extends CleverSdk {
     playRewardedVideo(adInfo: ggCreateRewardedVideoAd): Promise<VideoReward> {
         return new Promise((resolve, reject) => {
             // @ts-ignore
-            window["adBreak"] &&
-                window["adBreak"]({
+            const adBreak = (window as any)["adBreak"];
+            adBreak &&
+                adBreak({
                     // ad shows at start of next level
                     type: "reward",
                     name: "restart-game",

@@ -9,15 +9,15 @@ import { dyAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ShareAppMessage, dyShareAppMessage } from "../models/ShareAppMessage";
 
-// 抖音全局对象
-export declare const dy: any;
+// @ts-ignore
+const tt = typeof globalThis.tt !== "undefined" ? globalThis.tt : undefined;
 
 interface CheckSceneResult {
     isSupport: boolean;
     isScene: boolean;
 }
 
-export class DouyinSDK extends CleverSdk {
+export class DouyinSdk extends CleverSdk {
     private videoAd: any = null;
     private bannerAd: any = null;
 
@@ -25,13 +25,13 @@ export class DouyinSDK extends CleverSdk {
         this.sdk_login_url =
             config.sdk_login_url ??
             "https://api.salesagent.cc/game-analyzer/player/login";
-        console.info("抖音全局对象:", dy);
+        console.info("抖音全局对象:", tt);
         return true;
     }
 
     async login(): Promise<LoginData> {
         return new Promise((resolve, reject) => {
-            dy.login({
+            tt.login({
                 force: false,
                 success: (res: any) => {
                     if (res.code) {
@@ -40,15 +40,13 @@ export class DouyinSDK extends CleverSdk {
                             platform: "dou-yin",
                             login_code: res.code,
                         };
-                        // console.trace('抖音登录请求鉴权', this.sdk_login_url);
                         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request
-                        dy.request({
+                        tt.request({
                             url: this.sdk_login_url,
                             method: "POST",
                             data: body,
                             dataType: "json",
                             success: (fine: any) => {
-                                // console.trace('抖音登录成功: ', fine);
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
                             },
@@ -74,7 +72,7 @@ export class DouyinSDK extends CleverSdk {
         if (this.videoAd == null) {
             console.log("创建抖音激励视频广告");
             // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
-            this.videoAd = dy.createRewardedVideoAd({
+            this.videoAd = tt.createRewardedVideoAd({
                 adUnitId: config.ttUnitId || config.adUnitId,
                 multiton: config.multiton,
                 multitonRewardMsg: config.multitonMessage,
@@ -84,13 +82,11 @@ export class DouyinSDK extends CleverSdk {
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {
                 if (res && res.isEnded) {
-                    // 正常播放结束，可以下发游戏奖励
                     resolve({
                         isEnded: true,
                         count: 1,
                     });
                 } else {
-                    // 播放中途退出，不下发游戏奖励
                     resolve({
                         isEnded: false,
                         count: 0,
@@ -107,7 +103,7 @@ export class DouyinSDK extends CleverSdk {
     public override async checkScene(): Promise<CheckSceneResult> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/sidebar-capacity/tt-check-scene
         return new Promise((resolve, reject) => {
-            dy.checkScene({
+            tt.checkScene({
                 scene: "sidebar",
                 success: (res: any) => {
                     resolve({
@@ -128,7 +124,7 @@ export class DouyinSDK extends CleverSdk {
 
     // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-banner-ad
     async createBannerAd(adInfo: dyCreateBannerAd): Promise<VideoReward> {
-        this.bannerAd = dy.createBannerAd({
+        this.bannerAd = tt.createBannerAd({
             adUnitId: adInfo.adUnitId,
             adIntervals: adInfo.adIntervals,
             style: adInfo.style,
@@ -160,7 +156,7 @@ export class DouyinSDK extends CleverSdk {
     async shareAppMessage(share: dyShareAppMessage): Promise<boolean> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/retweet/tt-share-app-message
         return new Promise((resolve, reject) => {
-            dy.shareAppMessage({
+            tt.shareAppMessage({
                 desc: share.description,
                 ...share,
                 success: (res: any) => {
@@ -182,7 +178,7 @@ export class DouyinSDK extends CleverSdk {
     async addShortcut(options: dyAddShortcut): Promise<boolean> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
         return new Promise((resolve, reject) => {
-            dy.addShortcut({
+            tt.addShortcut({
                 ...options,
                 success() {
                     resolve(true);
@@ -197,7 +193,7 @@ export class DouyinSDK extends CleverSdk {
     async checkShortcut(): Promise<any> {
         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/check-shortcut
         return new Promise((resolve, reject) => {
-            dy.checkShortcut({
+            tt.checkShortcut({
                 success(fine: any) {
                     resolve({
                         isSupport: true,
@@ -212,8 +208,11 @@ export class DouyinSDK extends CleverSdk {
         });
     }
 
-    async reportEvent(id: string, custom: Record<string, any>,): Promise<boolean> {
-        return dy.request({
+    async reportEvent(
+        id: string,
+        custom: Record<string, any>,
+    ): Promise<boolean> {
+        return tt.request({
             url: "https://api.salesagent.cc/game-logger/event",
             method: "POST",
             data: {

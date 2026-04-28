@@ -37,8 +37,8 @@
 ### 示例：
 
 * **微信小游戏**: `AppID` (以 `wx` 开头)
-* **抖音小游戏**: `Client Key` 或 `AppID`
-* **TikTok 小游戏**: `Client Key` 或 `AppID`
+* **抖音小游戏**: 使用抖音开放平台的 App ID
+* **TikTok 小游戏**: 使用 TikTok for Developers 平台的 App ID
 * **快手小游戏**: `App ID`
 * **华为快游戏**: `App ID`
 * **OPPO 小游戏**: `App ID`
@@ -52,15 +52,18 @@
 将获取到的 AppID/GameID 配置到 Clever SDK 的初始化参数中：
 
 ```ts
-const sdkConfig = {
-    platform: "WECHAT_GAME", // 对应平台
-    sdk_url: "YOUR_SDK_SERVER_URL",
-    sdk_key: "YOUR_SDK_KEY",
-    game_id: "YOUR_GAME_ID", // 这里填写你申请到的 AppID/GameID
-    // ... 其他配置
+import {createSdk} from "@lingames/clever-sdk/src";
+import {DynamicSdkConfig} from "@lingames/clever-sdk/src/models";
+
+const sdkConfig: DynamicSdkConfig = {
+    platform: "wechat",          // 对应平台标识
+    project_id: "your_project_id",
+    game_id: "YOUR_GAME_ID",     // 这里填写你申请到的 AppID/GameID
+    sdk_login_url: "https://api.salesagent.cc/game-analyzer/player/login",
 };
 
-SdkManager.initSdk(sdkConfig);
+const sdk = await createSdk(sdkConfig);
+(window as any).mySdk = sdk;
 ```
 
 ## 5. 提交审核

@@ -5,9 +5,9 @@
 ## 类定义
 
 ```ts
-import { DouyinSDK } from "@lingames/clever-sdk/src/platformMini/DouyinSDK.js";
+import { DouyinSdk } from "@lingames/clever-sdk/src/platformMini/DouyinSdk.js";
 
-const sdk = new DouyinSDK(platform, project_id, game_id);
+const sdk = new DouyinSdk(platform, project_id, game_id);
 ```
 
 - **全局对象**: `dy`

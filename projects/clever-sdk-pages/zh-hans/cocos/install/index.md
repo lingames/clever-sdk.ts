@@ -32,7 +32,7 @@ export class SdkManager {
 在 Cocos Creator 中创建 `GAME_PLATFORM` 宏，并在 `assets/Script/SdkManager.ts` 中静态派发 SDK 实现：
 
 1. **创建宏**: 在 Cocos Creator 编辑器中，进入 `项目 -> 项目设置 -> 宏`，添加一个名为 `GAME_PLATFORM` 的宏，并设置其值为当前平台（例如
-   `WECHAT_GAME`, `douyingame`, `kuaishou`, `bilibili`, `oppo`, `huawei`, `google` 等）。
+   `WECHAT_GAME`, `douyingame`, `tiktokgame`, `kuaishou`, `bilibili`, `oppo`, `huawei`, `google` 等）。
 
 2. **静态派发**: 在 `SdkManager.ts` 中，根据 `GAME_PLATFORM` 宏的值来实例化对应的 SDK：
 
@@ -41,7 +41,8 @@ import {CleverSdk} from "@lingames/clever-sdk/src";
 import {DynamicSdkConfig} from "@lingames/clever-sdk/src/models";
 import {
     WeChatSdk,
-    DouyinSDK,
+    DouyinSdk,
+    TiktokSdk,
     KuaiShouSdk,
     BilibiliSdk,
     OppoSdk,
@@ -59,7 +60,10 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         return sdk
     }
     if (GAME_PLATFORM == 'douyingame') {
-        return new DouyinSDK(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id.toString());
+        return new DouyinSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id.toString());
+    }
+    if (GAME_PLATFORM == 'tiktokgame') {
+        return new TiktokSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id.toString());
     }
     if (GAME_PLATFORM == 'kuaishou') {
         return new KuaiShouSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id.toString());

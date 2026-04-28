@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { PlayRewardedVideo, VideoReward } from "./models/PlayRewardedVideo";
 import { CreateBannerAd } from "./models/CreateBannerAd";
+import { CreateInterstitialAd } from "./models/CreateInterstitialAd";
 import { SdkInitialize } from "./models/SdkInitialize";
 import { AddShortcut } from "./models/AddShortcut";
 import { LoginData } from "./models/LoginData";
@@ -85,6 +86,16 @@ export class CleverSdk {
 
     public async destroyBannerAd(): Promise<boolean> {
         return true;
+    }
+
+    // 插屏广告接口
+    public async showInterstitialAd(
+        _adInfo: CreateInterstitialAd,
+    ): Promise<VideoReward> {
+        return {
+            isEnded: false,
+            count: 0,
+        };
     }
 
     // 原生广告接口

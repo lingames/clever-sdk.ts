@@ -2,6 +2,7 @@ import { SdkInitialize } from "./SdkInitialize.js";
 
 export type DynamicSdkConfig = MyConfig & SdkInitialize;
 export { PlayRewardedVideo, VideoReward } from "./PlayRewardedVideo";
+export { CreateInterstitialAd } from "./CreateInterstitialAd";
 export { EventData } from "./events";
 export { AdvertiseStage } from "./AdvertiseStage";
 export type MyConfig = {
@@ -12,6 +13,7 @@ export type MyConfig = {
     game_id?: string;
     wx_game_id?: string;
     ks_game_id?: string;
+    dy_game_id?: string;
     tt_game_id?: string;
     bb_game_id?: string;
     hw_game_id?: string;

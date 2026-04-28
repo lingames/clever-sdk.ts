@@ -9,6 +9,7 @@ import { LoginData } from "../models/LoginData.js";
 import { ksShareAppMessage } from "../models/ShareAppMessage";
 import { AddShortcut } from "../models/AddShortcut";
 import { ksNavigateToScene } from "../models/NavigateToScene";
+import { EventEndPoint } from "../models";
 
 export declare const ks: any;
 
@@ -206,7 +207,7 @@ export class KuaiShouSdk extends CleverSdk {
         custom: Record<string, any>,
     ): Promise<boolean> {
         return ks.request({
-            url: "https://api.salesagent.cc/game-logger/event",
+            url: EventEndPoint,
             method: "POST",
             data: {
                 player_anonymous: this.player_anonymous,

@@ -75,8 +75,8 @@
 
 * **问题描述**: 如何获取最新版本的 Clever SDK 并更新到项目中。
 * **解决方案**: 
-    * 联系技术支持获取最新版本的 SDK 包。
-    * 替换项目中旧的 SDK 文件。
+    * 通过 npm 更新：`npm install @lingames/clever-sdk@latest`
+    * 或通过 pnpm 更新：`pnpm update @lingames/clever-sdk`
     * 根据新版本 SDK 的更新日志，检查是否有 API 变更或需要调整的配置。
 
 ## 8. 如何获取用户 OpenID

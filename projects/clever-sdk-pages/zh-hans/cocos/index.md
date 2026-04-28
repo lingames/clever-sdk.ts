@@ -1,5 +1,3 @@
-# Cocos 使用方法
-
 # Cocos SDK 使用方法
 
 ## 动态判断法
@@ -26,7 +24,10 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         return sdk
     }
     if (GAME_PLATFORM == 'douyingame') {
-        return new WeChatSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
+        return new DouyinSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
+    }
+    if (GAME_PLATFORM == 'tiktokgame') {
+        return new TiktokSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
     }
     if (GAME_PLATFORM == 'kuaishou') {
         return new KuaiShouSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
@@ -37,12 +38,15 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     if (GAME_PLATFORM == 'oppo') {
         return new OppoSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
     }
+    if (GAME_PLATFORM == 'huawei') {
+        return new HuaweiSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
+    }
     if (GAME_PLATFORM == 'google') {
         let sdk = new AdSenseSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
         await sdk.initialize({adSenseId: config.adSenseId});
         return sdk
     }
 
-    return new BrowserSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
+    return new MockSdk(GAME_PLATFORM, config.sdk_url, config.sdk_key, config.game_id);
 }
 ```

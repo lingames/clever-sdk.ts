@@ -1,5 +1,4 @@
-export type CreateBannerAd =
-    wxCreateBannerAd &
+export type CreateBannerAd = wxCreateBannerAd &
     ksCreateBannerAd &
     qgCreateBannerAd;
 

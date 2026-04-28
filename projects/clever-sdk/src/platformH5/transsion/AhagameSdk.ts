@@ -7,23 +7,25 @@ import { ggInitialize } from "../../models/SdkInitialize.js";
 import { CleverSdk } from "../../CleverSdk";
 import { TRANSSION_ADSDK_SCRIPT_URL } from "./constants.js";
 
+interface H5Sdk {
+    init: (
+        appKey: string,
+        top: string,
+        left: string,
+        bottom: string,
+        right: string,
+        options: any,
+    ) => void;
+    adConfig: (config: any) => void;
+    adBreak: (config: any) => void;
+    athenaSend: (event: string, ...params: any[]) => void;
+    gameLoadingCompleted?: () => void;
+}
+
 // 扩展Window接口以支持h5sdk
 declare global {
     interface Window {
-        h5sdk: {
-            init: (
-                appKey: string,
-                top: string,
-                left: string,
-                bottom: string,
-                right: string,
-                options: any,
-            ) => void;
-            adConfig: (config: any) => void;
-            adBreak: (config: any) => void;
-            athenaSend: (event: string, ...params: any[]) => void;
-            gameLoadingCompleted?: () => void;
-        };
+        h5sdk?: H5Sdk;
     }
 }
 

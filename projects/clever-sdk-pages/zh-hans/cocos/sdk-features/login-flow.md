@@ -26,10 +26,15 @@ import {LoginData} from "@lingames/clever-sdk/src/models/LoginData";
 
 **配置示例**:
 ```ts
+import {createSdk} from "@lingames/clever-sdk/src";
+import {DynamicSdkConfig} from "@lingames/clever-sdk/src/models";
+
 // 华为快游戏运行时登录
-const config = {
+const config: DynamicSdkConfig = {
     platform: 'huawei',
+    project_id: 'your_project_id',
     game_id: 'your_huawei_app_id',
+    sdk_login_url: 'https://api.salesagent.cc/game-analyzer/player/login',
 };
 
 const sdk = await createSdk(config);
@@ -51,10 +56,15 @@ const loginData = await sdk.login();
 
 **配置示例**:
 ```ts
+import {createSdk} from "@lingames/clever-sdk/src";
+import {DynamicSdkConfig} from "@lingames/clever-sdk/src/models";
+
 // SDK 登录配置
-const config = {
+const config: DynamicSdkConfig = {
     platform: 'wechat',
     project_id: 'your_project_id',
+    game_id: 'your_wx_app_id',
+    sdk_login_url: 'https://api.salesagent.cc/game-analyzer/player/login',
 };
 
 const sdk = await createSdk(config);
@@ -78,11 +88,15 @@ const loginData = await sdk.login();
 
 **配置示例**:
 ```ts
+import {createSdk} from "@lingames/clever-sdk/src";
+import {DynamicSdkConfig} from "@lingames/clever-sdk/src/models";
+
 // 后端登录配置
-const config = {
-    platform: 'custom',
-    sdk_login_url: 'https://your-game-server.com/api'
-    sdk_login_key: ''
+const config: DynamicSdkConfig = {
+    platform: 'mock',
+    project_id: 'your_project_id',
+    game_id: 'your_game_id',
+    sdk_login_url: 'https://your-game-server.com/api/login',
 };
 
 const sdk = await createSdk(config);

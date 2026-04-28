@@ -1,6 +1,4 @@
-export type PlayRewardedVideo =
-    {} &
-    wxCreateRewardedVideoAd &
+export type PlayRewardedVideo = {} & wxCreateRewardedVideoAd &
     dyCreateRewardedVideoAd &
     ttCreateRewardedVideoAd &
     ksCreateRewardedVideoAd &

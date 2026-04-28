@@ -4,35 +4,39 @@ import {
     VideoReward,
 } from "../models/PlayRewardedVideo";
 import { ttCreateBannerAd } from "../models/CreateBannerAd";
+import { ttCreateInterstitialAd } from "../models/CreateInterstitialAd";
 import { ttInitialize } from "../models/SdkInitialize";
 import { ttAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
-import { ShareAppMessage, ttShareAppMessage } from "../models/ShareAppMessage";
+import { ttShareAppMessage } from "../models/ShareAppMessage";
+import { EventEndPoint } from "../models";
+import { CreateNativeAd } from "../models/CreateNativeAd";
 
-// Tiktok全局对象
-export declare const tt: any;
+// @ts-ignore
+const TTMinis = typeof globalThis.TTMinis !== "undefined" ? globalThis.TTMinis : undefined;
 
 interface CheckSceneResult {
     isSupport: boolean;
     isScene: boolean;
 }
 
-export class TiktokSDK extends CleverSdk {
+export class TiktokSdk extends CleverSdk {
     private videoAd: any = null;
     private bannerAd: any = null;
+    private interstitialAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
         this.sdk_login_url =
             config.sdk_login_url ??
             "https://api.salesagent.cc/game-analyzer/player/login";
-        console.info("Tiktok全局对象:", tt);
+        console.info("TikTok 全局对象:", TTMinis);
         return true;
     }
 
     // https://developers.tiktok.com/doc/mini-games-sdk-login?enter_method=left_navigation
     async login(): Promise<LoginData> {
         return new Promise((resolve, reject) => {
-            tt.login({
+            TTMinis.login({
                 force: false,
                 success: (res: any) => {
                     if (res.code) {
@@ -41,40 +45,39 @@ export class TiktokSDK extends CleverSdk {
                             platform: "tik-tok",
                             login_code: res.code,
                         };
-                        // console.trace('Tiktok登录请求鉴权', this.sdk_login_url);
                         // https://developers.tiktok.com/doc/mini-games-sdk-login?enter_method=left_navigation
-                        tt.request({
+                        TTMinis.request({
                             url: this.sdk_login_url,
                             method: "POST",
                             data: body,
                             dataType: "json",
                             success: (fine: any) => {
-                                // console.trace('抖音登录成功: ', fine);
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
                             },
                             fail: (fail: any) => {
-                                console.warn("Tiktok登录失败: ", fail);
+                                console.warn("TikTok 登录失败: ", fail);
                                 reject(fail);
                             },
                         });
                     } else {
-                        console.warn("Tiktok获取登录凭证失败:", res.errMsg);
+                        console.warn("TikTok 获取登录凭证失败:", res.errMsg);
                         reject(res.errMsg);
                     }
                 },
                 fail(err: any) {
-                    console.warn("Tiktok登录凭证失败: ", err);
+                    console.warn("TikTok 登录凭证失败: ", err);
                     reject(err);
                 },
             });
         });
     }
 
+    // https://developers.tiktok.com/doc/mini-games-sdk-iaa?enter_method=left_navigation
     playRewardedVideo(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
         if (this.videoAd == null) {
-            console.log("创建Tiktok激励视频广告");
-            this.videoAd = tt.createRewardedVideoAd({
+            console.log("创建 TikTok 激励视频广告");
+            this.videoAd = TTMinis.game.createRewardedVideoAd({
                 adUnitId: config.ttUnitId || config.adUnitId,
                 multiton: config.multiton,
                 multitonRewardMsg: config.multitonMessage,
@@ -84,13 +87,11 @@ export class TiktokSDK extends CleverSdk {
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {
                 if (res && res.isEnded) {
-                    // 正常播放结束，可以下发游戏奖励
                     resolve({
                         isEnded: true,
                         count: 1,
                     });
                 } else {
-                    // 播放中途退出，不下发游戏奖励
                     resolve({
                         isEnded: false,
                         count: 0,
@@ -98,7 +99,7 @@ export class TiktokSDK extends CleverSdk {
                 }
             });
             this.videoAd.show().catch((error: any) => {
-                console.log(`Tiktok播放异常 ${JSON.stringify(error)}`);
+                console.log(`TikTok 播放异常 ${JSON.stringify(error)}`);
                 reject(error);
             });
         });
@@ -106,7 +107,7 @@ export class TiktokSDK extends CleverSdk {
 
     public override async checkScene(): Promise<CheckSceneResult> {
         return new Promise((resolve, reject) => {
-            tt.checkScene({
+            TTMinis.checkScene({
                 scene: "sidebar",
                 success: (res: any) => {
                     resolve({
@@ -125,8 +126,9 @@ export class TiktokSDK extends CleverSdk {
         });
     }
 
+    // https://developers.tiktok.com/doc/mini-games-sdk-iaa?enter_method=left_navigation
     async createBannerAd(adInfo: ttCreateBannerAd): Promise<VideoReward> {
-        this.bannerAd = tt.createBannerAd({
+        this.bannerAd = TTMinis.game.createBannerAd({
             adUnitId: adInfo.adUnitId,
             adIntervals: adInfo.adIntervals,
             style: adInfo.style,
@@ -152,18 +154,44 @@ export class TiktokSDK extends CleverSdk {
         return true;
     }
 
+    // https://developers.tiktok.com/doc/mini-games-sdk-iaa?enter_method=left_navigation
+    async showInterstitialAd(adInfo: ttCreateInterstitialAd): Promise<VideoReward> {
+        if (this.interstitialAd == null) {
+            this.interstitialAd = TTMinis.game.createInterstitialAd({
+                adUnitId: adInfo.ttUnitId || adInfo.adUnitId,
+            });
+        }
+
+        return new Promise((resolve) => {
+            this.interstitialAd
+                .show()
+                .then(() => {
+                    resolve({
+                        isEnded: true,
+                        count: 1,
+                    });
+                })
+                .catch((error: any) => {
+                    console.log(`Tiktok插屏播放异常 ${JSON.stringify(error)}`);
+                    resolve({
+                        isEnded: false,
+                        count: 0,
+                    });
+                });
+        });
+    }
+
     async shareAppMessage(share: ttShareAppMessage): Promise<boolean> {
-        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/retweet/tt-share-app-message
         return new Promise((resolve, reject) => {
-            tt.shareAppMessage({
+            TTMinis.shareAppMessage({
                 desc: share.description,
                 ...share,
                 success: (res: any) => {
-                    console.log("Tiktok分享成功", res);
+                    console.log("TikTok 分享成功", res);
                     resolve(true);
                 },
                 fail: (res: any) => {
-                    console.log("Tiktok分享失败", res);
+                    console.log("TikTok 分享失败", res);
                     resolve(false);
                 },
             });
@@ -175,9 +203,8 @@ export class TiktokSDK extends CleverSdk {
     }
 
     async addShortcut(options: ttAddShortcut): Promise<boolean> {
-        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/add-shortcut
         return new Promise((resolve, reject) => {
-            tt.addShortcut({
+            TTMinis.addShortcut({
                 ...options,
                 success() {
                     resolve(true);
@@ -190,9 +217,8 @@ export class TiktokSDK extends CleverSdk {
     }
 
     async checkShortcut(): Promise<any> {
-        // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/open-capacity/shortcut/check-shortcut
         return new Promise((resolve, reject) => {
-            tt.checkShortcut({
+            TTMinis.checkShortcut({
                 success(fine: any) {
                     resolve({
                         isSupport: true,
@@ -207,9 +233,12 @@ export class TiktokSDK extends CleverSdk {
         });
     }
 
-    async reportEvent(id: string, custom: Record<string, any>,): Promise<boolean> {
-        return tt.request({
-            url: "https://api.salesagent.cc/game-logger/event",
+    async reportEvent(
+        id: string,
+        custom: Record<string, any>,
+    ): Promise<boolean> {
+        return TTMinis.request({
+            url: EventEndPoint,
             method: "POST",
             data: {
                 player_anonymous: this.player_anonymous,

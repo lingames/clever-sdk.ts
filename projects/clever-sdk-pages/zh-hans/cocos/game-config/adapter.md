@@ -8,8 +8,8 @@ Clever SDK 通过为各小程序/快游戏/H5/原生APP平台提供统一的 API
 CleverSdk (基类)
 ├── platformMini/
 │   ├── WeChatSdk      微信小游戏
-│   ├── DouyinSDK      抖音小游戏
-│   ├── TiktokSDK      Tiktok小游戏
+│   ├── DouyinSdk      抖音小游戏
+│   ├── TiktokSdk      TikTok小游戏
 │   ├── KuaiShouSdk    快手小游戏
 │   ├── HuaweiSdk      华为快游戏
 │   ├── OppoSdk        OPPO 小游戏
@@ -30,7 +30,7 @@ CleverSdk (基类)
 ### 小游戏平台
 - **[微信小游戏](./platformMini/wechat.md)** — wx 全局对象，支持登录、激励视频、Banner 广告、分享、用户信息
 - **[抖音小游戏](./platformMini/douyin.md)** — dy 全局对象，支持登录、激励视频、Banner 广告、分享、侧边栏、桌面快捷方式
-- **[Tiktok小游戏](./platformMini/tiktok.md)** — tt 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
+- **[Tiktok小游戏](./platformMini/tiktok.md)** — TTMinis 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
 - **[快手小游戏](./platformMini/kuaishou.md)** — ks 全局对象，支持登录、激励视频、Banner 广告、分享、桌面快捷方式、侧边栏跳转
 - **[华为快游戏](./platformMini/huawei.md)** — qg 全局对象，支持登录、激励视频、Banner 广告
 - **[OPPO 小游戏](./platformMini/oppo.md)** — qg 全局对象，支持登录、激励视频、Banner 广告、原生广告

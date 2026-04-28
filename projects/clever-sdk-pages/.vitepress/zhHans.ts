@@ -123,7 +123,7 @@ export const zhHans: DefaultTheme.Config = {
                     },
                     {
                         text: "常见问题",
-                        link: "/zh-hans/cocos/faq/index"
+                        link: "/zh-hans/cocos/faq/index",
                     },
                 ],
             },

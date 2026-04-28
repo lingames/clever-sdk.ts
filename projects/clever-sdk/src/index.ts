@@ -3,11 +3,12 @@ export * from "./platformMini/index.js";
 export * from "./platformNative/index.js";
 import {
     BilibiliSdk,
-    DouyinSDK,
+    DouyinSdk,
     HuaweiSdk,
     KuaiShouSdk,
     OppoSdk,
     WeChatSdk,
+    TiktokSdk,
 } from "./platformMini";
 import { M4399Sdk } from "./platformNative";
 import { CleverSdk } from "./CleverSdk.js";
@@ -31,7 +32,14 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
         return sdk;
     }
     if (platform == "dou-yin") {
-        let sdk = new DouyinSDK(platform, config.project_id, gameId);
+        let sdk = new DouyinSdk(platform, config.project_id, gameId);
+        await sdk.initialize({
+            sdk_login_url: config.sdk_login_url,
+        });
+        return sdk;
+    }
+    if (platform == "tiktok") {
+        let sdk = new TiktokSdk(platform, config.project_id, gameId);
         await sdk.initialize({
             sdk_login_url: config.sdk_login_url,
         });
@@ -132,6 +140,8 @@ function getPlatformGameId(config: DynamicSdkConfig, platform: string): string {
         case "wechat":
             return config.wx_game_id || config.game_id || "";
         case "dou-yin":
+            return config.dy_game_id || config.game_id || "";
+        case "tiktok":
             return config.tt_game_id || config.game_id || "";
         case "kuai-shou":
             return config.ks_game_id || config.game_id || "";
@@ -154,12 +164,19 @@ function getPlatformGameId(config: DynamicSdkConfig, platform: string): string {
  * Auto-detect platform based on environment
  */
 function detectPlatform(): string {
+    // @ts-ignore
     if (typeof wx !== "undefined" && wx.getSystemInfo) {
         return "wechat";
     }
+    // @ts-ignore
     if (typeof tt !== "undefined" && tt.getSystemInfo) {
         return "dou-yin";
     }
+    // @ts-ignore
+    if (typeof TTMinis !== "undefined" && TTMinis.getSystemInfoSync) {
+        return "tiktok";
+    }
+    // @ts-ignore
     if (typeof ks !== "undefined" && ks.getSystemInfo) {
         return "kuai-shou";
     }
