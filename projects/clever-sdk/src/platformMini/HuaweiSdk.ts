@@ -6,8 +6,8 @@ import { CreateBannerAd } from "../models/CreateBannerAd";
 const qg = (globalThis as any).qg;
 
 export class HuaweiSdk extends CleverSdk {
-    private videoAd: any = null;
-    private bannerAd: any = null;
+    protected videoAd: any = null;
+    protected bannerAd: any = null;
 
     // https://developer.huawei.com/consumer/cn/doc/quickApp-Guides/quickgame-runtime-account-kit-0000001113458340
     async login(): Promise<HuaweiLoginData> {

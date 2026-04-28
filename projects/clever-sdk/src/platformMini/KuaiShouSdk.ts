@@ -6,17 +6,16 @@ import { LoginData } from "../models/LoginData.js";
 import { ksShareAppMessage } from "../models/ShareAppMessage";
 import { AddShortcut } from "../models/AddShortcut";
 import { ksNavigateToScene } from "../models/NavigateToScene";
-import { EventEndPoint } from "../models";
+import { EventEndPoint, LoginEndPoint } from "../models";
 
 const ks = (globalThis as any).ks;
 
-export var bannerAd: any = null;
-
 export class KuaiShouSdk extends CleverSdk {
+    protected bannerAd: any = null;
     videoAd: any = null;
 
     async initialize(config: ksInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
         console.info("快手全局对象:", ks);
         return true;
     }
@@ -107,12 +106,12 @@ export class KuaiShouSdk extends CleverSdk {
     }
 
     async hideBannerAd(): Promise<boolean> {
-        bannerAd?.hide();
+        this.bannerAd?.hide();
         return true;
     }
 
     async destroyBannerAd(): Promise<boolean> {
-        bannerAd?.destroy();
+        this.bannerAd?.destroy();
         return true;
     }
 

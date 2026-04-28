@@ -3,7 +3,7 @@ import { VideoReward } from "../models/PlayRewardedVideo.js";
 import { minigameInitialize } from "../models/SdkInitialize.js";
 import { minigameShareAppMessage } from "../models/ShareAppMessage.js";
 import { LoginData } from "../models/LoginData.js";
-import { EventEndPoint } from "../models/index.js";
+import { EventEndPoint, LoginEndPoint } from "../models/index.js";
 
 /** 微游SDK全局对象 */
 export declare const minigame: any;
@@ -33,7 +33,7 @@ export class MiniGameSDK extends CleverSdk {
      * @returns
      */
     async initialize(config: minigameInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
 
         const sdkUrl = config.sdk_script_url ?? "https://sdk.minigame.vip/js/1.1.1/minigame.js";
 

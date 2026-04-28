@@ -6,7 +6,7 @@ import { ttInitialize } from "../models/SdkInitialize";
 import { ttAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ttShareAppMessage } from "../models/ShareAppMessage";
-import { EventEndPoint } from "../models";
+import { EventEndPoint, LoginEndPoint } from "../models";
 import { CreateNativeAd } from "../models/CreateNativeAd";
 
 // @ts-ignore
@@ -18,12 +18,12 @@ interface CheckSceneResult {
 }
 
 export class TiktokSdk extends CleverSdk {
-    private videoAd: any = null;
-    private bannerAd: any = null;
-    private interstitialAd: any = null;
+    protected videoAd: any = null;
+    protected bannerAd: any = null;
+    protected interstitialAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
         console.info("TikTok 全局对象:", TTMinis);
         return true;
     }

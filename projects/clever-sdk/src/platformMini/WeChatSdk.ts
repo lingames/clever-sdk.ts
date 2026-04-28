@@ -6,14 +6,15 @@ import { wxInitialize } from "../models/SdkInitialize";
 import { wxGetUserInfo, wxLoginData, wxUserInfoCallback } from "../models/LoginData";
 import { wxShareAppMessage } from "../models/ShareAppMessage";
 import { wxNavigateToScene } from "../models/NavigateToScene";
+import { LoginEndPoint } from "../models";
 
 // @ts-ignore
 const wx = (globalThis as any).wx;
 
 export class WeChatSdk extends CleverSdk {
     protected inner: any;
-    private videoAd: any = null;
-    private bannerAd: any = null;
+    protected videoAd: any = null;
+    protected bannerAd: any = null;
 
     override async login(): Promise<wxLoginData> {
         return new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ export class WeChatSdk extends CleverSdk {
     }
 
     async initialize(config: wxInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
         if (config.enableShare !== false) {
             wx.showShareMenu({
                 menus: ["shareAppMessage", "shareTimeline"],
@@ -128,7 +129,7 @@ export class WeChatSdk extends CleverSdk {
         return true;
     }
 
-    /// https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.destroy.html
+    // https://developers.weixin.qq.com/minigame/dev/api/ad/BannerAd.destroy.html
     async destroyBannerAd(): Promise<boolean> {
         if (this.bannerAd != null) {
             this.bannerAd.destroy();

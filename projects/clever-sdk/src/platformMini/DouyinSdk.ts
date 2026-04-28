@@ -5,6 +5,7 @@ import { dyInitialize } from "../models/SdkInitialize";
 import { dyAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ShareAppMessage, dyShareAppMessage } from "../models/ShareAppMessage";
+import { LoginEndPoint } from "../models";
 
 const tt = (globalThis as any).tt;
 
@@ -14,11 +15,11 @@ interface CheckSceneResult {
 }
 
 export class DouyinSdk extends CleverSdk {
-    private videoAd: any = null;
-    private bannerAd: any = null;
+    protected videoAd: any = null;
+    protected bannerAd: any = null;
 
     async initialize(config: dyInitialize): Promise<boolean> {
-        this.sdk_login_url = config.sdk_login_url ?? "https://api.salesagent.cc/game-analyzer/player/login";
+        this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
         console.info("抖音全局对象:", tt);
         return true;
     }
