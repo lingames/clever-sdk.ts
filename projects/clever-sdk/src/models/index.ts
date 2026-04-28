@@ -2,6 +2,7 @@ import { SdkInitialize } from "./SdkInitialize.js";
 
 export type DynamicSdkConfig = MyConfig & SdkInitialize;
 export { PlayRewardedVideo, VideoReward } from "./PlayRewardedVideo";
+export { CreateInterstitialAd } from "./CreateInterstitialAd";
 export { EventData } from "./events";
 export { AdvertiseStage } from "./AdvertiseStage";
 export type MyConfig = {

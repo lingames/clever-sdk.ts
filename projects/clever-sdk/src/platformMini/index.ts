@@ -1,4 +1,5 @@
 export { DouyinSDK } from "./DouyinSDK.js";
+export { TiktokSDK } from "./TiktokSDK.js";
 export { WeChatSdk } from "./WeChatSdk.js";
 export { BilibiliSdk } from "./BilibiliSdk.js";
 export { KuaiShouSdk } from "./KuaiShouSdk.js";

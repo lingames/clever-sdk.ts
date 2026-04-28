@@ -81,6 +81,22 @@ await sdk.createBannerAd({
 
 > 参考: [tt.createBannerAd](https://developers.tiktok.com/doc/mini-games-sdk-ad-create-banner-ad)
 
+## 插屏广告
+
+```ts
+interface ttCreateInterstitialAd {
+    adUnitId?: string;  // 通用广告单元 ID
+    ttUnitId?: string;  // Tiktok 专用广告 ID（优先）
+}
+
+const result = await sdk.showInterstitialAd({
+    ttUnitId: "your_tt_interstitial_id"
+});
+// result.isEnded === true 表示展示成功
+```
+
+> 参考: `tt.createInterstitialAd` / `InterstitialAd.show`
+
 ## 分享
 
 ```ts

@@ -4,6 +4,7 @@ import {
     VideoReward,
 } from "../models/PlayRewardedVideo";
 import { ttCreateBannerAd } from "../models/CreateBannerAd";
+import { ttCreateInterstitialAd } from "../models/CreateInterstitialAd";
 import { ttInitialize } from "../models/SdkInitialize";
 import { ttAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
@@ -20,6 +21,7 @@ interface CheckSceneResult {
 export class TiktokSDK extends CleverSdk {
     private videoAd: any = null;
     private bannerAd: any = null;
+    private interstitialAd: any = null;
 
     async initialize(config: ttInitialize): Promise<boolean> {
         this.sdk_login_url =
@@ -150,6 +152,32 @@ export class TiktokSDK extends CleverSdk {
             this.bannerAd.destroy();
         }
         return true;
+    }
+
+    async showInterstitialAd(adInfo: ttCreateInterstitialAd): Promise<VideoReward> {
+        if (this.interstitialAd == null) {
+            this.interstitialAd = tt.createInterstitialAd({
+                adUnitId: adInfo.ttUnitId || adInfo.adUnitId,
+            });
+        }
+
+        return new Promise((resolve) => {
+            this.interstitialAd
+                .show()
+                .then(() => {
+                    resolve({
+                        isEnded: true,
+                        count: 1,
+                    });
+                })
+                .catch((error: any) => {
+                    console.log(`Tiktok插屏播放异常 ${JSON.stringify(error)}`);
+                    resolve({
+                        isEnded: false,
+                        count: 0,
+                    });
+                });
+        });
     }
 
     async shareAppMessage(share: ttShareAppMessage): Promise<boolean> {

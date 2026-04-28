@@ -4,6 +4,7 @@ export * from "./platformNative/index.js";
 import {
     BilibiliSdk,
     DouyinSDK,
+    TiktokSDK,
     HuaweiSdk,
     KuaiShouSdk,
     OppoSdk,
@@ -13,6 +14,9 @@ import { M4399Sdk } from "./platformNative";
 import { CleverSdk } from "./CleverSdk.js";
 import { AdSenseSdk, MiniGameSDK, MockSdk, AhagameSdk } from "./platformH5";
 import { DynamicSdkConfig } from "./models";
+import {wx} from "./platformMini/WeChatSdk";
+import {tt} from "./platformMini/TiktokSDK";
+import {ks} from "./platformMini/KuaiShouSdk";
 
 export { CleverSdk };
 
@@ -32,6 +36,13 @@ export async function createSdk(config: DynamicSdkConfig): Promise<CleverSdk> {
     }
     if (platform == "dou-yin") {
         let sdk = new DouyinSDK(platform, config.project_id, gameId);
+        await sdk.initialize({
+            sdk_login_url: config.sdk_login_url,
+        });
+        return sdk;
+    }
+    if (platform == "tiktok") {
+        let sdk = new TiktokSDK(platform, config.project_id, gameId);
         await sdk.initialize({
             sdk_login_url: config.sdk_login_url,
         });
