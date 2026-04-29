@@ -294,13 +294,13 @@ export class TiktokSdk extends CleverSdk {
     }
 
     async startEntranceMission(): Promise<boolean> {
-        if (!TTMinis || typeof TTMinis.startEntranceMission !== "function") {
+        if (!TTMinis.game || typeof TTMinis.game.startEntranceMission !== "function") {
             console.warn("TikTok 平台不支持 startEntranceMission API");
             return false;
         }
 
         return new Promise((resolve) => {
-            TTMinis.startEntranceMission({
+            TTMinis.game.startEntranceMission({
                 success() {
                     resolve(true);
                 },
@@ -313,13 +313,13 @@ export class TiktokSdk extends CleverSdk {
     }
 
     async getEntranceMissionReward(): Promise<any> {
-        if (!TTMinis || typeof TTMinis.getEntranceMissionReward !== "function") {
+        if (!TTMinis.game || typeof TTMinis.game.getEntranceMissionReward !== "function") {
             console.warn("TikTok 平台不支持 getEntranceMissionReward API");
             return { isSupport: false, canReceiveReward: false };
         }
 
         return new Promise((resolve) => {
-            TTMinis.getEntranceMissionReward({
+            TTMinis.game.getEntranceMissionReward({
                 success(res: any) {
                     resolve({
                         isSupport: true,
