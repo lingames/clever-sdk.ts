@@ -15,6 +15,7 @@ export class WeChatSdk extends CleverSdk {
     protected inner: any;
     protected videoAd: any = null;
     protected bannerAd: any = null;
+    private _lastVideoAdUnitId: string = '';
 
     override async login(): Promise<wxLoginData> {
         return new Promise((resolve, reject) => {
@@ -80,12 +81,15 @@ export class WeChatSdk extends CleverSdk {
      * https://developers.weixin.qq.com/minigame/dev/api/ad/wx.createRewardedVideoAd.html
      */
     public override playRewardedVideo(adInfo: wxCreateRewardedVideoAd): Promise<VideoReward> {
-        if (this.videoAd == null) {
+        const adUnitId = adInfo.wxUnitId || adInfo.adUnitId;
+        // 检查广告位 ID 是否变化，如果变化则重新创建广告实例
+        if (this.videoAd == null || this._lastVideoAdUnitId !== adUnitId) {
             this.videoAd = wx.createRewardedVideoAd({
-                adUnitId: adInfo.wxUnitId || adInfo.adUnitId,
+                adUnitId: adUnitId,
                 multiton: adInfo.multiton,
                 disableFallbackSharePage: adInfo.disableFallbackSharePage,
             });
+            this._lastVideoAdUnitId = adUnitId;
         }
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {

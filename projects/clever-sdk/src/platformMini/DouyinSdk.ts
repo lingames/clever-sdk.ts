@@ -5,18 +5,14 @@ import { dyInitialize } from "../models/SdkInitialize";
 import { dyAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ShareAppMessage, dyShareAppMessage } from "../models/ShareAppMessage";
-import { LoginEndPoint } from "../models";
+import { LoginEndPoint, CheckSceneResult } from "../models";
 
 const tt = (globalThis as any).tt;
-
-interface CheckSceneResult {
-    isSupport: boolean;
-    isScene: boolean;
-}
 
 export class DouyinSdk extends CleverSdk {
     protected videoAd: any = null;
     protected bannerAd: any = null;
+    private _lastVideoAdUnitId: string = '';
 
     async initialize(config: dyInitialize): Promise<boolean> {
         this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
@@ -32,7 +28,7 @@ export class DouyinSdk extends CleverSdk {
                     if (res.code) {
                         const body = {
                             project_id: this.project_id,
-                            platform: "dou-yin",
+                            platform: this.platform,
                             login_code: res.code,
                         };
                         // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/network/initiate-a-request/tt-request
@@ -64,15 +60,18 @@ export class DouyinSdk extends CleverSdk {
     }
 
     playRewardedVideo(config: dyCreateRewardedVideoAd): Promise<VideoReward> {
-        if (this.videoAd == null) {
+        const adUnitId = config.ttUnitId || config.adUnitId;
+        // 检查广告位 ID 是否变化，如果变化则重新创建广告实例
+        if (this.videoAd == null || this._lastVideoAdUnitId !== adUnitId) {
             console.log("创建抖音激励视频广告");
             // https://developer.open-douyin.com/docs/resource/zh-CN/mini-game/develop/api/ads/tt-create-rewarded-video-ad
             this.videoAd = tt.createRewardedVideoAd({
-                adUnitId: config.ttUnitId || config.adUnitId,
+                adUnitId: adUnitId,
                 multiton: config.multiton,
                 multitonRewardMsg: config.multitonMessage,
                 multitonRewardTimes: config.multitonTimes,
             });
+            this._lastVideoAdUnitId = adUnitId;
         }
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {

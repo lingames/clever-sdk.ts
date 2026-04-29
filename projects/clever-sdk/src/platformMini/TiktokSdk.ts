@@ -6,21 +6,17 @@ import { ttInitialize } from "../models/SdkInitialize";
 import { ttAddShortcut } from "../models/AddShortcut";
 import { LoginData } from "../models/LoginData";
 import { ttShareAppMessage } from "../models/ShareAppMessage";
-import { EventEndPoint, LoginEndPoint } from "../models";
+import { EventEndPoint, LoginEndPoint, CheckSceneResult } from "../models";
 import { CreateNativeAd } from "../models/CreateNativeAd";
 
 // @ts-ignore
 const TTMinis = (globalThis as any).TTMinis;
 
-interface CheckSceneResult {
-    isSupport: boolean;
-    isScene: boolean;
-}
-
 export class TiktokSdk extends CleverSdk {
     protected videoAd: any = null;
     protected bannerAd: any = null;
     protected interstitialAd: any = null;
+    private _lastVideoAdUnitId: string = '';
 
     async initialize(config: ttInitialize): Promise<boolean> {
         this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
@@ -36,7 +32,7 @@ export class TiktokSdk extends CleverSdk {
                     if (res.code) {
                         const body = {
                             project_id: this.project_id,
-                            platform: "tik-tok",
+                            platform: this.platform,
                             login_code: res.code,
                         };
                         // https://developers.tiktok.com/doc/mini-games-sdk-login?enter_method=left_navigation
@@ -85,7 +81,7 @@ export class TiktokSdk extends CleverSdk {
                     if (res.code) {
                         const body = {
                             project_id: this.project_id,
-                            platform: "tik-tok",
+                            platform: this.platform,
                             login_code: res.code,
                         };
                         TTMinis.game
@@ -117,11 +113,14 @@ export class TiktokSdk extends CleverSdk {
 
     // https://developers.tiktok.com/doc/mini-games-sdk-iaa?enter_method=left_navigation
     playRewardedVideo(config: ttCreateRewardedVideoAd): Promise<VideoReward> {
-        if (this.videoAd == null) {
+        const adUnitId = config.ttUnitId || config.adUnitId;
+        // 检查广告位 ID 是否变化，如果变化则重新创建广告实例
+        if (this.videoAd == null || this._lastVideoAdUnitId !== adUnitId) {
             console.log("创建 TikTok 激励视频广告");
             this.videoAd = TTMinis.game.createRewardedVideoAd({
-                adUnitId: config.ttUnitId || config.adUnitId,
+                adUnitId: adUnitId,
             });
+            this._lastVideoAdUnitId = adUnitId;
         }
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {

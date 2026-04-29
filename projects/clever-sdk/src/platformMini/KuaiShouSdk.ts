@@ -12,7 +12,8 @@ const ks = (globalThis as any).ks;
 
 export class KuaiShouSdk extends CleverSdk {
     protected bannerAd: any = null;
-    videoAd: any = null;
+    protected videoAd: any = null;
+    private _lastVideoAdUnitId: string = '';
 
     async initialize(config: ksInitialize): Promise<boolean> {
         this.sdk_login_url = config.sdk_login_url ?? LoginEndPoint;
@@ -68,13 +69,16 @@ export class KuaiShouSdk extends CleverSdk {
      * https://open.kuaishou.com/miniGameDocs/gameDev/api/ad/rewardAd/ks.createRewardedVideoAd.html
      */
     playRewardedVideo(adInfo: ksCreateRewardedVideoAd): Promise<VideoReward> {
-        if (this.videoAd == null) {
+        const adUnitId = adInfo.ksUnitId || adInfo.adUnitId;
+        // 检查广告位 ID 是否变化，如果变化则重新创建广告实例
+        if (this.videoAd == null || this._lastVideoAdUnitId !== adUnitId) {
             this.videoAd = ks.createRewardedVideoAd({
-                adUnitId: adInfo.ksUnitId || adInfo.adUnitId,
+                adUnitId: adUnitId,
                 multiton: adInfo.multiton,
                 multitonRewardMsg: adInfo.multitonMessage,
                 multitonRewardTimes: adInfo.multitonTimes,
             });
+            this._lastVideoAdUnitId = adUnitId;
         }
         return new Promise((resolve, reject) => {
             this.videoAd.onClose((res: any) => {
