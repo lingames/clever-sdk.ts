@@ -40,11 +40,12 @@ export class TiktokSdk extends CleverSdk {
                             login_code: res.code,
                         };
                         // https://developers.tiktok.com/doc/mini-games-sdk-login?enter_method=left_navigation
-                        TTMinis.game.request({
-                            url: this.sdk_login_url,
-                            method: "POST",
-                            data: body,
-                        })
+                        TTMinis.game
+                            .request({
+                                url: this.sdk_login_url,
+                                method: "POST",
+                                data: body,
+                            })
                             .then((fine: any) => {
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
@@ -71,13 +72,13 @@ export class TiktokSdk extends CleverSdk {
             console.warn("TikTok 平台不支持 authorize API");
             throw new Error("authorize API not supported");
         }
-        
+
         return new Promise((resolve, reject) => {
             const options: any = {};
             if (scope) {
                 options.scope = scope;
             }
-            
+
             TTMinis.game.authorize({
                 ...options,
                 success: (res: any) => {
@@ -87,11 +88,12 @@ export class TiktokSdk extends CleverSdk {
                             platform: "tik-tok",
                             login_code: res.code,
                         };
-                        TTMinis.game.request({
-                            url: this.sdk_login_url,
-                            method: "POST",
-                            data: body,
-                        })
+                        TTMinis.game
+                            .request({
+                                url: this.sdk_login_url,
+                                method: "POST",
+                                data: body,
+                            })
                             .then((fine: any) => {
                                 this.session_key = fine.data.session_key;
                                 resolve(fine.data);
@@ -150,7 +152,7 @@ export class TiktokSdk extends CleverSdk {
                 isScene: false,
             };
         }
-        
+
         return new Promise((resolve) => {
             TTMinis.game.checkScene({
                 scene: "sidebar",
@@ -252,7 +254,7 @@ export class TiktokSdk extends CleverSdk {
             console.warn("TikTok 平台不支持 addShortcut API");
             return false;
         }
-        
+
         return new Promise((resolve, reject) => {
             TTMinis.game.addShortcut({
                 ...options,
@@ -275,7 +277,7 @@ export class TiktokSdk extends CleverSdk {
             console.warn("TikTok 平台不支持 getShortcutMissionReward API");
             return { isSupport: false, canReceiveReward: false };
         }
-        
+
         return new Promise((resolve) => {
             TTMinis.getShortcutMissionReward({
                 success(res: any) {
@@ -297,7 +299,7 @@ export class TiktokSdk extends CleverSdk {
             console.warn("TikTok 平台不支持 startEntranceMission API");
             return false;
         }
-        
+
         return new Promise((resolve) => {
             TTMinis.startEntranceMission({
                 success() {
@@ -316,7 +318,7 @@ export class TiktokSdk extends CleverSdk {
             console.warn("TikTok 平台不支持 getEntranceMissionReward API");
             return { isSupport: false, canReceiveReward: false };
         }
-        
+
         return new Promise((resolve) => {
             TTMinis.getEntranceMissionReward({
                 success(res: any) {
